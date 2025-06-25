@@ -15,40 +15,6 @@
 #define OP_WRITE 2
 
 /**
- * @brief Operation code for initial DMA requests
- */
-#define DISAGG_DEV_OP_DMA_MAP 3
-
-/*
- * Instructs device to encrypt specific memory region into shmem
- * 1st message (host -> proxy): struct guest_message_header: addr = proxyDMA
- * 2nd message (proxy -> host): completion information (0 for success, 1 for failure), size of message 1 byte
- */
-#define DISAGG_DEV_OP_DMA_ENC 4
-
-/*
- * Instructs device to decrypt specific memory region into its own virtual address space
- * 1st message (host -> proxy): struct guest_message_header: addr = proxyDMA
- * 2nd message (proxy -> host): completion information (0 for success, 1 for failure), size of message 1 byte
- */
-#define DISAGG_DEV_OP_DMA_DEC 5
-
-/*
- * @brief Instructs proxy to send its proxyDMA address
- * Only done once during initialization
- */
-#define DISAGG_DEV_OP_ADDR_INIT 6
-
-/*
- * @brief VM sends the pyhsical address of its mapped region (EDU BAR)
- * Only done once during initialization
- * Done in two sends to get BAR number and then region
- * 1st message: address == physical address 
- * 2nd message: bar nr (no guest_message_header) size = 1B
- */
-#define DISAGG_DEV_OP_BAR_PHYS 7
-
-/**
  * @brief Structure representing the message header
  */
 struct guest_message_header
@@ -67,8 +33,9 @@ typedef struct disagg_pci_bar_info
 {
     uint64_t *addr; // Address of region, -1 means not mapped
     uint64_t *size; // Size of region
-    uint64_t vmPhys; // The physical address of this BAR on the VM; set with OP == 7 during init
     region_access_cb_t *cb;
+    uint64_t vmPhys; // The physical address of this BAR on the VM; read once
+    bool vmPhys_valid;
 } disagg_pci_bar_info;
 
 /**
@@ -87,5 +54,7 @@ typedef struct disagg_pci_dev_info
 int get_pci_region(disagg_pci_dev_info *disagg_pci_info, uint64_t addr, uint32_t size);
 
 void *run_shmem_app(disagg_pci_dev_info* arg, void *opaque);
+
+void *proxyDMA_to_proxyShmem(void *proxyDMA);
 
 #endif // CONNECTION_H

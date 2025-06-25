@@ -20,6 +20,7 @@ int main(void) {
         disagg_pci_info->regions[i].addr = &(edu->regions[i].addr);
         disagg_pci_info->regions[i].size = &(edu->regions[i].size);
         disagg_pci_info->regions[i].vmPhys = 0;
+        disagg_pci_info->regions[i].vmPhys_valid = false;
 	disagg_pci_info->regions[i].cb = edu->regions[i].cb;
 
         printf("main.c: Setting for region %d, proxy Address: 0x%" PRIx64 ", size: %lu\n", i, *(disagg_pci_info->regions[i].addr), *(disagg_pci_info->regions[i].size));
