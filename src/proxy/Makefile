@@ -27,7 +27,7 @@
 # tool macros
 CC ?= gcc
 CXX ?= # FILL: the compiler
-CFLAGS := -O2 -Wall -Wextra -Werror -lssl -lcrypto
+CFLAGS := -O2 -Wall -Wextra -Werror -libverbs -lrdmacm
 CXXFLAGS := # FILL: compile flags
 DBGFLAGS := -g -O0
 COBJFLAGS := $(CFLAGS) -c
@@ -39,7 +39,7 @@ SRC_PATH := src
 DBG_PATH := debug
 
 # compile macros
-TARGET_NAME := edu_device
+TARGET_NAME := proxy_disagg 
 ifeq ($(OS),Windows_NT)
 	TARGET_NAME := $(addsuffix .exe,$(TARGET_NAME))
 endif
