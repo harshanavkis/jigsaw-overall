@@ -10,7 +10,7 @@ typedef uint64_t hwaddr;
 #define DMA_IRQ         0x00000100
 
 #define DMA_START       0x40000
-#define DMA_SIZE        16384
+#define DMA_INTERNAL_SIZE        16384
 
 typedef struct EduState {
     struct IORegion {
@@ -43,7 +43,7 @@ typedef struct EduState {
         dma_addr_t cnt;
         dma_addr_t cmd;
     } dma;
-    char dma_buf[DMA_SIZE];
+    char dma_buf[DMA_INTERNAL_SIZE];
 } EduState;
 
 EduState *init_edu_device(void);

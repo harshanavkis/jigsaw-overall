@@ -87,7 +87,8 @@ err:
     return 0;
 }
 
-size_t disagg_mmio_decrypt(void *buf, size_t count) {
+size_t disagg_mmio_decrypt(void *from, void *to, size_t count)
+{
     EVP_CIPHER_CTX *ctx = NULL;
     EVP_CIPHER *cipher = NULL;
     int outlen;
@@ -109,26 +110,26 @@ size_t disagg_mmio_decrypt(void *buf, size_t count) {
     }
 
     // No AD
-    if (!EVP_DecryptUpdate(ctx, NULL, &outlen, disagg_crypto_mmio_global.buf, disagg_crypto_mmio_global.adlen)) {
+    if (!EVP_DecryptUpdate(ctx, NULL, &outlen, from, disagg_crypto_mmio_global.adlen)) {
 	printf("disagg_mmio_decrypt: DecryptUpdate 1 failed\n");
 	goto err;
     }
 
     // Set the ciphertext
-    if (!EVP_DecryptUpdate(ctx, buf, &outlen, disagg_crypto_mmio_global.buf + disagg_crypto_mmio_global.authsize, count)) {
+    if (!EVP_DecryptUpdate(ctx, to, &outlen, from + disagg_crypto_mmio_global.authsize, count)) {
 	printf("disagg_mmio_decrypt: DecryptUdpate 2 failed\n");
 	goto err;
     }
 
     // Set auth tag
-    params[0] = OSSL_PARAM_construct_octet_string(OSSL_CIPHER_PARAM_AEAD_TAG, disagg_crypto_mmio_global.buf, disagg_crypto_mmio_global.authsize);
+    params[0] = OSSL_PARAM_construct_octet_string(OSSL_CIPHER_PARAM_AEAD_TAG, from, disagg_crypto_mmio_global.authsize);
     if (!EVP_CIPHER_CTX_set_params(ctx, params)) {
 	printf("disagg_mmio_decrypt: set_params failed\n");
 	goto err;
     }
 
     // Finalise and check if auth tag matches
-    if (EVP_DecryptFinal_ex(ctx, buf, &outlen) <= 0) {
+    if (EVP_DecryptFinal_ex(ctx, to, &outlen) <= 0) {
 	printf("\ndisagg_mmio_decrypt: AUTH failed\n");
 	goto err;
     }
@@ -211,7 +212,7 @@ err:
     return -1;
 }
 
-void *disagg_mmio_encrypt(void *buf, size_t count) {
+void *disagg_mmio_encrypt(void *from, void *to, size_t count) {
     EVP_CIPHER_CTX *ctx = NULL;
     EVP_CIPHER *cipher = NULL;
     int outlen;
@@ -233,7 +234,7 @@ void *disagg_mmio_encrypt(void *buf, size_t count) {
     }
 
     // Set the plaintext
-    if (!EVP_EncryptUpdate(ctx, disagg_crypto_mmio_global.buf + disagg_crypto_mmio_global.authsize, &outlen, buf, count)) {
+    if (!EVP_EncryptUpdate(ctx, to + disagg_crypto_mmio_global.authsize, &outlen, from, count)) {
 	printf("disagg_mmio_encrypt: EncryptUdpate failed\n");
 	goto err;
     }
@@ -246,14 +247,14 @@ void *disagg_mmio_encrypt(void *buf, size_t count) {
 
     // Write Authentication code into output buf
     params[0] = OSSL_PARAM_construct_octet_string(OSSL_CIPHER_PARAM_AEAD_TAG, 
-	    disagg_crypto_mmio_global.buf, disagg_crypto_mmio_global.authsize);
+	    to, disagg_crypto_mmio_global.authsize);
     if (!EVP_CIPHER_CTX_get_params(ctx, params)) {
 	printf("disagg_mmio_encrypt: get_params for auth tag failed\n");
 	goto err;
     }
 
     ++(*disagg_crypto_mmio_global.counter);
-    return disagg_crypto_mmio_global.buf;
+    return to;
 err:
     if (cipher)
 	EVP_CIPHER_free(cipher);
@@ -269,11 +270,6 @@ int disagg_init_crypto(void)
      * init of disagg_crypto_mmio
      *
      */
-    disagg_crypto_mmio_global.buf = malloc(256);
-    if (!disagg_crypto_mmio_global.buf) {
-	printf("disagg_init_crypto: malloc failed\n");
-	goto err;
-    }
 
     // Init IV
     disagg_crypto_mmio_global.ivlen = 12; // this is what /include/crypto/gcm.h says

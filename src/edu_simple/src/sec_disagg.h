@@ -4,9 +4,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <infiniband/verbs.h>
 
 struct disagg_crypto_mmio {
-    unsigned char *buf;
     unsigned char *key;
     int keylen;
     unsigned char *iv;
@@ -32,10 +32,9 @@ extern struct disagg_crypto_dma disagg_crypto_dma_global;
 
 int disagg_init_crypto();
 
-void *disagg_mmio_encrypt(void *buf, size_t count);
+void *disagg_mmio_encrypt(void *from, void *to, size_t count);
 
-// Expects the encrypted input in disagg_crypto_global.buf
-size_t disagg_mmio_decrypt(void *buf, size_t count);
+size_t disagg_mmio_decrypt(void *from, void *to, size_t count);
 
 size_t disagg_dma_decrypt(void *from, void *to, size_t count);
 int disagg_dma_encrypt(void *from, void *to, size_t count);

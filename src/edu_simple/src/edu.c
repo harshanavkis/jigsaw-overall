@@ -32,9 +32,12 @@
 
 #include "edu.h"
 #include "sec_disagg.h"
+#include "rdma_server.h"
 
-/* Qemu normally provides those functions */
+/* Qemu API normally provides those functions */
 void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
+    rdma_read(proxyDMA_offset(addr), len);
+
     if (disagg_dma_decrypt(proxyDMA_to_proxyShmem((void *) addr), buf, len) != len)
 	printf("pci_dma_read failed\n");
 }
@@ -42,6 +45,8 @@ void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
 void pci_dma_write(dma_addr_t addr, void *buf, size_t len) {
     if (disagg_dma_encrypt(buf, proxyDMA_to_proxyShmem((void *) addr), len) != 0)
 	printf("pci_dma_write failed\n");
+
+    rdma_write(proxyDMA_offset(addr), len);
 }
 /* End QEMU API */
 
@@ -140,12 +145,12 @@ static void edu_dma_timer(void *opaque)
 
     if (EDU_DMA_DIR(edu->dma.cmd) == EDU_DMA_FROM_PCI) {
         uint64_t dst = edu->dma.dst;
-        edu_check_range(dst, edu->dma.cnt, DMA_START, DMA_SIZE);
+        edu_check_range(dst, edu->dma.cnt, DMA_START, DMA_INTERNAL_SIZE);
         dst -= DMA_START;
 	pci_dma_read(edu->dma.src, edu->dma_buf + dst, edu->dma.cnt);
     } else {
         uint64_t src = edu->dma.src;
-        edu_check_range(src, edu->dma.cnt, DMA_START, DMA_SIZE);
+        edu_check_range(src, edu->dma.cnt, DMA_START, DMA_INTERNAL_SIZE);
         src -= DMA_START;
 	pci_dma_write(edu->dma.dst, edu->dma_buf + src, edu->dma.cnt);
     }

@@ -1,31 +1,41 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include "unistd.h"
 
-#include "edu.h"
 #include "connection.h"
+#include "rdma_client.h"
 
-int main(void) {
+int main(int argc, char **argv)
+{
+	int op, ret;
+	char *server = NULL;
+	char *port = NULL;
 
-    EduState *edu = init_edu_device();
+	while ((op = getopt(argc, argv, "s:p:")) != -1) {
+		switch (op) {
+		case 's':
+			server = optarg;
+			break;
+		case 'p':
+			port = optarg;
+			break;
+		default:
+			printf("usage: %s\n", argv[0]);
+			printf("\t[-s server_address]\n");
+			printf("\t[-p port_number]\n");
+			exit(1);
+		}
+	}
 
-    if (edu == NULL)
-	exit(EXIT_FAILURE);
+	if (!server || !port) {
+	    fprintf(stderr, "Error: server and port both necessary");
+	    return EXIT_FAILURE;
+	}
 
-    // Setup region info
-    disagg_pci_dev_info *disagg_pci_info = (disagg_pci_dev_info *) malloc(sizeof(disagg_pci_dev_info));
-
-    for (int i = 0; i < PCI_NUM_REGIONS; i++)
-    {
-        disagg_pci_info->regions[i].addr = &(edu->regions[i].addr);
-        disagg_pci_info->regions[i].size = &(edu->regions[i].size);
-        disagg_pci_info->regions[i].vmPhys = 0;
-        disagg_pci_info->regions[i].vmPhys_valid = false;
-	disagg_pci_info->regions[i].cb = edu->regions[i].cb;
-
-        printf("main.c: Setting for region %d, proxy Address: 0x%" PRIx64 ", size: %lu\n", i, *(disagg_pci_info->regions[i].addr), *(disagg_pci_info->regions[i].size));
-    }
-
-    run_shmem_app(disagg_pci_info, edu);
+	printf("rdma_client: start\n");
+	ret = run(server, port);
+	printf("rdma_client: end %d\n", ret);
+	return ret;
 }
 
