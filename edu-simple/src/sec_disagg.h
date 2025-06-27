@@ -17,7 +17,6 @@ struct disagg_crypto_mmio {
 };
 
 struct disagg_crypto_dma {
-    void *proxyDMA_start;
     unsigned char *key;
     int keylen;
     unsigned char *iv;

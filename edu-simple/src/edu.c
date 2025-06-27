@@ -35,12 +35,12 @@
 
 /* Qemu normally provides those functions */
 void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
-    if (disagg_dma_decrypt(proxyDMA_to_proxyShmem((void *) addr), buf, len) != len)
+    if (disagg_dma_decrypt((void *)addr, buf, len) != len)
 	printf("pci_dma_read failed\n");
 }
 
 void pci_dma_write(dma_addr_t addr, void *buf, size_t len) {
-    if (disagg_dma_encrypt(buf, proxyDMA_to_proxyShmem((void *) addr), len) != 0)
+    if (disagg_dma_encrypt(buf, (void *)addr, len) != 0)
 	printf("pci_dma_write failed\n");
 }
 /* End QEMU API */

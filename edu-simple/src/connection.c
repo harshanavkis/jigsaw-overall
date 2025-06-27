@@ -23,7 +23,7 @@
 #define DMA_SIZE (SHMEM_SIZE - DMA_REGION_OFFSET)
 
 /* Offsets in the shared memory with special values */
-#define OFFSET_PROXY_DMA (256)
+#define OFFSET_PROXY_SHMEM (256)
 #define OFFSET_BAR_PHYS_ADDR (264)
 
 static void *shmem = NULL;
@@ -79,16 +79,8 @@ static int init_shared_memory() {
     *read_doorbell = 0;
     *write_doorbell = 0;
 
-    // alloc region for decryption of dma requests
-    void *dma_dec = malloc(DMA_SIZE); 
-    if (dma_dec == NULL) {
-	printf("malloc for big DMA region failed\n");
-	return -1;
-    }
-    disagg_crypto_dma_global.proxyDMA_start = dma_dec;
-
-    // write proxyDMA address into shmem
-    *((uint64_t *)(shmem + OFFSET_PROXY_DMA)) = (uint64_t) dma_dec; 
+    // write proxyShmem address into shmem
+    *((uint64_t *)(shmem + OFFSET_PROXY_SHMEM)) = (uint64_t) shmem + DMA_REGION_OFFSET; 
 
 
     msync(shmem, TOTAL_DOORBELL_SIZE, MS_SYNC);
@@ -155,13 +147,6 @@ static int wait_and_read_data(void *buf, size_t count) {
     __atomic_store_n(write_doorbell, 0, __ATOMIC_RELEASE);
 
     return read_bytes;
-}
-
-void *proxyDMA_to_proxyShmem(void *proxyDMA) {
-    if (disagg_crypto_dma_global.proxyDMA_start > shmem)
-	return proxyDMA - (disagg_crypto_dma_global.proxyDMA_start - DMA_REGION_OFFSET - shmem);
-    else
-	return proxyDMA + (shmem - disagg_crypto_dma_global.proxyDMA_start + DMA_REGION_OFFSET);
 }
 
 void read_vmPhys_mapping(disagg_pci_dev_info *pci_info, int bar_nr) {
