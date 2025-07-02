@@ -69,7 +69,5 @@ uint64_t proxyDMA_offset(dma_addr_t proxyDMA);
 
 /* Offsets in the shared memory with special values */
 #define OFFSET_PROXY_DMA (256)
-#define OFFSET_BAR_PHYS_ADDR (264)
-
 
 #endif // CONNECTION_H
