@@ -24,7 +24,7 @@
 
 /* Offsets in the shared memory with special values */
 #define OFFSET_PROXY_SHMEM (256)
-#define OFFSET_BAR_PHYS_ADDR (264)
+//#define OFFSET_BAR_PHYS_ADDR (264)
 
 static void *shmem = NULL;
 static volatile uint8_t *read_doorbell = NULL;
@@ -149,6 +149,7 @@ static int wait_and_read_data(void *buf, size_t count) {
     return read_bytes;
 }
 
+/*
 void read_vmPhys_mapping(disagg_pci_dev_info *pci_info, int bar_nr) {
     // Support only for 
     if (bar_nr != 0) {
@@ -181,6 +182,7 @@ int get_pci_region(disagg_pci_dev_info *pci_info, uint64_t addr, uint32_t size)
 
     return -1;
 }
+*/
 
 void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
     if (init_shared_memory() < 0) {
@@ -227,14 +229,16 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
                 continue;
             }
 
-            int pci_region = get_pci_region(pci_info, header.address, header.length);
+            //int pci_region = get_pci_region(pci_info, header.address, header.length);
+            int pci_region = 0;
 
 #ifdef CONFIG_DISAGG_DEBUG_MMIO
             printf("connection.c: OP_READ: Got PCI region: %d ", pci_region);
 #endif
             cb = pci_info->regions[pci_region].cb;
 
-	    offset = header.address - (pci_info->regions[pci_region].vmPhys);
+	    //offset = header.address - (pci_info->regions[pci_region].vmPhys);
+	    offset = header.address;
 #ifdef CONFIG_DISAGG_DEBUG_MMIO
             printf("with offset %ld\n", offset);
 #endif
@@ -279,7 +283,8 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
                 continue;
             }
 
-            pci_region = get_pci_region(pci_info, header.address, header.length);
+            //pci_region = get_pci_region(pci_info, header.address, header.length);
+	    pci_region = 0;
 
             cb = pci_info->regions[pci_region].cb;
 
@@ -292,7 +297,8 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
             printf("\n");
 #endif
 
-	    offset = header.address - (pci_info->regions[pci_region].vmPhys);
+	    //offset = header.address - (pci_info->regions[pci_region].vmPhys);
+	    offset = header.address;
             is_write = true;
             ret = cb(opaque, data, header.length, offset, is_write);
 
