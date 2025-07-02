@@ -173,7 +173,7 @@ int disagg_dma_encrypt(void *from, void *to, size_t count) {
     }
 
     // Set the plaintext
-    if (!EVP_EncryptUpdate(ctx, to + disagg_crypto_dma_global.authsize, &outlen, from, count)) {
+    if (!EVP_EncryptUpdate(ctx, to, &outlen, from, count)) {
 	printf("disagg_dma_encrypt: EncryptUdpate failed\n");
 	goto err;
     }
@@ -186,7 +186,7 @@ int disagg_dma_encrypt(void *from, void *to, size_t count) {
 
     // Write Authentication code into output buf
     params[0] = OSSL_PARAM_construct_octet_string(OSSL_CIPHER_PARAM_AEAD_TAG, 
-	    (unsigned char *) to, disagg_crypto_dma_global.authsize);
+	    (unsigned char *) to + count, disagg_crypto_dma_global.authsize);
     if (!EVP_CIPHER_CTX_get_params(ctx, params)) {
 	printf("disagg_dma_encrypt: get_params for auth tag failed\n");
 	goto err;
@@ -233,7 +233,7 @@ void *disagg_mmio_encrypt(void *buf, size_t count) {
     }
 
     // Set the plaintext
-    if (!EVP_EncryptUpdate(ctx, disagg_crypto_mmio_global.buf + disagg_crypto_mmio_global.authsize, &outlen, buf, count)) {
+    if (!EVP_EncryptUpdate(ctx, disagg_crypto_mmio_global.buf, &outlen, buf, count)) {
 	printf("disagg_mmio_encrypt: EncryptUdpate failed\n");
 	goto err;
     }
@@ -246,7 +246,7 @@ void *disagg_mmio_encrypt(void *buf, size_t count) {
 
     // Write Authentication code into output buf
     params[0] = OSSL_PARAM_construct_octet_string(OSSL_CIPHER_PARAM_AEAD_TAG, 
-	    disagg_crypto_mmio_global.buf, disagg_crypto_mmio_global.authsize);
+	    disagg_crypto_mmio_global.buf + count, disagg_crypto_mmio_global.authsize);
     if (!EVP_CIPHER_CTX_get_params(ctx, params)) {
 	printf("disagg_mmio_encrypt: get_params for auth tag failed\n");
 	goto err;
