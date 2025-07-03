@@ -12,4 +12,7 @@ struct meta_remote_info {
     uint32_t rkey;
 };
 
+
+//#define DEBUG_MESSAGES
+
 #endif // COMMON_H

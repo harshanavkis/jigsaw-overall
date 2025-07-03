@@ -14,28 +14,19 @@
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
-static void *shmem = NULL;
-
 uint64_t proxyDMA_offset(dma_addr_t proxyDMA) {
     return ((uint64_t)(proxyDMA - (dma_addr_t) disagg_crypto_dma_global.proxyDMA_start)) + DMA_REGION_OFFSET; 
 }
 
 static int init_dma_memory() 
 {
-    shmem = regions_rdma.shmem_buf;
+    void *shmem = regions_rdma.shmem_buf;
 
-    // alloc region for decryption of dma requests
-    void *dma_dec = malloc(DMA_SIZE); 
-    if (dma_dec == NULL) {
-	printf("malloc for big DMA region failed\n");
-	return -1;
-    }
-    disagg_crypto_dma_global.proxyDMA_start = dma_dec;
-
+    disagg_crypto_dma_global.proxyDMA_start = shmem + DMA_REGION_OFFSET;
 
     // write proxyDMA address into shmem
-    *((uint64_t *)(shmem + OFFSET_PROXY_DMA)) = (uint64_t) dma_dec; 
-    rdma_write(OFFSET_PROXY_DMA, sizeof(uint64_t));
+    *((uint64_t *)(shmem + OFFSET_PROXY_DMA)) = (uint64_t) shmem + DMA_REGION_OFFSET; 
+    rdma_write(OFFSET_PROXY_DMA, sizeof(shmem));
 
     return 0;
 }
@@ -60,7 +51,7 @@ static ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
 	return -1;
     }
 
-    int ret = rdma_send(enc_send_buf, count);
+    int ret = rdma_send(enc_send_buf, count + disagg_crypto_mmio_global.authsize);
     if (ret != 0)
 	return -1;
 
@@ -74,13 +65,6 @@ static int wait_and_read_data(void *buf, size_t count) {
     }
 
     return read_bytes;
-}
-
-void *proxyDMA_to_proxyShmem(void *proxyDMA) {
-    if (disagg_crypto_dma_global.proxyDMA_start > shmem)
-	return proxyDMA - (disagg_crypto_dma_global.proxyDMA_start - DMA_REGION_OFFSET - shmem);
-    else
-	return proxyDMA + (shmem - disagg_crypto_dma_global.proxyDMA_start + DMA_REGION_OFFSET);
 }
 
 /*
@@ -138,6 +122,7 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
     region_access_cb_t *cb;
     loff_t offset;
     int pci_region;
+    uint32_t ret;
 
     while (1) {
         struct guest_message_header header;
@@ -176,7 +161,7 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
             printf("with offset %ld\n", offset);
 #endif
             is_write = false;
-            uint32_t ret = cb(opaque, data, header.length, offset, is_write);
+            ret = cb(opaque, data, header.length, offset, is_write);
 
             if (ret != header.length)
             {

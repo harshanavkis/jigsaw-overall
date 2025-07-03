@@ -43,8 +43,6 @@
 static struct rdma_cm_id *listen_id, *id;
 static int send_flags;
 
-static struct meta_remote_info meta_dma_reg;
-
 struct disagg_regions_rdma regions_rdma;
 
 int rdma_write(uint64_t offset, size_t count)
@@ -52,7 +50,7 @@ int rdma_write(uint64_t offset, size_t count)
     int ret;
     struct ibv_wc wc;
 
-    ret = rdma_post_write(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, meta_dma_reg.remote_addr + offset, meta_dma_reg.rkey);
+    ret = rdma_post_write(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, regions_rdma.remote_addr + offset, regions_rdma.rkey);
 
     if (ret != 0) {
 	perror("rdma_post_write failed\n");
@@ -72,7 +70,7 @@ int rdma_read(uint64_t offset, size_t count)
     int ret;
     struct ibv_wc wc;
 
-    ret = rdma_post_read(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, meta_dma_reg.remote_addr + offset, meta_dma_reg.rkey);
+    ret = rdma_post_read(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, regions_rdma.remote_addr + offset, regions_rdma.rkey);
 
     if (ret != 0) {
 	perror("rdma_post_write failed\n");
@@ -110,7 +108,7 @@ out:
 
 // Retreived a completed recv work request and returns the corresponding buffer
 // The buffer's buddy is posted for recv
-// NULL for failure
+// Return NULL for failure
 void *rdma_recv(void)
 {
     struct ibv_wc wc;
@@ -212,7 +210,7 @@ static int register_mregions(void)
 	printf("Error malloc\n");
 	goto free_dereg;
     }
-    regions_rdma.shmem_buf = res_buf;;
+    regions_rdma.shmem_buf = res_buf;
     res_mr = ibv_reg_mr(id->pd, res_buf, SHMEM_SIZE, IBV_ACCESS_LOCAL_WRITE | 
 						     IBV_ACCESS_REMOTE_READ |
 						     IBV_ACCESS_REMOTE_WRITE);
@@ -263,7 +261,7 @@ int init_rdma(const char *serverIP, const char *port)
 
 	// Configures attributes
 	memset(&init_attr, 0, sizeof init_attr);
-	init_attr.cap.max_send_wr = init_attr.cap.max_recv_wr = 8;
+	init_attr.cap.max_send_wr = init_attr.cap.max_recv_wr = NUM_RECV_BUFS / 2;
 	init_attr.cap.max_send_sge = init_attr.cap.max_recv_sge = 1;
 	init_attr.cap.max_inline_data = BUFS_SIZE;
 	init_attr.sq_sig_all = 1;
@@ -336,10 +334,10 @@ int init_rdma(const char *serverIP, const char *port)
 	// First message is meta information about the shmem DMA region
 	struct meta_remote_info *tmp_meta = (struct meta_remote_info *)recv_msg;
 
-	meta_dma_reg.remote_addr = tmp_meta->remote_addr;
-	meta_dma_reg.rkey = tmp_meta->rkey;
+	regions_rdma.remote_addr = tmp_meta->remote_addr;
+	regions_rdma.rkey = tmp_meta->rkey;
 
-	printf("remote_addr: %p, rkey: 0x%x\n", (uint64_t *)meta_dma_reg.remote_addr, meta_dma_reg.rkey);
+	printf("remote_addr: %p, rkey: 0x%x\n", (uint64_t *)regions_rdma.remote_addr, regions_rdma.rkey);
 
 	return 0;
 

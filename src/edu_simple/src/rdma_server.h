@@ -33,8 +33,12 @@ struct disagg_regions_rdma {
 				// The buffer itself is returned as a result.
 				// This prevents overriding of memory regions if the result is not yet processed.
 
-    void *shmem_buf; // Pointer shmem; contains the encrypted DMA region
+    void *shmem_buf; // Pointer shmem; contains the encrypted DMA region; needed as the read requests need a destination
+		     // Because the data cannot be directly decrypted from a rdma request
     struct ibv_mr *mr_shmem_buf;
+
+    uint64_t remote_addr;
+    uint32_t rkey;
 };
 
 extern struct disagg_regions_rdma regions_rdma;

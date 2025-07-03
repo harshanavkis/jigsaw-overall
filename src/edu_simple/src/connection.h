@@ -59,8 +59,6 @@ int get_pci_region(disagg_pci_dev_info *disagg_pci_info, uint64_t addr, uint32_t
 
 void *run_shmem_app(disagg_pci_dev_info* arg, void *opaque);
 
-void *proxyDMA_to_proxyShmem(void *proxyDMA);
-
 // Offset of this address from start of shared memory region
 uint64_t proxyDMA_offset(dma_addr_t proxyDMA);
 

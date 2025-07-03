@@ -4,57 +4,17 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/**
- * @brief Operation code for read requests
+/*
+ * Maps shared memory
+ * If successfull, writes the mapped shmem pointer into @shmem
+ * @return 0 for success
  */
-#define OP_READ 1
+int init_shared_memory(char **shmem);
 
-/**
- * @brief Operation code for write requests
- */
-#define OP_WRITE 2
+ssize_t ivshmem_write(void *buf, size_t count, off_t offset);
 
-/**
- * @brief Structure representing the message header
- */
-struct guest_message_header
-{
-    uint8_t operation; /**< Operation type */
-    uint64_t address;  /**< Memory address for the operation */
-    uint32_t length;   /**< Length of data to read or write */
-} __attribute__((packed));
+int get_write_doorbell(void);
 
-typedef size_t (region_access_cb_t)(void *opaque, char *buf, size_t count, size_t offset, bool is_write);
-
-/**
- * @brief Structure representing the PCI BARs in a device
- */
-typedef struct disagg_pci_bar_info
-{
-    uint64_t *addr; // Address of region, -1 means not mapped
-    uint64_t *size; // Size of region
-    region_access_cb_t *cb;
-    uint64_t vmPhys; // The physical address of this BAR on the VM; read once
-    bool vmPhys_valid;
-} disagg_pci_bar_info;
-
-/**
- * @brief Number of PCI regions including config space and BARs
- */
-#define PCI_NUM_REGIONS 7
-
-/**
- * @brief Structure representing the PCI information that is passed to the shmem thread
- */
-typedef struct disagg_pci_dev_info
-{   
-    disagg_pci_bar_info regions[PCI_NUM_REGIONS];
-} disagg_pci_dev_info;
-
-int get_pci_region(disagg_pci_dev_info *disagg_pci_info, uint64_t addr, uint32_t size);
-
-void *run_shmem_app(disagg_pci_dev_info* arg, void *opaque);
-
-void *proxyDMA_to_proxyShmem(void *proxyDMA);
+void reset_write_doorbell(void);
 
 #endif // CONNECTION_H

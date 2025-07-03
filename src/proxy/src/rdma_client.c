@@ -33,49 +33,33 @@
 #include <netdb.h>
 #include <errno.h>
 #include <getopt.h>
+#include <fcntl.h>
 #include <rdma/rdma_cma.h>
 #include <rdma/rdma_verbs.h>
 
 #include "../../include/common.h"
 
 static struct rdma_cm_id *id;
-static struct ibv_mr *mr_recv[NUM_RECV_BUFS], *send_mr;
+static struct ibv_mr *mr_recv[NUM_RECV_BUFS];
 static int send_flags;
-static uint8_t send_msg[BUFS_SIZE];
 static uint8_t recv_msg[NUM_RECV_BUFS][BUFS_SIZE];
 
 struct ibv_mr *mr_shmem;
 
 static void deregister_mregions(void)
 {
-    rdma_dereg_mr(mr_dma);
+    rdma_dereg_mr(mr_shmem);
 
     for (int i = 0; i < NUM_RECV_BUFS; ++i) {
 	rdma_dereg_mr(mr_recv[i]);
     }
-
-    if ((send_flags & IBV_SEND_INLINE) == 0)
-	rdma_dereg_mr(send_mr);
 }
 
 // Allocates regions and
 // Registers regions in struct regions_dma with the RDMA side
-static int register_mregions(void)
+static int register_mregions(void *shmem)
 {
     struct ibv_mr *res_mr;
-    void *res_buf;
-
-    // First, the enc_buf, input for rdma_post_send
-    if ((send_flags & IBV_SEND_INLINE) == 0) {
-	res_mr = rdma_reg_msgs(id, send_msg, BUFS_SIZE);
-	if (!res_mr) {
-	    perror("rdma_reg_msgs");
-	    goto out;
-	}
-	send_mr = res_mr;
-    } else {
-	send_mr = NULL;
-    }
 
     // Now, the recv buffers, input for rdma_post_recv
     int i = 0;
@@ -83,7 +67,6 @@ static int register_mregions(void)
 	res_mr = rdma_reg_msgs(id, recv_msg[i], BUFS_SIZE);
 	if (!res_mr) {
 	    perror("rdma_reg_msgs");
-	    free(res_buf);
 	    goto free_dereg;
 	}
 	mr_recv[i] = res_mr;
@@ -104,16 +87,118 @@ static int register_mregions(void)
 free_dereg:
     --i;
     for (; i >= 0; --i) {
-	rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
+	rdma_dereg_mr(mr_recv[i]);
     }
 
-    if ((send_flags & IBV_SEND_INLINE) == 0)
-	rdma_dereg_mr(regions_rdma.mr_enc_send_buf);
-out:
     return 1;
 }
 
-int init_rdma(char *server, char *port)
+int rdma_send(void *buf, size_t size)
+{
+#ifdef DEBUG_MESSAGES
+    printf("rdma_send:\nlength: %lu\nbuf: ", size);
+    for (size_t i = 0; i < size; ++i)
+	printf("%x", *((unsigned char *)buf + i));
+    printf("\n\n");
+#endif
+    int ret; 
+    struct ibv_wc wc;
+
+    ret = rdma_post_send(id, NULL, buf, size, mr_shmem, send_flags);
+    if (ret) {
+	perror("rdma_post_send");
+	goto out;
+    }
+
+    while ((ret = rdma_get_send_comp(id, &wc)) == 0);
+    if (ret < 0)
+	perror("rdma_get_send_comp");
+    else
+	ret = 0;
+
+out:
+    return ret;
+}
+
+
+// This is the rdma_get_recv_comp from the rdma-core library (https://github.com/linux-rdma/rdma-core/blob/5abc21f894bf39eaaa3ecee14a0a3358eabfd121/librdmacm/rdma_verbs.h#L283) with the exception that it only does one iteration and not loop until recv is available. This allows non-blocking implementation.
+static inline int
+rdma_get_recv_comp_one_iter(struct rdma_cm_id *id, struct ibv_wc *wc)
+{
+    struct ibv_cq *cq;
+    void *context;
+    int ret;
+
+    ret = ibv_poll_cq(id->recv_cq, 1, wc);
+    if (ret)
+	goto out;
+
+    ret = ibv_req_notify_cq(id->recv_cq, 0);
+    if (ret)
+	return rdma_seterrno(ret);
+
+    ret = ibv_poll_cq(id->recv_cq, 1, wc);
+    if (ret)
+	goto out;
+
+    ret = ibv_get_cq_event(id->recv_cq_channel, &cq, &context);
+    if (ret == -1)
+	return 0;
+
+    assert(cq == id->recv_cq && context == id);
+    ibv_ack_cq_events(id->recv_cq, 1);
+
+out:
+    return (ret < 0) ? rdma_seterrno(ret) : ret;
+}
+
+ssize_t rdma_recv(void **ret_buf)
+{
+    struct ibv_wc wc;
+    uint64_t i;
+    int ret;
+    uint64_t buddy;
+
+    ret = rdma_get_recv_comp_one_iter(id, &wc);
+    if (ret < 0) {
+	perror("rdma_get_recv_comp_one_iter");
+	return -1;
+    } else if (ret == 0) {
+	return 0;
+    }
+
+    i = wc.wr_id;
+
+    if (i >= NUM_RECV_BUFS) {
+	printf("invalid recv buffer id\n");
+	return -1;
+    }
+
+    // Get buddy index
+    if (i < NUM_RECV_BUFS / 2) {
+	buddy = i + (NUM_RECV_BUFS / 2);
+    } else {
+	buddy = i - (NUM_RECV_BUFS / 2);
+    }
+
+    ret = rdma_post_recv(id, (void *) buddy, recv_msg[buddy], BUFS_SIZE, mr_recv[buddy]);
+    if (ret) {
+	perror("rdma_post_recv");
+	return -1;
+    }
+
+    *ret_buf = recv_msg[i];
+
+#ifdef DEBUG_MESSAGES
+    printf("rdma_recv:\nlength: %d\nbuf: ", wc.byte_len);
+    for (ssize_t n = 0; n < wc.byte_len; ++n)
+	printf("%x", recv_msg[i][n]);
+    printf("\n\n");
+#endif
+    return wc.byte_len;
+}
+
+int init_rdma(char *server, char *port, void *shmem)
 {
 	struct rdma_addrinfo hints, *res;
 	struct ibv_qp_init_attr attr;
@@ -129,7 +214,7 @@ int init_rdma(char *server, char *port)
 	}
 
 	memset(&attr, 0, sizeof attr);
-	attr.cap.max_send_wr = attr.cap.max_recv_wr = 8;
+	attr.cap.max_send_wr = attr.cap.max_recv_wr = NUM_RECV_BUFS / 2;
 	attr.cap.max_send_sge = attr.cap.max_recv_sge = 1;
 	attr.cap.max_inline_data = BUFS_SIZE;
 	attr.qp_context = id;
@@ -149,16 +234,16 @@ int init_rdma(char *server, char *port)
 	}
 
 	// Register all regions
-	ret = register_mregions();
+	ret = register_mregions(shmem);
 	if (ret != 0)
-	    goto out_dereg_send;
+	    goto out_dereg;
 
 	// Post first half of recv buffers
 	for (uint64_t i = 0; i < NUM_RECV_BUFS / 2; ++i) {
-	    ret = rdma_post_recv(id, (void *) i; recv_msg[i], BUFS_SIZE, mr_recv[i]);
+	    ret = rdma_post_recv(id, (void *) i, recv_msg[i], BUFS_SIZE, mr_recv[i]);
 	    if (ret) {
 		perror("rdma_post_recv");
-		goto out_dereg_send;
+		goto out_dereg;
 	    }
 	}
 
@@ -166,67 +251,66 @@ int init_rdma(char *server, char *port)
 	ret = rdma_connect(id, NULL);
 	if (ret) {
 		perror("rdma_connect");
-		goto out_dereg_send;
+		goto out_dereg;
 	}
 
-	{
 
-	    // Send the necessary metadata to the server
-	    struct meta_remote_info *meta_dma_reg = (struct meta_remote_info *) send_msg;
-	    meta_dma_reg->remote_addr = (uint64_t) dma_reg;
-	    meta_dma_reg->rkey = mr_dma->rkey;
+	/*** Send metadata with information of dma region to server ***/
+	// The server needs this information to be able to perfrom read/writes
 
-	    printf("addr: %p, rkey: 0x%x\n", dma_reg, meta_dma_reg->rkey);
+	// Register temporary memory region
+	struct meta_remote_info meta_dma_reg;
+	struct ibv_mr *meta_dma_mr = NULL;
 
-	    ret = rdma_post_send(id, NULL, send_msg, sizeof(*meta_dma_reg), send_mr, send_flags);
-	    if (ret) {
-		    perror("rdma_post_send");
-		    goto out_disconnect;
-	    }
-
-	    while ((ret = rdma_get_send_comp(id, &wc)) == 0);
-	    if (ret < 0) {
-		    perror("rdma_get_send_comp");
-		    goto out_disconnect;
-	    }
-
-	}
-
-	/*
-	ret = rdma_post_send(id, NULL, send_msg, 16, send_mr, send_flags);
-	if (ret) {
-		perror("rdma_post_send");
+	if ((send_flags & IBV_SEND_INLINE) == 0) {
+	    meta_dma_mr = rdma_reg_msgs(id, &meta_dma_reg, sizeof(meta_dma_reg));
+	    if (!meta_dma_mr) {
+		perror("rdma_reg_msgs");
 		goto out_disconnect;
+	    }
+	}
+
+	// Send the necessary metadata to the server
+	meta_dma_reg.remote_addr = (uint64_t) shmem;
+	meta_dma_reg.rkey = mr_shmem->rkey;
+
+	printf("addr: %lx, rkey: 0x%x\n", meta_dma_reg.remote_addr, meta_dma_reg.rkey);
+
+	ret = rdma_post_send(id, NULL, &meta_dma_reg, sizeof(meta_dma_reg), meta_dma_mr, send_flags);
+	if (ret) {
+	    perror("rdma_post_send");
+	    goto out_meta_dma;
 	}
 
 	while ((ret = rdma_get_send_comp(id, &wc)) == 0);
 	if (ret < 0) {
-		perror("rdma_get_send_comp");
-		goto out_disconnect;
+	    perror("rdma_get_send_comp");
+	    goto out_meta_dma;
 	}
-	*/
 
-	while ((ret = rdma_get_recv_comp(id, &wc)) == 0);
-	if (ret < 0)
-		perror("rdma_get_recv_comp");
-	else
-		ret = 0;
+	if (meta_dma_mr)
+	    rdma_dereg_mr(meta_dma_mr);
+	/***/
 
+	/* change recv queue to non-blocking */
+	// Copied this section from https://www.rdmamojo.com/2013/03/09/ibv_get_cq_event/
+	int flags;
+	flags = fcntl(id->recv_cq_channel->fd, F_GETFL);
+	ret = fcntl(id->recv_cq_channel->fd, F_SETFL, flags | O_NONBLOCK);
+	if (ret < 0) {
+	    fprintf(stderr, "Failed to change file descriptor of Completion Event Channel\n");
+	    goto out_meta_dma;
+	}
 
-	// Print dma_region and test if it worked
-	for (uint64_t i = 0; i < dma_size; ++i)
-	    printf("%02x ", dma_reg[i]);
-	printf("\n");
+	return 0;
 
+out_meta_dma:
+	if (meta_dma_mr)
+	    rdma_dereg_mr(meta_dma_mr);
 out_disconnect:
 	rdma_disconnect(id);
-out_dereg_send:
-	free(dma_reg);
-	if ((send_flags & IBV_SEND_INLINE) == 0)
-		rdma_dereg_mr(send_mr);
-out_dereg_recv:
-	rdma_dereg_mr(mr);
-out_destroy_ep:
+out_dereg:
+	deregister_mregions();
 	rdma_destroy_ep(id);
 out_free_addrinfo:
 	rdma_freeaddrinfo(res);

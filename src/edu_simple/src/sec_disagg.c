@@ -7,8 +7,9 @@
 #include <openssl/core_names.h>
 
 //#define CONFIG_DISAGG_DEBUG_DMA_SEC
+#define CONFIG_DISAGG_DEBUG_MMIO_SEC
 
-#ifdef CONFIG_DISAGG_DEBUG_DMA_SEC
+#if defined(CONFIG_DISAGG_DEBUG_DMA_SEC) || defined(CONFIG_DISAGG_DEBUG_MMIO_SEC)
 static void print_bytes(void *buf, size_t count) {
     unsigned char *bytes = buf;
     for (size_t i = 0; i < count; ++i)
@@ -89,6 +90,17 @@ err:
 
 size_t disagg_mmio_decrypt(void *from, void *to, size_t count)
 {
+#ifdef CONFIG_DISAGG_DEBUG_MMIO_SEC
+    printf("disagg_mmio_decrypt:\n");
+    printf("counter: %lu\n", *disagg_crypto_mmio_global.counter);
+    printf("cipher-size (only encrypted data): %ld\n", count);
+    printf("ciphertext: ");
+    print_bytes(from + disagg_crypto_mmio_global.authsize, count);
+    printf("\nAuth Tag: ");
+    print_bytes(from, disagg_crypto_mmio_global.authsize);
+    printf("\n");
+#endif
+			
     EVP_CIPHER_CTX *ctx = NULL;
     EVP_CIPHER *cipher = NULL;
     int outlen;
@@ -135,6 +147,12 @@ size_t disagg_mmio_decrypt(void *from, void *to, size_t count)
     }
 
     ++(*disagg_crypto_mmio_global.counter);
+
+#ifdef CONFIG_DISAGG_DEBUG_MMIO_SEC
+    printf("Plaintext: ");
+    print_bytes(to, count);
+    printf("\n");
+#endif
 
     return count;
 err:
@@ -213,6 +231,14 @@ err:
 }
 
 void *disagg_mmio_encrypt(void *from, void *to, size_t count) {
+#ifdef CONFIG_DISAGG_DEBUG_MMIO_SEC
+    printf("disagg_mmio_encrypt:\n");
+    printf("counter: %lu\n", *disagg_crypto_mmio_global.counter);
+    printf("Plaintext: ");
+    print_bytes(from, count);
+    printf("\n");
+#endif
+
     EVP_CIPHER_CTX *ctx = NULL;
     EVP_CIPHER *cipher = NULL;
     int outlen;
@@ -254,6 +280,16 @@ void *disagg_mmio_encrypt(void *from, void *to, size_t count) {
     }
 
     ++(*disagg_crypto_mmio_global.counter);
+
+#ifdef CONFIG_DISAGG_DEBUG_MMIO_SEC
+    printf("cipher-size (only encrypted data): %ld\n", count);
+    printf("ciphertext: ");
+    print_bytes(to + disagg_crypto_mmio_global.authsize, count);
+    printf("\nAuth Tag: ");
+    print_bytes(to + count, disagg_crypto_mmio_global.authsize);
+    printf("\n");
+#endif
+
     return to;
 err:
     if (cipher)

@@ -10,6 +10,8 @@
 
 #include "connection.h"
 
+#include "../../include/common.h"
+
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
 #define SHMEM_FILE "/dev/shm/ivshmem"  // Adjust this path as needed
@@ -22,7 +24,6 @@
 
 /* Offsets in the shared memory with special values */
 #define OFFSET_PROXY_DMA (256)
-#define OFFSET_BAR_PHYS_ADDR (264)
 
 static void *shmem = NULL;
 static volatile uint8_t *read_doorbell = NULL;
@@ -56,7 +57,7 @@ static int create_or_open_shmem_file() {
     return fd;
 }
 
-static int init_shared_memory() {
+int init_shared_memory(char **ret_shmem) {
     int fd = create_or_open_shmem_file();
     if (fd < 0) {
         return -1;
@@ -78,17 +79,21 @@ static int init_shared_memory() {
     *write_doorbell = 0;
 
     msync(shmem, TOTAL_DOORBELL_SIZE, MS_SYNC);
+
+    *ret_shmem = shmem;
     
     return 0;
 }
 
-static void wait_for_write_doorbell_set() {
-    // uint32_t counter = 0;
-    while (__atomic_load_n(write_doorbell, __ATOMIC_ACQUIRE) == 0) {
-        // if (++counter % 1000000 == 0) {
-        //     printf("Still waiting for write doorbell to be set. Current value: %u\n", *write_doorbell);
-        // }
-    }
+/*
+ * @return 1 if is set, 0 if not
+ */
+int get_write_doorbell(void) {
+    return __atomic_load_n(write_doorbell, __ATOMIC_ACQUIRE);
+}
+
+void reset_write_doorbell(void) {
+    __atomic_store_n(write_doorbell, 0, __ATOMIC_RELEASE);
 }
 
 static void wait_for_read_doorbell_clear() {
@@ -97,76 +102,28 @@ static void wait_for_read_doorbell_clear() {
     }
 }
 
-static ssize_t ivshmem_read(void *buf, size_t count, off_t offset) {
+ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
+#ifdef DEBUG_MESSAGES 
+    printf("ivshmem_write\ncount: %lu\nbuffer: ", count);
+    for (size_t i = 0; i < count; ++i)
+	printf("%x", *((unsigned char *)buf + i));
+    printf("\n");
+#endif
+
     if (!shmem || offset >= SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
         return -1;
 
     if (offset + count > SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
         count = SHMEM_SIZE - TOTAL_DOORBELL_SIZE - offset;
-
-    memcpy(disagg_crypto_mmio_global.buf, shmem + TOTAL_DOORBELL_SIZE + offset, disagg_crypto_mmio_global.adlen + count + disagg_crypto_mmio_global.authsize);
-
-    return disagg_mmio_decrypt(buf, count);
-}
-
-static ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
-    if (!shmem || offset >= SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
-        return -1;
-
-    if (offset + count > SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
-        count = SHMEM_SIZE - TOTAL_DOORBELL_SIZE - offset;
-
-    void *enc_buf = disagg_mmio_encrypt(buf, count);
-    if (!enc_buf) {
-	return 0;
-    }
 
     wait_for_read_doorbell_clear();
 
-    memcpy(shmem + TOTAL_DOORBELL_SIZE + offset, enc_buf, disagg_crypto_mmio_global.adlen + count + disagg_crypto_mmio_global.authsize);
+    memcpy(shmem + TOTAL_DOORBELL_SIZE + offset, buf, count);
 
     __atomic_store_n(read_doorbell, 1, __ATOMIC_RELEASE);
 
     return count;
 }
 
-static int wait_and_read_data(void *buf, size_t count) {
-    wait_for_write_doorbell_set();
-
-    ssize_t read_bytes = ivshmem_read(buf, count, 0);
-    if (read_bytes < 0) {
-        return -1;
-    }
-
-    __atomic_store_n(write_doorbell, 0, __ATOMIC_RELEASE);
-
-    return read_bytes;
-}
-
-void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
-    if (init_shared_memory() < 0) {
-        printf("SHMEM: init_shared_memory failed\n");
-        // return;
-    }
-    
-    if (disagg_init_crypto()) {
-	printf("SHMEM: disagg_init_crypto failed\n");
-    }
-
-    printf("connection.c: In shmem app\n");
-
-    printf("ages...\n");
-
-    void *data = NULL;
-    bool is_write = false;
-    region_access_cb_t *cb;
-    loff_t offset;
-
-
-    munmap(shmem, SHMEM_SIZE);
-}
-
-
-/***********************/
-
 /***************/
+
