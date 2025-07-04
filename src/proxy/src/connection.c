@@ -70,6 +70,8 @@ int init_shared_memory(char **ret_shmem) {
         return -1;
     }
 
+    printf("Virtual address of shmem: %p\n", shmem);
+
     read_doorbell = (volatile uint8_t *)shmem + READ_DOORBELL_OFFSET;
     write_doorbell = (volatile uint8_t *)shmem + WRITE_DOORBELL_OFFSET;
     close(fd);
@@ -77,6 +79,11 @@ int init_shared_memory(char **ret_shmem) {
     // Initialize doorbells to 0
     *read_doorbell = 0;
     *write_doorbell = 0;
+
+
+    // Write virtual address of shmem DMA region to shmem
+    // Driver needs this to instruct device
+    *((uint64_t *)(shmem + OFFSET_PROXY_DMA)) = (uint64_t) shmem + DMA_REGION_OFFSET;
 
     msync(shmem, TOTAL_DOORBELL_SIZE, MS_SYNC);
 

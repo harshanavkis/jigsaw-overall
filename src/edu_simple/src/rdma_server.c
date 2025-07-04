@@ -43,14 +43,18 @@
 static struct rdma_cm_id *listen_id, *id;
 static int send_flags;
 
+// Contains the buffers and registered memory regions and rkey of remote
 struct disagg_regions_rdma regions_rdma;
 
-int rdma_write(uint64_t offset, size_t count)
+int rdma_write(uint64_t raddr, size_t count)
 {
+#ifdef CONFIG_DISAGG_DEBUG_DMA_SEC
+    printf("rdma_write: count: %lu, address to read from %lx\n", count, raddr);
+#endif
     int ret;
     struct ibv_wc wc;
 
-    ret = rdma_post_write(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, regions_rdma.remote_addr + offset, regions_rdma.rkey);
+    ret = rdma_post_write(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
 
     if (ret != 0) {
 	perror("rdma_post_write failed\n");
@@ -65,12 +69,15 @@ out:
     return ret;
 }
 
-int rdma_read(uint64_t offset, size_t count)
+int rdma_read(uint64_t raddr, size_t count)
 {
+#ifdef CONFIG_DISAGG_DEBUG_DMA_SEC
+    printf("rdma_read: count: %lu, address to read from %lx\n", count, raddr);
+#endif
     int ret;
     struct ibv_wc wc;
 
-    ret = rdma_post_read(id, NULL, regions_rdma.shmem_buf + offset, count, regions_rdma.mr_shmem_buf, 0, regions_rdma.remote_addr + offset, regions_rdma.rkey);
+    ret = rdma_post_read(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
 
     if (ret != 0) {
 	perror("rdma_post_write failed\n");
@@ -147,8 +154,8 @@ void *rdma_recv(void)
 
 static void deregister_mregions(void)
 {
-    rdma_dereg_mr(regions_rdma.mr_shmem_buf);
-    free(regions_rdma.shmem_buf);
+    rdma_dereg_mr(regions_rdma.mr_dma_buf);
+    free(regions_rdma.dma_buf);
 
     for (int i = 0; i < NUM_RECV_BUFS; ++i) {
 	rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
@@ -204,26 +211,25 @@ static int register_mregions(void)
 	regions_rdma.recv_bufs[i].mr = res_mr;
     }
 
-    // The shmem buffer; contains decrypted DMA region
-    res_buf = malloc(SHMEM_SIZE);
+    // The dma buffer; contains decrypted DMA region
+    res_buf = malloc(DMA_SIZE);
     if (!res_buf) {
 	printf("Error malloc\n");
 	goto free_dereg;
     }
-    regions_rdma.shmem_buf = res_buf;
-    res_mr = ibv_reg_mr(id->pd, res_buf, SHMEM_SIZE, IBV_ACCESS_LOCAL_WRITE | 
-						     IBV_ACCESS_REMOTE_READ |
-						     IBV_ACCESS_REMOTE_WRITE);
+    regions_rdma.dma_buf = res_buf;
+    res_mr = rdma_reg_msgs(id, res_buf, DMA_SIZE);
+
     if (!res_mr) {
 	perror("rdma_reg_msgs for remote DMA");
 	goto free_shmem;
     }
-    regions_rdma.mr_shmem_buf = res_mr;
+    regions_rdma.mr_dma_buf = res_mr;
 
     return 0;
 
 free_shmem:
-    free(regions_rdma.shmem_buf);
+    free(regions_rdma.dma_buf);
 free_dereg:
     --i;
     for (; i >= 0; --i) {
@@ -331,13 +337,10 @@ int init_rdma(const char *serverIP, const char *port)
 	    goto out_disconnect;
 	}
 
-	// First message is meta information about the shmem DMA region
-	struct meta_remote_info *tmp_meta = (struct meta_remote_info *)recv_msg;
+	// First message is the meta information (i.e. rkey) about the shmem DMA region
+	regions_rdma.rkey = *(uint32_t *)recv_msg;
 
-	regions_rdma.remote_addr = tmp_meta->remote_addr;
-	regions_rdma.rkey = tmp_meta->rkey;
-
-	printf("remote_addr: %p, rkey: 0x%x\n", (uint64_t *)regions_rdma.remote_addr, regions_rdma.rkey);
+	printf("rkey: 0x%x\n", regions_rdma.rkey);
 
 	return 0;
 

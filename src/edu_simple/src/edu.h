@@ -10,7 +10,7 @@ typedef uint64_t hwaddr;
 #define DMA_IRQ         0x00000100
 
 #define DMA_START       0x40000
-#define DMA_INTERNAL_SIZE        16384
+#define DMA_INTERNAL_SIZE        1048576 
 
 typedef struct EduState {
     struct IORegion {

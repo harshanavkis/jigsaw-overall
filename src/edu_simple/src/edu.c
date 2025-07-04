@@ -1,3 +1,5 @@
+// This implementation tries to emulate QEMU's EDU device as good as possible.
+// It doesn't implement interrupts.
 /*
  * QEMU educational PCI device
  *
@@ -36,17 +38,17 @@
 
 /* Qemu API normally provides those functions */
 void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
-    rdma_read(proxyDMA_offset(addr), len + disagg_crypto_dma_global.authsize);
+    rdma_read(addr, len + disagg_crypto_dma_global.authsize);
 
-    if (disagg_dma_decrypt((void *) addr, buf, len) != len)
+    if (disagg_dma_decrypt(regions_rdma.dma_buf, buf, len) != len)
 	printf("pci_dma_read failed\n");
 }
 
 void pci_dma_write(dma_addr_t addr, void *buf, size_t len) {
-    if (disagg_dma_encrypt(buf, (void *) addr, len) != 0)
+    if (disagg_dma_encrypt(buf, regions_rdma.dma_buf, len) != 0)
 	printf("pci_dma_write failed\n");
 
-    rdma_write(proxyDMA_offset(addr), len+ disagg_crypto_dma_global.authsize);
+    rdma_write(addr, len + disagg_crypto_dma_global.authsize);
 }
 /* End QEMU API */
 

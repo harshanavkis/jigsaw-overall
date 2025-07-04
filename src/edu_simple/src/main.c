@@ -18,6 +18,10 @@ int main(int argc, char **argv) {
 
     // Setup region info
     disagg_pci_dev_info *disagg_pci_info = (disagg_pci_dev_info *) malloc(sizeof(disagg_pci_dev_info));
+    if (!disagg_pci_info) {
+	printf("malloc failed\n");
+	exit(EXIT_FAILURE);
+    }
 
     for (int i = 0; i < PCI_NUM_REGIONS; i++)
     {

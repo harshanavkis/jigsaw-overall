@@ -259,24 +259,20 @@ int init_rdma(char *server, char *port, void *shmem)
 	// The server needs this information to be able to perfrom read/writes
 
 	// Register temporary memory region
-	struct meta_remote_info meta_dma_reg;
-	struct ibv_mr *meta_dma_mr = NULL;
+	struct ibv_mr *rkey_mr = NULL;
 
 	if ((send_flags & IBV_SEND_INLINE) == 0) {
-	    meta_dma_mr = rdma_reg_msgs(id, &meta_dma_reg, sizeof(meta_dma_reg));
-	    if (!meta_dma_mr) {
+	    rkey_mr = rdma_reg_msgs(id, &mr_shmem->rkey, sizeof(mr_shmem->rkey));
+	    if (!rkey_mr) {
 		perror("rdma_reg_msgs");
 		goto out_disconnect;
 	    }
 	}
 
 	// Send the necessary metadata to the server
-	meta_dma_reg.remote_addr = (uint64_t) shmem;
-	meta_dma_reg.rkey = mr_shmem->rkey;
+	printf("rkey: 0x%x\n", mr_shmem->rkey);
 
-	printf("addr: %lx, rkey: 0x%x\n", meta_dma_reg.remote_addr, meta_dma_reg.rkey);
-
-	ret = rdma_post_send(id, NULL, &meta_dma_reg, sizeof(meta_dma_reg), meta_dma_mr, send_flags);
+	ret = rdma_post_send(id, NULL, &mr_shmem->rkey, sizeof(mr_shmem->rkey), rkey_mr, send_flags);
 	if (ret) {
 	    perror("rdma_post_send");
 	    goto out_meta_dma;
@@ -288,8 +284,8 @@ int init_rdma(char *server, char *port, void *shmem)
 	    goto out_meta_dma;
 	}
 
-	if (meta_dma_mr)
-	    rdma_dereg_mr(meta_dma_mr);
+	if (rkey_mr)
+	    rdma_dereg_mr(rkey_mr);
 	/***/
 
 	/* change recv queue to non-blocking */
@@ -305,8 +301,8 @@ int init_rdma(char *server, char *port, void *shmem)
 	return 0;
 
 out_meta_dma:
-	if (meta_dma_mr)
-	    rdma_dereg_mr(meta_dma_mr);
+	if (rkey_mr)
+	    rdma_dereg_mr(rkey_mr);
 out_disconnect:
 	rdma_disconnect(id);
 out_dereg:

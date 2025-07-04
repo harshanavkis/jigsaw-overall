@@ -5,17 +5,20 @@
 #include <infiniband/verbs.h>
 #include "../../include/common.h"
 
+//#define CONFIG_DISAGG_DEBUG_DMA_SEC
+//#define CONFIG_DISAGG_DEBUG_MMIO_SEC
+
 int init_rdma(const char *serverIP, const char *port);
 
 int rdma_send(void *buf, size_t size);
 
 void *rdma_recv(void);
 
-// Writes @count bytes of the local shmem_buf at @offset to the remote region
-int rdma_read(uint64_t offset, size_t count);
+// Writes @count bytes of the local shmem_buf at @raddr to the remote region
+int rdma_read(uint64_t raddr, size_t count);
 
-// Reads @count bytes from the remote region at @offset to the local shmem_buf 
-int rdma_write(uint64_t offset, size_t count);
+// Reads @count bytes from the remote region at @raddr to the local dma_buf 
+int rdma_write(uint64_t raddr, size_t count);
 
 int reg_dma_mr(void *buf);
 
@@ -33,11 +36,11 @@ struct disagg_regions_rdma {
 				// The buffer itself is returned as a result.
 				// This prevents overriding of memory regions if the result is not yet processed.
 
-    void *shmem_buf; // Pointer shmem; contains the encrypted DMA region; needed as the read requests need a destination
-		     // Because the data cannot be directly decrypted from a rdma request
-    struct ibv_mr *mr_shmem_buf;
+    void *dma_buf; // contains the encrypted sent DMA region; needed as the read requests need a destination
+		   // Because the data cannot be directly decrypted from a rdma request
+    struct ibv_mr *mr_dma_buf;
 
-    uint64_t remote_addr;
+    // Used when writing to remote DMA region
     uint32_t rkey;
 };
 

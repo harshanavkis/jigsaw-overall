@@ -7,12 +7,6 @@
 #define BUFS_SIZE 92 // Size of the rdma buffers used in recv/send
 #define NUM_RECV_BUFS 8 // Has to be an even number
 
-struct meta_remote_info {
-    uint64_t remote_addr;
-    uint32_t rkey;
-};
-
-
 //#define DEBUG_MESSAGES
 
 #endif // COMMON_H

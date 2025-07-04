@@ -14,23 +14,6 @@
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
-uint64_t proxyDMA_offset(dma_addr_t proxyDMA) {
-    return ((uint64_t)(proxyDMA - (dma_addr_t) disagg_crypto_dma_global.proxyDMA_start)) + DMA_REGION_OFFSET; 
-}
-
-static int init_dma_memory() 
-{
-    void *shmem = regions_rdma.shmem_buf;
-
-    disagg_crypto_dma_global.proxyDMA_start = shmem + DMA_REGION_OFFSET;
-
-    // write proxyDMA address into shmem
-    *((uint64_t *)(shmem + OFFSET_PROXY_DMA)) = (uint64_t) shmem + DMA_REGION_OFFSET; 
-    rdma_write(OFFSET_PROXY_DMA, sizeof(shmem));
-
-    return 0;
-}
-
 static ssize_t ivshmem_read(void *buf, size_t count, off_t offset) {
     (void) offset;
     void *res;
@@ -67,48 +50,7 @@ static int wait_and_read_data(void *buf, size_t count) {
     return read_bytes;
 }
 
-/*
-void read_vmPhys_mapping(disagg_pci_dev_info *pci_info, int bar_nr) {
-    // Support only for 
-    if (bar_nr != 0) {
-	pci_info->regions[bar_nr].vmPhys = 0;
-	pci_info->regions[bar_nr].vmPhys_valid = true;
-	return;
-    }
-
-    rdma_read(OFFSET_BAR_PHYS_ADDR, sizeof(uint64_t *));
-    pci_info->regions[bar_nr].vmPhys = *((uint64_t *)(shmem + OFFSET_BAR_PHYS_ADDR));
-    pci_info->regions[bar_nr].vmPhys_valid = true;
-
-    printf("vmPhys for bar %d: 0x%lx\n", bar_nr, pci_info->regions[bar_nr].vmPhys);
-}
-
-int get_pci_region(disagg_pci_dev_info *pci_info, uint64_t addr, uint32_t size)
-{
-    for (int i = 0; i < PCI_NUM_REGIONS; i++)
-    {
-	if (!pci_info->regions[i].vmPhys_valid)
-	    read_vmPhys_mapping(pci_info, i);
-
-        if (pci_info->regions[i].vmPhys == 0x0)
-            continue;
-        
-	if ((addr >= (pci_info->regions[i].vmPhys)) 
-	     && (addr + size <= (pci_info->regions[i].vmPhys) + *(pci_info->regions[i].size))) {
-	 return i;
-	}
-    }
-
-    return -1;
-}
-*/
-
 void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
-    if (init_dma_memory() < 0) {
-        printf("SHMEM: init_shared_memory failed\n");
-        // return;
-    }
-    
     if (disagg_init_crypto()) {
 	printf("SHMEM: disagg_init_crypto failed\n");
     }
