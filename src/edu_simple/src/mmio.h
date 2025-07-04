@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef MMIO_H
+#define MMIO_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -57,15 +57,6 @@ typedef struct disagg_pci_dev_info
 
 int get_pci_region(disagg_pci_dev_info *disagg_pci_info, uint64_t addr, uint32_t size);
 
-void *run_shmem_app(disagg_pci_dev_info* arg, void *opaque);
+void *run_mmio_app(disagg_pci_dev_info* arg, void *opaque);
 
-// Offset of this address from start of shared memory region
-uint64_t proxyDMA_offset(dma_addr_t proxyDMA);
-
-#define DMA_REGION_OFFSET (1 << 12) // 4K aligned
-#define DMA_SIZE (SHMEM_SIZE - DMA_REGION_OFFSET)
-
-/* Offsets in the shared memory with special values */
-#define OFFSET_PROXY_DMA (256)
-
-#endif // CONNECTION_H
+#endif // MMIO_H

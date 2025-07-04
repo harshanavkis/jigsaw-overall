@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef SHMEM_H
+#define SHMEM_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -17,4 +17,4 @@ int get_write_doorbell(void);
 
 void reset_write_doorbell(void);
 
-#endif // CONNECTION_H
+#endif // SHMEM_H

@@ -1,7 +1,7 @@
 #ifndef EDU_H
 #define EDU_H
 
-#include "connection.h"
+#include "mmio.h"
 
 typedef uint64_t dma_addr_t;
 typedef uint64_t hwaddr;

@@ -8,14 +8,13 @@
 #include <string.h>
 #include <time.h>
 
-#include "connection.h"
+#include "mmio.h"
 #include "sec_disagg.h"
 #include "rdma_server.h"
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
-static ssize_t ivshmem_read(void *buf, size_t count, off_t offset) {
-    (void) offset;
+static ssize_t mmio_recv(void *buf, size_t count) {
     void *res;
 
     res = rdma_recv();
@@ -27,8 +26,7 @@ static ssize_t ivshmem_read(void *buf, size_t count, off_t offset) {
     return disagg_mmio_decrypt(res, buf, count);
 }
 
-static ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
-    (void) offset;
+static ssize_t mmio_send(void *buf, size_t count) {
     void *enc_send_buf = disagg_mmio_encrypt(buf, regions_rdma.enc_send_buf, count);
     if (!enc_send_buf) {
 	return -1;
@@ -42,7 +40,7 @@ static ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
 }
 
 static int wait_and_read_data(void *buf, size_t count) {
-    ssize_t read_bytes = ivshmem_read(buf, count, 0);
+    ssize_t read_bytes = mmio_recv(buf, count);
     if (read_bytes < 0) {
         return -1;
     }
@@ -50,14 +48,12 @@ static int wait_and_read_data(void *buf, size_t count) {
     return read_bytes;
 }
 
-void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
+void *run_mmio_app(disagg_pci_dev_info *pci_info, void *opaque) {
     if (disagg_init_crypto()) {
-	printf("SHMEM: disagg_init_crypto failed\n");
+	printf("disagg_init_crypto failed\n");
     }
 
-    printf("connection.c: In shmem app\n");
-
-    printf("SHMEM application started. Waiting for messages...\n");
+    printf("MMIO communication application started. Waiting for messages...\n");
 
     void *data = NULL;
     bool is_write = false;
@@ -120,12 +116,11 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
             printf("\n");
 #endif
 
-            if (ivshmem_write(data, header.length, 0) < 0) {
+            if (mmio_send(data, header.length) < 0) {
                 perror("Failed to write response");
                 continue;
             }
             continue;
-            // break;
 
         case OP_WRITE:
 #ifdef CONFIG_DISAGG_DEBUG_MMIO
@@ -170,14 +165,6 @@ void *run_shmem_app(disagg_pci_dev_info *pci_info, void *opaque) {
             fprintf(stderr, "Unknown operation: %d\n", header.operation);
             continue;
         }
-
-        printf("Response sent. Waiting for next message...\n");
     }
-
-    // return;
 }
 
-
-/***********************/
-
-/***************/

@@ -38,7 +38,7 @@
 
 #include "../../include/common.h"
 #include "rdma_server.h"
-#include "connection.h"
+#include "mmio.h"
 
 static struct rdma_cm_id *listen_id, *id;
 static int send_flags;

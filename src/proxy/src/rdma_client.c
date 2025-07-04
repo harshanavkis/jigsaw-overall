@@ -73,7 +73,7 @@ static int register_mregions(void *shmem)
     }
 
     // The shmem buffer; contains decrypted DMA region
-    res_mr = ibv_reg_mr(id->pd, shmem, SHMEM_SIZE, IBV_ACCESS_LOCAL_WRITE | 
+    res_mr = ibv_reg_mr(id->pd, shmem + DMA_REGION_OFFSET, DMA_SIZE, IBV_ACCESS_LOCAL_WRITE | 
 						     IBV_ACCESS_REMOTE_READ |
 						     IBV_ACCESS_REMOTE_WRITE);
     if (!res_mr) {

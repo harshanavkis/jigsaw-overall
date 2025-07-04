@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "edu.h"
-#include "connection.h"
+#include "mmio.h"
 #include "sec_disagg.h"
 #include "rdma_server.h"
 
@@ -64,6 +64,6 @@ int main(int argc, char **argv) {
     if (ret != 0)
 	exit(EXIT_FAILURE);
 
-    run_shmem_app(disagg_pci_info, edu);
+    run_mmio_app(disagg_pci_info, edu);
 }
 

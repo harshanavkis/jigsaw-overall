@@ -5,7 +5,7 @@
 
 #include <sys/mman.h>
 
-#include "connection.h"
+#include "shmem.h"
 #include "rdma_client.h"
 #include "../../include/common.h"
 
