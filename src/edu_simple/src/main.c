@@ -6,7 +6,7 @@
 #include "edu.h"
 #include "mmio.h"
 #include "sec_disagg.h"
-#include "rdma_server.h"
+#include "tcp_server.h"
 
 int main(int argc, char **argv) {
 
@@ -34,33 +34,9 @@ int main(int argc, char **argv) {
         printf("main.c: Setting for region %d, proxy Address: 0x%" PRIx64 ", size: %lu\n", i, *(disagg_pci_info->regions[i].addr), *(disagg_pci_info->regions[i].size));
     }
 
-    /** Setup RDMA **/
-    int op, ret;
-    char *serverIP = NULL;
-    char *port = NULL;
-
-    while ((op = getopt(argc, argv, "s:p:")) != -1) {
-	    switch (op) {
-	    case 's':
-		    serverIP = optarg;
-		    break;
-	    case 'p':
-		    port = optarg;
-		    break;
-	    default:
-		    printf("usage: %s\n", argv[0]);
-		    printf("\t[-s server_address]\n");
-		    printf("\t[-p port_number]\n");
-		    exit(EXIT_FAILURE);
-	    }
-    }
-
-    if (!serverIP || !port) {
-	printf("Both server IP address and port have to be specified\n");
-	exit(EXIT_FAILURE);
-    }
-
-    ret = init_rdma(serverIP, port);
+    /** Setup TCP **/
+    int ret;
+    ret = init_tcp(argc, argv);
     if (ret != 0)
 	exit(EXIT_FAILURE);
 

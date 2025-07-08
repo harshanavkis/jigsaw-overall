@@ -10,16 +10,16 @@
 
 #include "mmio.h"
 #include "sec_disagg.h"
-#include "rdma_server.h"
+#include "tcp_server.h"
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
 static ssize_t mmio_recv(void *buf, size_t count) {
     void *res;
 
-    res = rdma_recv();
+    res = tcp_recv_mmio_request();
     if (!res) {
-	printf("error rdma_recv\n");
+	printf("error receiving mmio\n");
 	return -1;
     }
 
@@ -27,12 +27,12 @@ static ssize_t mmio_recv(void *buf, size_t count) {
 }
 
 static ssize_t mmio_send(void *buf, size_t count) {
-    void *enc_send_buf = disagg_mmio_encrypt(buf, regions_rdma.enc_send_buf, count);
+    void *enc_send_buf = disagg_mmio_encrypt(buf, regions_tcp->send_buf + 1, count);
     if (!enc_send_buf) {
 	return -1;
     }
 
-    int ret = rdma_send(enc_send_buf, count + disagg_crypto_mmio_global.authsize);
+    int ret = tcp_send_mmio_reply(regions_tcp->send_buf, count + disagg_crypto_mmio_global.authsize);
     if (ret != 0)
 	return -1;
 

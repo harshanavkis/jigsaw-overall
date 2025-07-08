@@ -2,50 +2,33 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include <sys/mman.h>
+#include <sys/socket.h>
 
 #include "shmem.h"
-#include "rdma_client.h"
+#include "tcp_client.h"
 #include "../../include/common.h"
+
+static char recv_buf[MMIO_MESSAGE_SIZE - 1];
 
 int main(int argc, char **argv)
 {
-	int op, ret;
+	int ret;
 	ssize_t ret_size;
-	char *server = NULL;
-	char *port = NULL;
 	char *shmem = NULL;
-	void *buf; 
+	char type = 0;
+	uint64_t dma_addr, dma_size;
 
-	while ((op = getopt(argc, argv, "s:p:")) != -1) {
-	    switch (op) {
-	    case 's':
-		server = optarg;
-		break;
-	    case 'p':
-		port = optarg;
-		break;
-	    default:
-		printf("usage: %s\n", argv[0]);
-		printf("\t[-s server_address]\n");
-		printf("\t[-p port_number]\n");
-		goto err;
-	    }
-	}
-
-	if (!server || !port) {
-	    fprintf(stderr, "Error: server and port both necessary");
-	    goto err;
-	}
 
 	if (init_shared_memory(&shmem) < 0) {
 	    printf("init_shared_memory failed\n");
 	    goto err;
 	}
 
-	printf("rdma_client: start\n");
-	ret = init_rdma(server, port, shmem);
+	printf("tcp_client: start\n");
+	ret = init_tcp(argc, argv);
 	if (ret != 0) {
 	    goto err_unmap;
 	} 
@@ -57,36 +40,121 @@ int main(int argc, char **argv)
 	    ret = get_write_doorbell();
 	    if (ret == 1) {
 		// Message ready to send
-		ret = rdma_send(shmem + 2, BUFS_SIZE);
+		ret = tcp_send_mmio_request(shmem + 2);
 		if (ret != 0) {
-		    perror("rdma_send for mmio failed\n");
+		    perror("send for mmio failed\n");
 		    goto err_unmap;
 		}
 
 		reset_write_doorbell();
 	    }
 
-	    
-	    // Check if there is a message to receive
-	    ret_size = rdma_recv(&buf);
-	    if (ret_size == 0) {
-		continue;
-	    } else if (ret_size == -1) {
-		printf("error receiving message form server\n");
-		goto err_unmap;
-	    } else {
-		// Received message. Write to shmem
-		ret_size = ivshmem_write(buf, ret_size, 0);
-		if (ret_size == -1) {
-		    printf("shmem write failed\n");
+
+	    // Read first byte, if available, to determine type of message
+	    ret = tcp_recv_data(&type, 1, MSG_DONTWAIT);
+	    if (ret == -1) {
+		if (errno == EAGAIN || errno == EWOULDBLOCK) {
+		    // No data available
+		    continue;
+		} else {
+		    perror("recv failed");
 		    goto err_unmap;
 		}
 	    }
+
+	    switch (type) {
+		case TYPE_REPLY:
+		    /*** Client sent reply to MMIO read ***/
+
+		    // Receive rest of message 
+		    ret = tcp_recv_data(&recv_buf, MMIO_MESSAGE_SIZE - 1, 0);
+		    if (ret != 0) {
+			perror("Recv of mmio request reply failed");
+			goto err_unmap;
+		    }
+
+		    // Received message. Write to shmem
+		    ret_size = ivshmem_write(recv_buf, MMIO_MESSAGE_SIZE - 1, 0);
+		    if (ret_size == -1) {
+			printf("shmem write of mmio reply failed\n");
+			goto err_unmap;
+		    }
+
+		    break;
+
+		case TYPE_REQUEST_DMA_TO_DEVICE:
+		    /*** Client requests DMA region ***/
+
+		    // Receive rest of message (i.e. address and size)
+		    ret = tcp_recv_data(&recv_buf, sizeof(uint64_t) * 2, 0);
+		    if (ret != 0) {
+			printf("Recv of DMA request addres and size failed\n");
+			goto err_unmap;
+		    }
+
+		    dma_addr = *((uint64_t *)recv_buf);
+		    dma_size = *(((uint64_t *)recv_buf) + 1);
+
+		    // Validate requested region
+		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET || (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
+			fprintf(stderr, "Requested DMA memory region does not lie within valid shmem DMA region:"
+					 "addr: 0x%lx, size: %ld\n", dma_addr, dma_size);
+			goto err_unmap;
+		    }	
+
+		    // Send type first in different message as otherwise would require big copy of DMA region
+		    // (Works as this is a single-thread process)
+		    type = TYPE_REPLY_DMA_TO_DEVICE;
+		    if (tcp_send_buf(&type, 1) != 0) {
+			perror("send of TYPE_REPLY_DMA_TO_DEVICE failed");
+			goto err_unmap;
+		    }
+
+		    if (tcp_send_buf((void *) dma_addr, dma_size) != 0) {
+			perror("send of DMA region failed");
+			goto err_unmap;
+		    }
+
+		    break;
+
+		case TYPE_DMA_FROM_DEVICE:
+		    /*** Client send DMA region ***/
+
+		    // Receive rest of message (i.e. address and size)
+		    ret = tcp_recv_data(&recv_buf, sizeof(uint64_t) * 2, 0);
+		    if (ret != 0) {
+			perror("Recv of DMA request addres and size failed");
+			goto err_unmap;
+		    }
+
+		    dma_addr = *((uint64_t *)recv_buf);
+		    dma_size = *(((uint64_t *)recv_buf) + 1);
+
+		    // Validate sent region
+		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET || (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
+			fprintf(stderr, "Sent DMA memory region does not lie within valid shmem DMA region:"
+					 "addr: 0x%lx, size: %ld\n", dma_addr, dma_size);
+			goto err_unmap;
+		    }	
+
+		    ret = tcp_recv_data((void *)dma_addr, dma_size, 0);
+		    if (ret != 0) {
+			perror("Recv of DMA region failed");
+			goto err_unmap;
+		    }
+
+		    break;
+
+		default:
+		    printf("Error: Unknown type\n");
+		    goto err_unmap;
+	    }
+	    
 	}
 
 
 	// Will never reach that
-	printf("rdma_client: end %d\n", ret);
+	printf("tcp_client: end %d\n", ret);
 	exit(EXIT_SUCCESS);
 
 err_unmap:
