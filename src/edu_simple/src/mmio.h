@@ -9,23 +9,14 @@
 typedef uint64_t dma_addr_t;
 
 /**
- * @brief Operation code for read requests
- */
-#define OP_READ 1
-
-/**
- * @brief Operation code for write requests
- */
-#define OP_WRITE 2
-
-/**
  * @brief Structure representing the message header
  */
 struct guest_message_header
 {
-    uint8_t operation; /**< Operation type */
-    uint64_t address;  /**< Memory address for the operation */
-    uint32_t length;   /**< Length of data to read or write */
+    uint8_t operation; /** Operation type */
+    uint64_t address;  /** Memory address for the operation */
+    uint64_t length;   /** Length of data to read or write */
+    uint64_t value;    /** Value to write in case of OP_WRITE */
 } __attribute__((packed));
 
 typedef size_t (region_access_cb_t)(void *opaque, char *buf, size_t count, size_t offset, bool is_write);

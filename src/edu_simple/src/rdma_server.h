@@ -6,7 +6,7 @@
 #include "../../include/common.h"
 
 //#define CONFIG_DISAGG_DEBUG_DMA_SEC
-//#define CONFIG_DISAGG_DEBUG_MMIO_SEC
+#define CONFIG_DISAGG_DEBUG_MMIO_SEC
 
 int init_rdma(const char *serverIP, const char *port);
 

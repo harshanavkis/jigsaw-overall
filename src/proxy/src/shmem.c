@@ -123,7 +123,7 @@ ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
 
     wait_for_read_doorbell_clear();
 
-    memcpy(shmem + TOTAL_DOORBELL_SIZE + offset, buf, count);
+    memcpy(shmem + MMIO_REGION_OFFSET + offset, buf, count);
 
     __atomic_store_n(read_doorbell, 1, __ATOMIC_RELEASE);
 

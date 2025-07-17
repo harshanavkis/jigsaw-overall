@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 	    ret = get_write_doorbell();
 	    if (ret == 1) {
 		// Message ready to send
-		ret = rdma_send(shmem + 2, BUFS_SIZE);
+		ret = rdma_send(shmem + MMIO_REGION_OFFSET, BUFS_SIZE);
 		if (ret != 0) {
 		    perror("rdma_send for mmio failed\n");
 		    goto err_unmap;
