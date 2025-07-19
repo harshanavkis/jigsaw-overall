@@ -8,33 +8,12 @@
 
 typedef uint64_t dma_addr_t;
 
-/**
- * @brief Operation code for read requests
- */
-#define OP_READ 1
-
-/**
- * @brief Operation code for write requests
- */
-#define OP_WRITE 2
-
-/**
- * @brief Structure representing the message header
- */
-struct guest_message_header
-{
-    uint8_t operation; /**< Operation type */
-    uint64_t address;  /**< Memory address for the operation */
-    uint32_t length;   /**< Length of data to read or write */
-} __attribute__((packed));
-
 typedef size_t (region_access_cb_t)(void *opaque, char *buf, size_t count, size_t offset, bool is_write);
 
 /**
  * @brief Structure representing the PCI BARs in a device
  */
-typedef struct disagg_pci_bar_info
-{
+typedef struct disagg_pci_bar_info {
     uint64_t *addr; // Address of region, -1 means not mapped
     uint64_t *size; // Size of region
     region_access_cb_t *cb;
@@ -50,8 +29,7 @@ typedef struct disagg_pci_bar_info
 /**
  * @brief Structure representing the PCI information that is passed to the shmem thread
  */
-typedef struct disagg_pci_dev_info
-{   
+typedef struct disagg_pci_dev_info {   
     disagg_pci_bar_info regions[PCI_NUM_REGIONS];
 } disagg_pci_dev_info;
 

@@ -11,7 +11,7 @@
 #include "tcp_client.h"
 #include "../../include/common.h"
 
-static char recv_buf[MMIO_MESSAGE_SIZE - 1];
+static char recv_buf[128];
 
 int main(int argc, char **argv)
 {
@@ -40,7 +40,8 @@ int main(int argc, char **argv)
 	    ret = get_write_doorbell();
 	    if (ret == 1) {
 		// Message ready to send
-		ret = tcp_send_mmio_request(shmem + 2);
+		ret = tcp_send_buf(shmem + MMIO_REGION_OFFSET, 1 + sizeof(struct mmio_message) + 16);
+
 		if (ret != 0) {
 		    perror("send for mmio failed\n");
 		    goto err_unmap;
@@ -63,18 +64,18 @@ int main(int argc, char **argv)
 	    }
 
 	    switch (type) {
-		case TYPE_REPLY:
+		case OP_MMIO_READ:
 		    /*** Client sent reply to MMIO read ***/
 
 		    // Receive rest of message 
-		    ret = tcp_recv_data(&recv_buf, MMIO_MESSAGE_SIZE - 1, 0);
+		    ret = tcp_recv_data(recv_buf, sizeof(uint64_t) + 16, 0);
 		    if (ret != 0) {
 			perror("Recv of mmio request reply failed");
 			goto err_unmap;
 		    }
 
 		    // Received message. Write to shmem
-		    ret_size = ivshmem_write(recv_buf, MMIO_MESSAGE_SIZE - 1, 0);
+		    ret_size = ivshmem_write(recv_buf, sizeof(uint64_t) + 16, 1);
 		    if (ret_size == -1) {
 			printf("shmem write of mmio reply failed\n");
 			goto err_unmap;
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
 
 		    break;
 
-		case TYPE_REQUEST_DMA_TO_DEVICE:
+		case OP_DMA_TO_DEVICE:
 		    /*** Client requests DMA region ***/
 
 		    // Receive rest of message (i.e. address and size)
@@ -94,9 +95,11 @@ int main(int argc, char **argv)
 
 		    dma_addr = *((uint64_t *)recv_buf);
 		    dma_size = *(((uint64_t *)recv_buf) + 1);
+		    dma_size += 16; // For auth. tag
 
 		    // Validate requested region
-		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET || (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
+		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET 
+				|| (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
 			fprintf(stderr, "Requested DMA memory region does not lie within valid shmem DMA region:"
 					 "addr: 0x%lx, size: %ld\n", dma_addr, dma_size);
 			goto err_unmap;
@@ -104,9 +107,9 @@ int main(int argc, char **argv)
 
 		    // Send type first in different message as otherwise would require big copy of DMA region
 		    // (Works as this is a single-thread process)
-		    type = TYPE_REPLY_DMA_TO_DEVICE;
+		    type = OP_DMA_TO_DEVICE;
 		    if (tcp_send_buf(&type, 1) != 0) {
-			perror("send of TYPE_REPLY_DMA_TO_DEVICE failed");
+			perror("send of OP_DMA_TO_DEVICE failed");
 			goto err_unmap;
 		    }
 
@@ -115,9 +118,11 @@ int main(int argc, char **argv)
 			goto err_unmap;
 		    }
 
+		    printf("in OP_DMA_TO_DEVICE\n");
+
 		    break;
 
-		case TYPE_DMA_FROM_DEVICE:
+		case OP_DMA_FROM_DEVICE:
 		    /*** Client send DMA region ***/
 
 		    // Receive rest of message (i.e. address and size)
@@ -129,9 +134,11 @@ int main(int argc, char **argv)
 
 		    dma_addr = *((uint64_t *)recv_buf);
 		    dma_size = *(((uint64_t *)recv_buf) + 1);
+		    dma_size += 16;
 
 		    // Validate sent region
-		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET || (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
+		    if ((char *)dma_addr < shmem + DMA_REGION_OFFSET 
+			    || (char *)dma_addr + dma_size >= shmem + SHMEM_SIZE) {
 			fprintf(stderr, "Sent DMA memory region does not lie within valid shmem DMA region:"
 					 "addr: 0x%lx, size: %ld\n", dma_addr, dma_size);
 			goto err_unmap;

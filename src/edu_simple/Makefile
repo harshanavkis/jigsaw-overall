@@ -27,7 +27,7 @@
 # tool macros
 CC ?= gcc
 CXX ?= # FILL: the compiler
-CFLAGS := -O2 -Wall -Wextra -Werror -lssl -lcrypto -libverbs -lrdmacm
+CFLAGS := -O2 -Wall -Wextra -Werror -lssl -lcrypto
 CXXFLAGS := # FILL: compile flags
 DBGFLAGS := -g -O0
 COBJFLAGS := $(CFLAGS) -c

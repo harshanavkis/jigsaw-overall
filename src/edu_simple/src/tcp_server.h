@@ -5,12 +5,14 @@
 
 #include "../../include/common.h"
 
+#define MMIO_MSG_MAX_SIZE (sizeof(struct mmio_message) + 1)
+
 struct disagg_regions_tcp {
     /*
      * This buffer contains already received mmio requests.
      * Before calling recv on socket it first checks if there already is data available in here.
      */
-    char recv_buf[MMIO_MESSAGE_SIZE * 64]; // Just use a big size
+    char recv_buf[MMIO_MSG_MAX_SIZE][64]; // Just use a big size
     ssize_t recv_buf_last_valid; // The last valid index of MMIO message (-1 if empty)
     ssize_t recv_buf_next; // The next index to be read
 
@@ -19,7 +21,7 @@ struct disagg_regions_tcp {
      * Buffer used in sends.
      * First byte is TYPE_REPLY.
      */
-    char send_buf[MMIO_MESSAGE_SIZE];
+    char send_buf[sizeof(struct mmio_message)];
 
 
     /*
@@ -44,11 +46,9 @@ int init_tcp(int argc, char **argv);
 void *tcp_recv_mmio_request(void);
 
 /*
- * Prepends TYPE_REPLY and sends data over socket
- * Size of send is @count + 1
+ * @return non-zero for failure
  */
-int tcp_send_mmio_reply(void *buf, size_t count);
-
+int tcp_send(void *buf, size_t count);
 
 /*
  * Fills regions_tcp->dma_buf with data at @addr of shmem

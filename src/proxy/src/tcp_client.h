@@ -4,9 +4,8 @@
 int init_tcp(int argc, char **argv);
 
 /*
- * Sends TYPE_REQUEST || @buf to server.
- * Whole size of send is MMIO_MESSAGE_SIZE.
- * I.e. the number of bytes sent of @buf are (MMIO_MESSAGE_SIZE - 1).
+ * Sends @buf to server.
+ * Size of send is determined by the first byte of @buf
  */
 int tcp_send_mmio_request(const char *buf);
 

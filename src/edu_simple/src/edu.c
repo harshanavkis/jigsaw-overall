@@ -21,7 +21,7 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+* DEALINGS IN THE SOFTWARE.
  */
 
 #include <pthread.h> // for thread, mutex and condition
@@ -38,17 +38,21 @@
 
 /* Qemu API normally provides those functions */
 void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
-    tcp_read_dma(addr, len + disagg_crypto_dma_global.authsize);
+    tcp_read_dma(addr, len);
 
-    if (disagg_dma_decrypt(regions_tcp->dma_buf, buf, len) != len)
+    if (disagg_dma_decrypt(regions_tcp->dma_buf, buf, len) != len) {
 	printf("pci_dma_read failed\n");
+	exit(EXIT_FAILURE);
+    }
 }
 
 void pci_dma_write(dma_addr_t addr, void *buf, size_t len) {
-    if (disagg_dma_encrypt(buf, regions_tcp->dma_buf, len) != 0)
+    if (disagg_dma_encrypt(buf, regions_tcp->dma_buf, len) != 0) {
 	printf("pci_dma_write failed\n");
+	exit(EXIT_FAILURE);
+    }
 
-    tcp_write_dma(addr, len + disagg_crypto_dma_global.authsize);
+    tcp_write_dma(addr, len);
 }
 /* End QEMU API */
 
@@ -80,6 +84,7 @@ static void cond_signal(pthread_cond_t *cond) {
     }
 }
 
+/*
 // Copied from https://stackoverflow.com/a/40949950
 // We don't need a very accurate timer
 static void start_timer(uint64_t ms) {
@@ -90,6 +95,7 @@ static void start_timer(uint64_t ms) {
 	ms_since = clock() * 1000 / CLOCKS_PER_SEC;
     } while (ms_since <= end);
 }
+*/
 
 static bool edu_msi_enabled(EduState *edu)
 {
@@ -181,7 +187,7 @@ static void dma_rw(EduState *edu, bool write, dma_addr_t *val, dma_addr_t *dma,
     }
 
     if (timer) {
-	start_timer(100);
+	//start_timer(100);
 	edu_dma_timer(edu);
     }
 }

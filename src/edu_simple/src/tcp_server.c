@@ -8,6 +8,8 @@
 #include <signal.h>
 #include <arpa/inet.h>
 
+#include "sec_disagg.h"
+
 #include "tcp_server.h"
 
 int lfd = -1; // Listening fd
@@ -27,26 +29,23 @@ void signal_handler(int signum) {
     exit(EXIT_FAILURE);
 }
 
-int tcp_send_mmio_reply(void *buf, size_t count) {
+int tcp_send(void *buf, size_t count)
+{
     ssize_t ret;
 
-    if (count > MMIO_MESSAGE_SIZE) {
-	printf("tcp_send_mmio_reply: length of message exceeds MMIO_MESSAGE_SIZE\n");
-	return -1;
-    }
+    ret = send(cfd, buf, count, 0);	
 
-    ret = send(cfd, buf, MMIO_MESSAGE_SIZE, 0);	
-
-    if (ret != (ssize_t) MMIO_MESSAGE_SIZE) {
+    if (ret != (ssize_t) count) {
 	printf("send failed\n");
-	return -1;
+	return 1;
     }
 
     return 0;
 }
 
 // Calls recv until has received size bytes
-static int recv_data(int ifd, void *buf, size_t size, int flags) {
+static int recv_data(int ifd, void *buf, size_t size, int flags)
+{
     size_t size_recv = 0;
     ssize_t ret;
 
@@ -78,7 +77,7 @@ void *tcp_recv_mmio_request(void)
     void *ret;
     if (regions_tcp->recv_buf_last_valid != -1) {
 	// There is a buffered request available
-	ret = regions_tcp->recv_buf + (MMIO_MESSAGE_SIZE * regions_tcp->recv_buf_next);
+	ret = regions_tcp->recv_buf[regions_tcp->recv_buf_next];
 	++regions_tcp->recv_buf_next;
 	if (regions_tcp->recv_buf_next > regions_tcp->recv_buf_last_valid) {
 	    // Read all buffered data
@@ -86,25 +85,26 @@ void *tcp_recv_mmio_request(void)
 	    regions_tcp->recv_buf_next = 0;
 	}
 
-	return (char *)ret + 1;
+	return ret;
     }
 
     // recv new data
-    if (recv_data(cfd, regions_tcp->recv_buf, MMIO_MESSAGE_SIZE, 0) != 0) {
+    if (recv_data(cfd, regions_tcp->recv_buf, 1 + sizeof(struct mmio_message) + 16, 0) != 0) {
 	printf("Error receiving data\n");
 	return NULL;
     }
 
-    return (char *)regions_tcp->recv_buf + 1;
+    return (char *)regions_tcp->recv_buf;
 }
 
-void tcp_read_dma(uint64_t addr, size_t count) {
-    size_t size_to_send = (sizeof(uint64_t) * 2) + 1;
+void tcp_read_dma(uint64_t addr, size_t count)
+{
+    size_t size_to_send = 1 + (sizeof(uint64_t) * 2);
     ssize_t ret;
     uint8_t type;
 
     /*** Send request for DMA region to proxy ***/
-    regions_tcp->dma_mem[0] = TYPE_REQUEST_DMA_TO_DEVICE;
+    regions_tcp->dma_mem[0] = OP_DMA_TO_DEVICE;
     *((uint64_t *)(regions_tcp->dma_mem + 1)) = addr;
     *((uint64_t *)(regions_tcp->dma_mem + sizeof(uint64_t) + 1)) = count;
 
@@ -125,37 +125,41 @@ void tcp_read_dma(uint64_t addr, size_t count) {
 	}	
 
 	// If read message is a MMIO request, store in buffer
-	if (type == TYPE_REQUEST) {
-	    // Received message is MMIO
-	    ++regions_tcp->recv_buf_last_valid;
-
-	    if (recv_data(cfd, 
-			  regions_tcp->recv_buf + (MMIO_MESSAGE_SIZE * regions_tcp->recv_buf_last_valid) + 1, 
-			  MMIO_MESSAGE_SIZE - 1, 0) != 0) {
-		printf("recv failed for filling of mmio requests in buffer\n");
-		return;
-	    }
-	} else {
+	if (type == OP_DMA_TO_DEVICE) {
 	    // Received response to DMA request
 	    if (recv_data(cfd, 
 			  regions_tcp->dma_buf, 
-			  count, 0) != 0) {
+			  disagg_crypto_dma_global.authsize + count, 0) != 0) {
 		printf("recv failed for dma read response\n");
 		return;
 	    }
+	} else {
+	    // Received message is MMIO
+	    ++regions_tcp->recv_buf_last_valid;
+
+	    void *dst = regions_tcp->recv_buf + ((1 + sizeof(struct mmio_message)) * regions_tcp->recv_buf_last_valid); 
+
+	    if (recv_data(cfd, 
+			  dst + 1, 
+			  sizeof(struct mmio_message) + 16, 0) != 0) {
+		printf("recv failed for filling of mmio requests in buffer\n");
+		return;
+	    }
+	    memcpy(dst, &type, 1);
 	}
 
-    } while(type != TYPE_REPLY_DMA_TO_DEVICE);
+    } while(type != OP_DMA_TO_DEVICE);
 }
 
-void tcp_write_dma(uint64_t addr, size_t count) {
-    size_t size_to_send = (sizeof(uint64_t) * 2) + 1 + count;
+void tcp_write_dma(uint64_t addr, size_t count)
+{
+    size_t size_to_send = 1 + (sizeof(uint64_t) * 2) + count + disagg_crypto_dma_global.authsize;
     ssize_t ret;
 
-    /*** Send request for DMA region to proxy ***/
-    regions_tcp->dma_mem[0] = TYPE_DMA_FROM_DEVICE;
+    /*** Send DMA region to proxy ***/
+    regions_tcp->dma_mem[0] = OP_DMA_FROM_DEVICE;
     *((uint64_t *)(regions_tcp->dma_mem + 1)) = addr;
-    *((uint64_t *)(regions_tcp->dma_mem + sizeof(uint64_t) + 1)) = count;
+    *((uint64_t *)(regions_tcp->dma_mem + 1 + sizeof(uint64_t))) = count;
 
     ret = send(cfd, regions_tcp->dma_mem, size_to_send, 0);	
 
@@ -163,11 +167,10 @@ void tcp_write_dma(uint64_t addr, size_t count) {
 	printf("send failed for DMA to device request\n");
 	return;
     }
-
 }
 
-int init_tcp(int argc, char **argv) {
-
+int init_tcp(int argc, char **argv)
+{
     int op, ret = 0;
     uint32_t ret_size;
     char *serverAddrString = NULL, *serverPortString = NULL;
@@ -292,9 +295,7 @@ int init_tcp(int argc, char **argv) {
     regions_tcp->recv_buf_last_valid = -1;
     regions_tcp->recv_buf_next = 0;
 
-    regions_tcp->send_buf[0] = TYPE_REPLY;
-
-    regions_tcp->dma_buf = regions_tcp->dma_mem + (sizeof(uint64_t) * 2) + 1;
+    regions_tcp->dma_buf = regions_tcp->dma_mem + 1 + (sizeof(uint64_t) * 2);
 
     return 0; 
 

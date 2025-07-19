@@ -11,7 +11,7 @@
 #include "../../include/common.h"
 
 int fd = -1;
-char send_buf[MMIO_MESSAGE_SIZE];
+char send_buf[64];
 
 // Register signals with signal handler to close socket
 void signal_handler(int signum) {
@@ -44,21 +44,6 @@ int tcp_recv_data(void *buf, size_t size, int flags) {
 	}
 
 	size_recv += ret;
-    }
-
-    return 0;
-}
-
-int tcp_send_mmio_request(const char *buf)
-{
-    // Prepare the send buffer
-    send_buf[0] = TYPE_REQUEST;
-    memcpy(send_buf + 1, buf, MMIO_MESSAGE_SIZE - 1);  
-
-    
-    if (send(fd, send_buf, MMIO_MESSAGE_SIZE, 0) != MMIO_MESSAGE_SIZE) {
-	perror("tcp_send_mmio_request failed");
-	return -1;
     }
 
     return 0;
@@ -218,3 +203,4 @@ err_sock:
 out:
     return ret;
 } 
+
