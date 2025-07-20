@@ -118,8 +118,6 @@ int main(int argc, char **argv)
 			goto err_unmap;
 		    }
 
-		    printf("in OP_DMA_TO_DEVICE\n");
-
 		    break;
 
 		case OP_DMA_FROM_DEVICE:
