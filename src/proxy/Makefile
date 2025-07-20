@@ -1,4 +1,4 @@
-# Copied from https://github.com/TheNetAdmin/Makefile-Templates/SmallProject
+# Copied from https://github.com/TheNetAdmin/Makefile-Templates/tree/master/SmallProject
 #
 # MIT License
 #
@@ -27,7 +27,7 @@
 # tool macros
 CC ?= gcc
 CXX ?= # FILL: the compiler
-CFLAGS := -O2 -Wall -Wextra -Werror -libverbs -lrdmacm
+CFLAGS := -O2 -Wall -Wextra -Werror
 CXXFLAGS := # FILL: compile flags
 DBGFLAGS := -g -O0
 COBJFLAGS := $(CFLAGS) -c

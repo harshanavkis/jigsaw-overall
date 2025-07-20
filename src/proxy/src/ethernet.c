@@ -52,19 +52,6 @@ void signal_handler(int signum) {
     exit(EXIT_FAILURE);
 }
 
-/*
- * Recv mechanism
- * Usage: 	1. eth_recv_first returns an address, if available.
- * 		2. If the payload is accepted and the user is done with it, call eth_recv_done(address).
- * 		3. Otherwise if not accepted call eth_recv_next(address), returns address if available.
- * 		4. If payload not accepted go to step 3. Otherwise, call eth_recv_done(address) if done with it.
- */
-
-/*
- * @return NULL if non available, otherwise pointer to payload
- * set @wait to true, if application should block until a packet is available
- * set @wait to false, if application should return immediatly if no packet is available
- */
 void *eth_recv_first(bool wait)
 {
     void *frame;
@@ -418,7 +405,7 @@ static int init_rings(void)
 }
 
 
-int main(int argc, char **argv)
+int init_ethernet(int argc, char **argv)
 {
     int ret = 0;
 
@@ -446,51 +433,6 @@ int main(int argc, char **argv)
 	goto out;
     }
 
-    {
-	/*** Tests ***/
-	char test_cmp[9000];
-	memset(test_cmp, 0x32, 9000);
-	uint8_t *test_recv, *test_send;
-
-	// Send
-	test_send = eth_get_send_buf(10);
-
-	memset(test_send, 0x54, 10);
-
-	if (eth_send_buf(test_send) != 0) {
-	    ret = 1;
-	}
-
-	// Recv
-	test_recv = eth_recv_first(true);
-	if (!test_recv)
-	    return 1;
-
-	if (memcmp(test_cmp, test_recv, 56) != 0) {
-	    printf("cmp failed\n");
-	    ret = 1;
-	}
-
-	eth_recv_done(test_recv);
-
-
-	/*
-	// Send
-	if (eth_send(test_send, 56) != 0) {
-	    ret = 1;
-	}
-
-	// Recv
-	if (eth_recv(test_recv, 8000) == -1) {
-	    ret = 1;
-	}
-
-	if (memcmp(test_cmp, test_recv, 8000) != 0) {
-	    printf("cmp failed\n");
-	    ret = 1;
-	}
-	*/
-    }
     return 0;
 
 out:

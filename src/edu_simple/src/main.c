@@ -6,7 +6,7 @@
 #include "edu.h"
 #include "mmio.h"
 #include "sec_disagg.h"
-#include "tcp_server.h"
+#include "ethernet.h"
 
 int main(int argc, char **argv) {
 
@@ -23,8 +23,7 @@ int main(int argc, char **argv) {
 	exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < PCI_NUM_REGIONS; i++)
-    {
+    for (int i = 0; i < PCI_NUM_REGIONS; i++) {
         disagg_pci_info->regions[i].addr = &(edu->regions[i].addr);
         disagg_pci_info->regions[i].size = &(edu->regions[i].size);
         disagg_pci_info->regions[i].vmPhys = 0;
@@ -34,9 +33,9 @@ int main(int argc, char **argv) {
         printf("main.c: Setting for region %d, proxy Address: 0x%" PRIx64 ", size: %lu\n", i, *(disagg_pci_info->regions[i].addr), *(disagg_pci_info->regions[i].size));
     }
 
-    /** Setup TCP **/
+    /** Setup Ethernet **/
     int ret;
-    ret = init_tcp(argc, argv);
+    ret = init_ethernet(argc, argv);
     if (ret != 0)
 	exit(EXIT_FAILURE);
 

@@ -14,21 +14,12 @@
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
 
-#define SHMEM_FILE "/dev/shm/ivshmem"  // Adjust this path as needed
-#define READ_DOORBELL_OFFSET 0
-#define WRITE_DOORBELL_OFFSET 1
-#define DOORBELL_SIZE 1  // 1 byte for each doorbell
-#define TOTAL_DOORBELL_SIZE (DOORBELL_SIZE * 2)
-
-/* Offsets in the shared memory with special values */
-#define OFFSET_PROXY_DMA (256)
-
 static void *shmem = NULL;
 static volatile uint8_t *read_doorbell = NULL;
 static volatile uint8_t *write_doorbell = NULL;
 
 static int create_or_open_shmem_file() {
-    int fd = open(SHMEM_FILE, O_RDWR | O_CREAT, 0666);
+    int fd = open(SHMEM_FILE, O_RDWR | O_CREAT, 0644);
     if (fd < 0) {
         perror("Failed to open or create shared memory file");
         return -1;
@@ -115,15 +106,9 @@ ssize_t ivshmem_write(void *buf, size_t count, off_t offset) {
     printf("\n");
 #endif
 
-    if (!shmem || offset >= SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
-        return -1;
-
-    if (offset + count > SHMEM_SIZE - TOTAL_DOORBELL_SIZE)
-        count = SHMEM_SIZE - TOTAL_DOORBELL_SIZE - offset;
-
     wait_for_read_doorbell_clear();
 
-    memcpy(shmem + TOTAL_DOORBELL_SIZE + offset, buf, count);
+    memcpy(shmem + MMIO_REGION_OFFSET + offset, buf, count);
 
     __atomic_store_n(read_doorbell, 1, __ATOMIC_RELEASE);
 

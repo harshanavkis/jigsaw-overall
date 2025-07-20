@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <infiniband/verbs.h>
 
 struct disagg_crypto_mmio {
     unsigned char *key;

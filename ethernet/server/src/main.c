@@ -11,41 +11,196 @@
 #include <signal.h>
 #include <stdio.h>
 #include <poll.h>
+#include <stdbool.h>
 #include <sys/mman.h>
+#include <netinet/ether.h> // For address conversion
 
 #include "../../include/common.h"
 
-int ps = -1;
-char *serverMacString = NULL;
-char *localInterfaceString = NULL;
-uint8_t *rx_ring;
-uint8_t *tx_ring;
+static int ps = -1;
 
-size_t tx_frame_idx = 0;
-size_t rx_frame_idx = 0;
+static char *remoteMacString = NULL;
+static char *localInterfaceString = NULL;
 
-struct pollfd tx_pfd;
-struct pollfd rx_pfd;
+static uint8_t *rx_ring = NULL;
+static uint8_t *tx_ring = NULL;
+static size_t mapped_size = 0;
 
-struct ethhdr tx_ethernet_hdr;
+static size_t tx_frame_idx = 0;
+static size_t rx_idx_head = 0;
+static size_t rx_idx_tail = 0;
 
-int eth_send(void *buf, size_t size)
+static struct pollfd tx_pfd;
+static struct pollfd rx_pfd;
+
+static struct ethhdr tx_ethernet_hdr;
+
+static void cleanup(void)
+{
+    if (ps != -1)
+	close(ps);
+    
+    if (rx_ring)
+	munmap(rx_ring, mapped_size);
+}
+
+void signal_handler(int signum) {
+    printf("signal_handler: received signal %d\n", signum);
+
+    cleanup();
+
+    exit(EXIT_FAILURE);
+}
+
+/*
+ * Recv mechanism
+ * Usage: 	1. eth_recv_first returns an address, if available.
+ * 		2. If the payload is accepted and the user is done with it, call eth_recv_done(address).
+ * 		3. Otherwise if not accepted call eth_recv_next(address), returns address if available.
+ * 		4. If payload not accepted go to step 3. Otherwise, call eth_recv_done(address) if done with it.
+ */
+
+/*
+ * @return NULL if non available, otherwise pointer to payload
+ * set @wait to true, if application should block until a packet is available
+ * set @wait to false, if application should return immediatly if no packet is available
+ */
+void *eth_recv_first(bool wait)
+{
+    void *frame;
+    struct tpacket2_hdr *tphdr;
+    void *payload;
+
+    frame = rx_ring + (rx_idx_head * FRAME_SIZE);
+
+    tphdr = frame;
+
+    if (rx_idx_head == rx_idx_tail) {
+	while ((tphdr->tp_status & TP_STATUS_USER) == 0) {
+	    if (wait)
+		poll(&rx_pfd, 1, -1);
+	    else
+		return NULL;
+	}
+
+	rx_idx_tail = (rx_idx_tail + 1) % FRAME_NR;
+    }
+
+    payload = frame + tphdr->tp_mac + sizeof(struct ethhdr);
+
+    return payload;
+}
+
+void *eth_recv_next(bool wait, uint8_t *address)
+{
+    void *frame;
+    ssize_t idx;
+    struct tpacket2_hdr *tphdr;
+    void *payload;
+
+    idx = (address - rx_ring) / FRAME_SIZE;
+
+    if (idx < 0 || idx >= FRAME_NR) {
+	fprintf(stderr, "eth_recv_next: Invalid address\n");
+	cleanup();
+	exit(EXIT_FAILURE);
+    }
+
+    idx = (idx + 1) % FRAME_NR;
+
+    frame = rx_ring + (idx * FRAME_SIZE);
+
+    tphdr = frame;
+
+    while ((tphdr->tp_status & TP_STATUS_USER) == 0) {
+
+	if ((size_t)idx != rx_idx_tail) {
+
+	    idx = (idx + 1) % FRAME_NR;
+
+	    frame = rx_ring + (idx * FRAME_SIZE);
+
+	    tphdr = frame;
+
+	} else {
+
+	    if (wait)
+		poll(&rx_pfd, 1, -1);
+	    else
+		return NULL;
+
+	}
+
+    }
+
+    payload = frame + tphdr->tp_mac + sizeof(struct ethhdr);
+
+    if ((size_t)idx == rx_idx_tail)
+	rx_idx_tail = (rx_idx_tail + 1) % FRAME_NR;
+
+    return payload;
+}
+
+/*
+ * Changes state of this frame to be again available for the kernel
+ * @address is a pointer returned by eth_recv_first or eth_recv_next
+ */
+void eth_recv_done(uint8_t *address)
+{
+    void *frame;
+    ssize_t idx;
+    struct tpacket2_hdr *tphdr;
+
+    idx = (address - rx_ring) / FRAME_SIZE;
+
+    if (idx < 0 || idx >= FRAME_NR) {
+	fprintf(stderr, "eth_recv_done: Invalid address\n");
+	cleanup();
+	exit(EXIT_FAILURE);
+    }
+
+    frame = rx_ring + (idx * FRAME_SIZE);
+
+    tphdr = frame;
+
+    tphdr->tp_status = TP_STATUS_KERNEL;
+
+    // Advance the global current idx indicator, if possible
+    if ((size_t)idx == rx_idx_head) {
+
+	rx_idx_head = (rx_idx_head + 1) % FRAME_NR;
+
+	while (rx_idx_head != rx_idx_tail) {
+
+	    frame = rx_ring + (rx_idx_head * FRAME_SIZE);
+
+	    tphdr = frame;
+
+	    if ((tphdr->tp_status & TP_STATUS_USER) != 0)
+		break;
+
+	    rx_idx_head = (rx_idx_head + 1) % FRAME_NR;
+	}
+    }
+}
+
+void *eth_get_send_buf(size_t size)
 {
     void *frame;
     struct tpacket2_hdr *tphdr;
     void *data;
-    ssize_t ret;
 
     if (size > MTU) {
-	// TODO: Split up into multiple packets
-	fprintf(stderr, "eth_send: too big size argument\n");
-	return 1;
+	fprintf(stderr, "eth_get_send_buf: too big size argument\n");
+	return NULL;
     }
 
     frame = tx_ring + (tx_frame_idx * FRAME_SIZE);
+
     tx_frame_idx = (tx_frame_idx + 1) % FRAME_NR;
 
     tphdr = frame;
+
     data = frame + TPACKET_ALIGN(sizeof(*tphdr));
 
     while (tphdr->tp_status != TP_STATUS_AVAILABLE) { 
@@ -54,9 +209,24 @@ int eth_send(void *buf, size_t size)
 
     memcpy(data, &tx_ethernet_hdr, sizeof(tx_ethernet_hdr));
 
-    memcpy(data + sizeof(tx_ethernet_hdr), buf, size);
-
     tphdr->tp_len = size + sizeof(tx_ethernet_hdr);
+
+    return data + sizeof(tx_ethernet_hdr);
+}
+
+int eth_send_buf(uint8_t *address)
+{
+    void *frame;
+    ssize_t idx;
+    struct tpacket2_hdr *tphdr;
+    int ret;
+
+    idx = (address - tx_ring) / FRAME_SIZE;
+
+    frame = tx_ring + (idx * FRAME_SIZE);
+
+    tphdr = frame;
+
     tphdr->tp_status = TP_STATUS_SEND_REQUEST;
 
     ret = send(ps, NULL, 0, 0);
@@ -66,61 +236,11 @@ int eth_send(void *buf, size_t size)
 	return 1;
     }
 
-    printf("Sent frame of size\n");
-
     return 0;
 }
 
-ssize_t eth_recv(void *buf, size_t max_size)
+static int init_signal_handler(void)
 {
-    void *frame;
-    struct tpacket2_hdr *tphdr;
-    void *payload;
-    size_t size;
-
-    frame = rx_ring + (rx_frame_idx * FRAME_SIZE);
-    rx_frame_idx = (rx_frame_idx + 1) % FRAME_NR;
-
-    tphdr = frame;
-
-    while ((tphdr->tp_status & TP_STATUS_USER) == 0) {
-	poll(&rx_pfd, 1, -1);
-    }
-
-    payload = frame + tphdr->tp_mac + sizeof(struct ethhdr);
-
-    size = tphdr->tp_len - sizeof(struct ethhdr);
-    
-    if (max_size > size) {
-	fprintf(stderr, "eth_recv: received data size does exceed max_size\n");
-	return -1;
-    }
-
-    memcpy(buf, payload, size);
-
-    printf("Received frame of size: %lu\n", size);
-
-    tphdr->tp_status = TP_STATUS_KERNEL;
-
-    return size;
-}
-
-
-// Register signals with signal handler to close socket
-void signal_handler(int signum) {
-    printf("signal_handler: received signal %d\n", signum);
-
-    if (ps != -1) 
-	close(ps);
-
-    exit(EXIT_FAILURE);
-}
-
-int init(int argc, char **argv)
-{
-    int op;
-
-    /*** Register signal handler ***/
     struct sigaction sig_action[1];
     memset(&sig_action[0], 0, sizeof(struct sigaction));
     sig_action[0].sa_handler = signal_handler;
@@ -134,9 +254,23 @@ int init(int argc, char **argv)
 	return 1;
     }	
 
+    return 0;
+}
+
+static void print_usage(void)
+{
+    printf("usage: [program_name]\n");
+    printf("\t[--remoteMAC [remote's interface MAC]             or -a]\n");
+    printf("\t[--localInterface [local interface name]          or -b]\n");
+}
+
+static int init_params(int argc, char **argv)
+{
+    int op;
+
     /*** Read command line arguments ***/
     struct option long_opts[] = {
-	{ "serverMAC", 1, NULL, 'a' },
+	{ "remoteMAC", 1, NULL, 'a' },
 	{ "localInterface", 1, NULL, 'b' },
 	{ NULL, 0, NULL, 0 }
     };
@@ -144,73 +278,52 @@ int init(int argc, char **argv)
     while ((op = getopt_long(argc, argv, "a:b:", long_opts, NULL)) != -1) {
 	switch (op) {
 	case 'a':
-	    serverMacString = optarg;
+	    remoteMacString = optarg;
 	    break;
 	case 'b':
 	    localInterfaceString = optarg;
 	    break;
 	default:
-	    printf("usage: %s\n", argv[0]);
-	    printf("\t[--serverMAC [Server's interface MAC]       or -a]\n");
-	    printf("\t[--localInterface [local interface]         or -b]\n");
+	    print_usage();
 	    return 1;
 	}
     }
 
-    if (!serverMacString || !localInterfaceString) {
+    if (!remoteMacString || !localInterfaceString) {
 	printf("All arguments have to be specified\n");
-	printf("usage: %s\n", argv[0]);
-	printf("\t[--serverMAC [Server's interface MAC]       or -a]\n");
-	printf("\t[--localInterface [local interface]         or -b]\n");
+	print_usage();
 	return 1;
     }
-
-    // TODO: make this depend on the option
-    // This is amy's interface MAC
-    tx_ethernet_hdr.h_dest[0] = 0xb4; tx_ethernet_hdr.h_dest[1] = 0x96; tx_ethernet_hdr.h_dest[2] = 0x91; tx_ethernet_hdr.h_dest[3] = 0xb3; tx_ethernet_hdr.h_dest[4] = 0x8a; tx_ethernet_hdr.h_dest[5] = 0x90;
-
-    // This is wilfred's interface MAC
-    tx_ethernet_hdr.h_source[0] = 0xb4; tx_ethernet_hdr.h_source[1] = 0x96; tx_ethernet_hdr.h_source[2] = 0x91; tx_ethernet_hdr.h_source[3] = 0xb3; tx_ethernet_hdr.h_source[4] = 0x8b; tx_ethernet_hdr.h_source[5] = 0x04;
-
-    tx_ethernet_hdr.h_proto = htons(ETH_PROT_NR);
 
     return 0;
 }
 
-int main(int argc, char **argv)
+static int init_socket(void)
 {
-    int ret = 0;
+    int ret;
+    struct sockaddr_ll saddr, bsaddr;
     int version = TPACKET_VERSION;
-    struct sockaddr_ll saddr;
     int ifidx;
-    struct tpacket_req tpreq_rx, tpreq_tx;
+    struct ether_addr *remoteMac;
+    socklen_t bsaddr_len = sizeof(bsaddr);
 
-    ret = init(argc, argv);
-    if (ret != 0) {
-	fprintf(stderr, "init() failed\n");
-	goto out;
-    }
-
-    /*** Setup socket ***/
     ps = socket(AF_PACKET, SOCK_RAW, htons(ETH_PROT_NR));
     if (ps < 0) {
 	perror("socket() failed");
-	ret = 1;
-	goto out;
+	return 1;
     }
 
     ret = setsockopt(ps, SOL_PACKET, PACKET_VERSION, &version, sizeof(version));
     if (ret < 0) {
 	perror("setsockopt() failed");
-	goto out_sock;
+	return 1;
     }
 
-    /*** Bind to right interface ***/
+    /*** Bind to interface ***/
     ifidx = if_nametoindex(localInterfaceString);
     if (ifidx == 0) {
 	perror("if_nametoindex failed");
-	ret = 1;
-	goto out_sock;
+	return 1;
     }
 
     memset(&saddr, 0, sizeof(saddr));
@@ -218,7 +331,43 @@ int main(int argc, char **argv)
     saddr.sll_protocol = htons(ETH_PROT_NR);
     saddr.sll_ifindex = ifidx;
 
-    bind(ps, (struct sockaddr *)&saddr, sizeof(struct sockaddr_ll));
+    ret = bind(ps, (struct sockaddr *)&saddr, sizeof(struct sockaddr_ll));
+    if (ret != 0) {
+	perror("bind to local interface failed");
+	return 1;
+    }
+
+
+    /*** Init the addresses ***/
+
+    // Convert remoteMac to bytes array
+    remoteMac = ether_aton(remoteMacString);
+    if (!remoteMac) {
+	fprintf(stderr, "Invalid remoteMac: %s\n", remoteMacString);
+	print_usage();
+	return 1;
+    }
+
+    memcpy(tx_ethernet_hdr.h_dest, remoteMac, sizeof(*remoteMac));
+
+    // Get interface MAC bytes
+    ret = getsockname(ps, (struct sockaddr *)&bsaddr, &bsaddr_len);
+    if (ret != 0) {
+	perror("getsockname for MAC interface address failed");
+	return 1;
+    }
+
+    memcpy(tx_ethernet_hdr.h_source, &bsaddr.sll_addr, sizeof(tx_ethernet_hdr.h_source));
+
+    tx_ethernet_hdr.h_proto = htons(ETH_PROT_NR);
+
+    return 0;
+}
+
+static int init_rings(void)
+{
+    struct tpacket_req tpreq_rx, tpreq_tx;
+    int ret;
 
     /*** Setup up the rx and tx ring ***/
     tpreq_rx.tp_block_size = BLOCK_SIZE;
@@ -234,23 +383,24 @@ int main(int argc, char **argv)
     ret = setsockopt(ps, SOL_PACKET, PACKET_RX_RING, &tpreq_rx, sizeof(tpreq_rx));
     if (ret != 0) {
 	perror("setsockopt for rx ring failed");
-	goto out_sock;
+	return 1;
     }
 
     setsockopt(ps, SOL_PACKET, PACKET_TX_RING, &tpreq_tx, sizeof(tpreq_tx));
     if (ret != 0) {
 	perror("setsockopt for tx ring failed");
-	goto out_sock;
+	return 1;
     }
 
+    mapped_size = (tpreq_rx.tp_block_size * tpreq_rx.tp_block_nr) + (tpreq_tx.tp_block_size * tpreq_tx.tp_block_nr);
 
     rx_ring = mmap(0, 
-		   (tpreq_rx.tp_block_size * tpreq_rx.tp_block_nr) + (tpreq_tx.tp_block_size * tpreq_tx.tp_block_nr),
+		   mapped_size, 
 		   PROT_READ | PROT_WRITE, MAP_SHARED, ps, 0);
+
     if (rx_ring == MAP_FAILED) {
 	perror("mmap failed");
-	ret = 1;
-	goto out_sock;
+	return 1;
     }
 
     tx_ring = rx_ring + (tpreq_rx.tp_block_size * tpreq_rx.tp_block_nr);
@@ -264,30 +414,67 @@ int main(int argc, char **argv)
     tx_pfd.revents = 0;
     tx_pfd.events = POLLOUT;
 
+    return 0;
+}
+
+
+int main(int argc, char **argv)
+{
+    int ret = 0;
+
+    ret = init_signal_handler();
+    if (ret != 0) {
+	fprintf(stderr, "init_signal_handler() failed\n");
+	goto out;
+    }
+
+    ret = init_params(argc, argv);
+    if (ret != 0) {
+	fprintf(stderr, "init_params() failed\n");
+	goto out;
+    }
+
+    ret = init_socket();
+    if (ret != 0) {
+	fprintf(stderr, "init_socket() failed\n");
+	goto out;
+    }
+
+    ret = init_rings();
+    if (ret != 0) {
+	fprintf(stderr, "init_rings() failed\n");
+	goto out;
+    }
+
     {
 	/*** Tests ***/
-	char test_recv[9000];
-	char test_send[9000];
-	memset(test_send, 0x32, 9000);
 	char test_cmp[9000];
 	memset(test_cmp, 0x54, 9000);
+	uint8_t *test_recv, *test_send;
 
 	// Recv
-	if (eth_recv(test_recv, 10) == -1) {
-	    ret = 1;
-	}
+	test_recv = eth_recv_first(true);
+	if (!test_recv)
+	    return 1;
 
 	if (memcmp(test_cmp, test_recv, 10) != 0) {
 	    printf("cmp failed\n");
 	    ret = 1;
 	}
 
+	eth_recv_done(test_recv);
+
 
 	// Send
-	if (eth_send(test_send, 56) != 0) {
+	test_send = eth_get_send_buf(56);
+
+	memset(test_send, 0x32, 56);
+
+	if (eth_send_buf(test_send) != 0) {
 	    ret = 1;
 	}
 
+	/*
 	// Send
 	if (eth_send(test_send, 56) != 0) {
 	    ret = 1;
@@ -302,12 +489,11 @@ int main(int argc, char **argv)
 	    printf("cmp failed\n");
 	    ret = 1;
 	}
+	*/
     }
+    return 0;
 
-//out_mmap:
-    munmap(rx_ring, (tpreq_rx.tp_block_size * tpreq_rx.tp_block_nr) + (tpreq_tx.tp_block_size * tpreq_tx.tp_block_nr));
-out_sock:
-    close(ps);
 out:
-    return ret;
+    cleanup();
+    return 1;
 }

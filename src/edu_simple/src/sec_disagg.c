@@ -6,6 +6,9 @@
 #include <openssl/evp.h>
 #include <openssl/core_names.h>
 
+//#define CONFIG_DISAGG_DEBUG_DMA_SEC
+//#define CONFIG_DISAGG_DEBUG_MMIO_SEC
+
 #if defined(CONFIG_DISAGG_DEBUG_DMA_SEC) || defined(CONFIG_DISAGG_DEBUG_MMIO_SEC)
 static void print_bytes(void *buf, size_t count) {
     unsigned char *bytes = buf;

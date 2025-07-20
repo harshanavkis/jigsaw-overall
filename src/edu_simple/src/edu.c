@@ -21,7 +21,7 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+* DEALINGS IN THE SOFTWARE.
  */
 
 #include <pthread.h> // for thread, mutex and condition
@@ -33,24 +33,7 @@
 #include <stdbool.h>
 
 #include "edu.h"
-#include "sec_disagg.h"
-#include "tcp_server.h"
-
-/* Qemu API normally provides those functions */
-void pci_dma_read(dma_addr_t addr, void *buf, size_t len) {
-    tcp_read_dma(addr, len + disagg_crypto_dma_global.authsize);
-
-    if (disagg_dma_decrypt(regions_tcp->dma_buf, buf, len) != len)
-	printf("pci_dma_read failed\n");
-}
-
-void pci_dma_write(dma_addr_t addr, void *buf, size_t len) {
-    if (disagg_dma_encrypt(buf, regions_tcp->dma_buf, len) != 0)
-	printf("pci_dma_write failed\n");
-
-    tcp_write_dma(addr, len + disagg_crypto_dma_global.authsize);
-}
-/* End QEMU API */
+#include "dma.h"
 
 static void mutex_lock(pthread_mutex_t *mutex) {
     if (pthread_mutex_lock(mutex) != 0) {

@@ -39,7 +39,7 @@ SRC_PATH := src
 DBG_PATH := debug
 
 # compile macros
-TARGET_NAME := tcp_client 
+TARGET_NAME := ethernet_client
 ifeq ($(OS),Windows_NT)
 	TARGET_NAME := $(addsuffix .exe,$(TARGET_NAME))
 endif
