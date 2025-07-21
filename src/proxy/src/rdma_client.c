@@ -1,3 +1,5 @@
+// The initial structure of this file was taken from: https://github.com/linux-rdma/rdma-core/blob/master/librdmacm/examples/rdma_client.c
+// But it was modified to work for this project
 /*
  * Copyright (c) 2010 Intel Corporation.  All rights reserved.
  *
