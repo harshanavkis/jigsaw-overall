@@ -7,24 +7,24 @@
 #include <infiniband/verbs.h>
 
 struct disagg_crypto_mmio {
-    unsigned char *key;
-    int keylen;
-    unsigned char *iv;
-    size_t ivlen;
-    uint64_t *counter;
-    int authsize;
-    size_t adlen;
+	unsigned char *key;
+	int keylen;
+	unsigned char *iv;
+	size_t ivlen;
+	uint64_t *counter;
+	int authsize;
+	size_t adlen;
 };
 
 struct disagg_crypto_dma {
-    void *proxyDMA_start;
-    unsigned char *key;
-    int keylen;
-    unsigned char *iv;
-    size_t ivlen;
-    uint64_t *counter;
-    int authsize;
-    size_t adlen;
+	void *proxyDMA_start;
+	unsigned char *key;
+	int keylen;
+	unsigned char *iv;
+	size_t ivlen;
+	uint64_t *counter;
+	int authsize;
+	size_t adlen;
 };
 
 extern struct disagg_crypto_mmio disagg_crypto_mmio_global;

@@ -13,10 +13,10 @@ typedef uint64_t dma_addr_t;
  */
 struct guest_message_header
 {
-    uint8_t operation; /** Operation type */
-    uint64_t address;  /** Memory address for the operation */
-    uint64_t length;   /** Length of data to read or write */
-    uint64_t value;    /** Value to write in case of OP_WRITE */
+	uint8_t operation; /** Operation type */
+	uint64_t address;  /** Memory address for the operation */
+	uint64_t length;   /** Length of data to read or write */
+	uint64_t value;    /** Value to write in case of OP_WRITE */
 } __attribute__((packed));
 
 typedef size_t (region_access_cb_t)(void *opaque, char *buf, size_t count, size_t offset, bool is_write);
@@ -26,11 +26,11 @@ typedef size_t (region_access_cb_t)(void *opaque, char *buf, size_t count, size_
  */
 typedef struct disagg_pci_bar_info
 {
-    uint64_t *addr; // Address of region, -1 means not mapped
-    uint64_t *size; // Size of region
-    region_access_cb_t *cb;
-    uint64_t vmPhys; // The physical address of this BAR on the VM; read once
-    bool vmPhys_valid;
+	uint64_t *addr; // Address of region, -1 means not mapped
+	uint64_t *size; // Size of region
+	region_access_cb_t *cb;
+	uint64_t vmPhys; // The physical address of this BAR on the VM; read once
+	bool vmPhys_valid;
 } disagg_pci_bar_info;
 
 /**
@@ -43,7 +43,7 @@ typedef struct disagg_pci_bar_info
  */
 typedef struct disagg_pci_dev_info
 {   
-    disagg_pci_bar_info regions[PCI_NUM_REGIONS];
+	disagg_pci_bar_info regions[PCI_NUM_REGIONS];
 } disagg_pci_dev_info;
 
 int get_pci_region(disagg_pci_dev_info *disagg_pci_info, uint64_t addr, uint32_t size);

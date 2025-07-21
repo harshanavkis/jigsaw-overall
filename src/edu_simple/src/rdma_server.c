@@ -49,68 +49,68 @@ struct disagg_regions_rdma regions_rdma;
 int rdma_write(uint64_t raddr, size_t count)
 {
 #ifdef CONFIG_DISAGG_DEBUG_DMA_SEC
-    printf("rdma_write: count: %lu, address to read from %lx\n", count, raddr);
+	printf("rdma_write: count: %lu, address to read from %lx\n", count, raddr);
 #endif
-    int ret;
-    struct ibv_wc wc;
+	int ret;
+	struct ibv_wc wc;
 
-    ret = rdma_post_write(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
+	ret = rdma_post_write(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
 
-    if (ret != 0) {
-	perror("rdma_post_write failed\n");
-	goto out;
-    }
+	if (ret != 0) {
+		perror("rdma_post_write failed\n");
+		goto out;
+	}
 
-    while ((ret = rdma_get_send_comp(id, &wc)) == 0);
-    if (ret < 0)
-	perror("rdma_get_send_comp");
+	while ((ret = rdma_get_send_comp(id, &wc)) == 0);
+	if (ret < 0)
+		perror("rdma_get_send_comp");
 
 out:
-    return ret;
+	return ret;
 }
 
 int rdma_read(uint64_t raddr, size_t count)
 {
 #ifdef CONFIG_DISAGG_DEBUG_DMA_SEC
-    printf("rdma_read: count: %lu, address to read from %lx\n", count, raddr);
+	printf("rdma_read: count: %lu, address to read from %lx\n", count, raddr);
 #endif
-    int ret;
-    struct ibv_wc wc;
+	int ret;
+	struct ibv_wc wc;
 
-    ret = rdma_post_read(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
+	ret = rdma_post_read(id, NULL, regions_rdma.dma_buf, count, regions_rdma.mr_dma_buf, 0, raddr, regions_rdma.rkey);
 
-    if (ret != 0) {
-	perror("rdma_post_write failed\n");
-	goto out;
-    }
+	if (ret != 0) {
+		perror("rdma_post_write failed\n");
+		goto out;
+	}
 
-    while ((ret = rdma_get_send_comp(id, &wc)) == 0);
-    if (ret < 0)
-	perror("rdma_get_send_comp");
+	while ((ret = rdma_get_send_comp(id, &wc)) == 0);
+	if (ret < 0)
+		perror("rdma_get_send_comp");
 
 out:
-    return ret;
+	return ret;
 }
 
 int rdma_send(void *buf, size_t size)
 {
-    int ret; 
-    struct ibv_wc wc;
+	int ret; 
+	struct ibv_wc wc;
 
-    ret = rdma_post_send(id, NULL, buf, size, regions_rdma.mr_enc_send_buf, send_flags);
-    if (ret) {
-	perror("rdma_post_send");
-	goto out;
-    }
+	ret = rdma_post_send(id, NULL, buf, size, regions_rdma.mr_enc_send_buf, send_flags);
+	if (ret) {
+		perror("rdma_post_send");
+		goto out;
+	}
 
-    while ((ret = rdma_get_send_comp(id, &wc)) == 0);
-    if (ret < 0)
-	perror("rdma_get_send_comp");
-    else
-	ret = 0;
+	while ((ret = rdma_get_send_comp(id, &wc)) == 0);
+	if (ret < 0)
+		perror("rdma_get_send_comp");
+	else
+		ret = 0;
 
 out:
-    return ret;
+	return ret;
 }
 
 // Retreived a completed recv work request and returns the corresponding buffer
@@ -118,131 +118,131 @@ out:
 // Return NULL for failure
 void *rdma_recv(void)
 {
-    struct ibv_wc wc;
-    uint64_t i;
-    int ret;
-    uint64_t buddy;
+	struct ibv_wc wc;
+	uint64_t i;
+	int ret;
+	uint64_t buddy;
 
-    while ((ret = rdma_get_recv_comp(id, &wc)) == 0);
-    if (ret < 0) {
-	perror("rdma_get_recv_comp");
-	return NULL;
-    }
+	while ((ret = rdma_get_recv_comp(id, &wc)) == 0);
+	if (ret < 0) {
+		perror("rdma_get_recv_comp");
+		return NULL;
+	}
 
-    i = wc.wr_id;
+	i = wc.wr_id;
 
-    if (i >= NUM_RECV_BUFS) {
-	printf("invalid recv buffer id\n");
-	return NULL;
-    }
+	if (i >= NUM_RECV_BUFS) {
+		printf("invalid recv buffer id\n");
+		return NULL;
+	}
 
-    // Get buddy index
-    if (i < NUM_RECV_BUFS / 2) {
-	buddy = i + (NUM_RECV_BUFS / 2);
-    } else {
-	buddy = i - (NUM_RECV_BUFS / 2);
-    }
+	// Get buddy index
+	if (i < NUM_RECV_BUFS / 2) {
+		buddy = i + (NUM_RECV_BUFS / 2);
+	} else {
+		buddy = i - (NUM_RECV_BUFS / 2);
+	}
 
-    ret = rdma_post_recv(id, (void *) buddy, regions_rdma.recv_bufs[buddy].buf, BUFS_SIZE, regions_rdma.recv_bufs[buddy].mr);
-    if (ret) {
-	perror("rdma_post_recv");
-	return NULL;
-    }
+	ret = rdma_post_recv(id, (void *) buddy, regions_rdma.recv_bufs[buddy].buf, BUFS_SIZE, regions_rdma.recv_bufs[buddy].mr);
+	if (ret) {
+		perror("rdma_post_recv");
+		return NULL;
+	}
 
-    return regions_rdma.recv_bufs[i].buf;
+	return regions_rdma.recv_bufs[i].buf;
 }
 
 static void deregister_mregions(void)
 {
-    rdma_dereg_mr(regions_rdma.mr_dma_buf);
-    free(regions_rdma.dma_buf);
+	rdma_dereg_mr(regions_rdma.mr_dma_buf);
+	free(regions_rdma.dma_buf);
 
-    for (int i = 0; i < NUM_RECV_BUFS; ++i) {
-	rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
-	free(regions_rdma.recv_bufs[i].buf);
-    }
+	for (int i = 0; i < NUM_RECV_BUFS; ++i) {
+		rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
+		free(regions_rdma.recv_bufs[i].buf);
+	}
 
-    if ((send_flags & IBV_SEND_INLINE) == 0)
-	rdma_dereg_mr(regions_rdma.mr_enc_send_buf);
-    free(regions_rdma.enc_send_buf);
+	if ((send_flags & IBV_SEND_INLINE) == 0)
+		rdma_dereg_mr(regions_rdma.mr_enc_send_buf);
+	free(regions_rdma.enc_send_buf);
 }
 
 // Allocates regions and
 // Registers regions in struct regions_dma with the RDMA side
 static int register_mregions(void)
 {
-    struct ibv_mr *res_mr;
-    void *res_buf;
+	struct ibv_mr *res_mr;
+	void *res_buf;
 
-    // First, the enc_buf, input for rdma_post_send
-    res_buf = malloc(BUFS_SIZE); 
-    if (!res_buf) {
-	printf("Error malloc\n");
-	goto out;
-    }
-    regions_rdma.enc_send_buf = res_buf;
-    if ((send_flags & IBV_SEND_INLINE) == 0) {
-	res_mr = rdma_reg_msgs(id, res_buf, BUFS_SIZE);
-	if (!res_mr) {
-	    perror("rdma_reg_msgs");
-	    goto free_buf1;
-	}
-	regions_rdma.mr_enc_send_buf = res_mr;
-    } else {
-	regions_rdma.mr_enc_send_buf = NULL;
-    }
-
-    // Now, the recv buffers, input for rdma_post_recv
-    int i = 0;
-    for (; i < NUM_RECV_BUFS; ++i) {
-	res_buf = malloc(BUFS_SIZE);
+	// First, the enc_buf, input for rdma_post_send
+	res_buf = malloc(BUFS_SIZE); 
 	if (!res_buf) {
-	    printf("Error malloc\n");
-	    goto free_dereg;
+		printf("Error malloc\n");
+		goto out;
 	}
-	regions_rdma.recv_bufs[i].buf = res_buf;
+	regions_rdma.enc_send_buf = res_buf;
+	if ((send_flags & IBV_SEND_INLINE) == 0) {
+		res_mr = rdma_reg_msgs(id, res_buf, BUFS_SIZE);
+		if (!res_mr) {
+			perror("rdma_reg_msgs");
+			goto free_buf1;
+		}
+		regions_rdma.mr_enc_send_buf = res_mr;
+	} else {
+		regions_rdma.mr_enc_send_buf = NULL;
+	}
 
-	res_mr = rdma_reg_msgs(id, res_buf, BUFS_SIZE);
+	// Now, the recv buffers, input for rdma_post_recv
+	int i = 0;
+	for (; i < NUM_RECV_BUFS; ++i) {
+		res_buf = malloc(BUFS_SIZE);
+		if (!res_buf) {
+			printf("Error malloc\n");
+			goto free_dereg;
+		}
+		regions_rdma.recv_bufs[i].buf = res_buf;
+
+		res_mr = rdma_reg_msgs(id, res_buf, BUFS_SIZE);
+		if (!res_mr) {
+			perror("rdma_reg_msgs");
+			free(res_buf);
+			goto free_dereg;
+		}
+		regions_rdma.recv_bufs[i].mr = res_mr;
+	}
+
+	// The dma buffer; contains decrypted DMA region
+	res_buf = malloc(DMA_SIZE);
+	if (!res_buf) {
+		printf("Error malloc\n");
+		goto free_dereg;
+	}
+	regions_rdma.dma_buf = res_buf;
+	res_mr = rdma_reg_msgs(id, res_buf, DMA_SIZE);
+
 	if (!res_mr) {
-	    perror("rdma_reg_msgs");
-	    free(res_buf);
-	    goto free_dereg;
+		perror("rdma_reg_msgs for remote DMA");
+		goto free_shmem;
 	}
-	regions_rdma.recv_bufs[i].mr = res_mr;
-    }
+	regions_rdma.mr_dma_buf = res_mr;
 
-    // The dma buffer; contains decrypted DMA region
-    res_buf = malloc(DMA_SIZE);
-    if (!res_buf) {
-	printf("Error malloc\n");
-	goto free_dereg;
-    }
-    regions_rdma.dma_buf = res_buf;
-    res_mr = rdma_reg_msgs(id, res_buf, DMA_SIZE);
-
-    if (!res_mr) {
-	perror("rdma_reg_msgs for remote DMA");
-	goto free_shmem;
-    }
-    regions_rdma.mr_dma_buf = res_mr;
-
-    return 0;
+	return 0;
 
 free_shmem:
-    free(regions_rdma.dma_buf);
+	free(regions_rdma.dma_buf);
 free_dereg:
-    --i;
-    for (; i >= 0; --i) {
-	rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
-	free(regions_rdma.recv_bufs[i].buf);
-    }
+	--i;
+	for (; i >= 0; --i) {
+		rdma_dereg_mr(regions_rdma.recv_bufs[i].mr);
+		free(regions_rdma.recv_bufs[i].buf);
+	}
 
-    if ((send_flags & IBV_SEND_INLINE) == 0)
-	rdma_dereg_mr(regions_rdma.mr_enc_send_buf);
+	if ((send_flags & IBV_SEND_INLINE) == 0)
+		rdma_dereg_mr(regions_rdma.mr_enc_send_buf);
 free_buf1:
-    free(regions_rdma.enc_send_buf);
+	free(regions_rdma.enc_send_buf);
 out:
-    return 1;
+	return 1;
 }
 
 int init_rdma(const char *serverIP, const char *port)
@@ -261,8 +261,8 @@ int init_rdma(const char *serverIP, const char *port)
 	hints.ai_port_space = RDMA_PS_TCP;
 	ret = rdma_getaddrinfo(serverIP, port, &hints, &res);
 	if (ret) {
-	    printf("rdma_getaddrinfo: %s\n", gai_strerror(ret));
-	    return ret;
+		printf("rdma_getaddrinfo: %s\n", gai_strerror(ret));
+		return ret;
 	}
 
 	// Configures attributes
@@ -274,67 +274,67 @@ int init_rdma(const char *serverIP, const char *port)
 	init_attr.qp_type = IBV_QPT_RC;
 	ret = rdma_create_ep(&listen_id, res, NULL, &init_attr);
 	if (ret) {
-	    perror("rdma_create_ep");
-	    goto out_free_addrinfo;
+		perror("rdma_create_ep");
+		goto out_free_addrinfo;
 	}
 
 	// Listens for connection requests
 	ret = rdma_listen(listen_id, 0);
 	if (ret) {
-	    perror("rdma_listen");
-	    goto out_destroy_listen_ep;
+		perror("rdma_listen");
+		goto out_destroy_listen_ep;
 	}
 
 	// Retreives connection request
 	ret = rdma_get_request(listen_id, &id);
 	if (ret) {
-	    perror("rdma_get_request");
-	    goto out_destroy_listen_ep;
+		perror("rdma_get_request");
+		goto out_destroy_listen_ep;
 	}
 
 	// Checks attribute values of connection
 	memset(&qp_attr, 0, sizeof qp_attr);
 	memset(&init_attr, 0, sizeof init_attr);
 	ret = ibv_query_qp(id->qp, &qp_attr, IBV_QP_CAP,
-			   &init_attr);
+			&init_attr);
 	if (ret) {
-	    perror("ibv_query_qp");
-	    goto out_destroy_accept_ep;
+		perror("ibv_query_qp");
+		goto out_destroy_accept_ep;
 	}
 	if (init_attr.cap.max_inline_data >= BUFS_SIZE)
-	    send_flags = IBV_SEND_INLINE;
+		send_flags = IBV_SEND_INLINE;
 	else
-	    printf("rdma_server: device doesn't support IBV_SEND_INLINE, "
-		   "using sge sends\n");
+		printf("rdma_server: device doesn't support IBV_SEND_INLINE, "
+				"using sge sends\n");
 
 	// Registers the send/recv memory regions with RDMA
 	ret = register_mregions();
 	if (ret) {
-	    ret = -1;
-	    printf("server error end\n");
-	    goto out_destroy_accept_ep;
+		ret = -1;
+		printf("server error end\n");
+		goto out_destroy_accept_ep;
 	}
 
 	// Post first half of receive buffers
 	for (uint64_t i = 0; i < NUM_RECV_BUFS / 2; ++i) {
-	    ret = rdma_post_recv(id, (void *) i, regions_rdma.recv_bufs[i].buf, BUFS_SIZE, regions_rdma.recv_bufs[i].mr);
-	    if (ret) {
-		perror("rdma_post_recv");
-		goto out_dereg;
-	    }
+		ret = rdma_post_recv(id, (void *) i, regions_rdma.recv_bufs[i].buf, BUFS_SIZE, regions_rdma.recv_bufs[i].mr);
+		if (ret) {
+			perror("rdma_post_recv");
+			goto out_dereg;
+		}
 	}
 
 	// Accept the connection request
 	ret = rdma_accept(id, NULL);
 	if (ret) {
-	    perror("rdma_accept");
-	    goto out_dereg;
+		perror("rdma_accept");
+		goto out_dereg;
 	}
 
 	// Retreive first completed recv request (the meta information about the remote DMA area)
 	recv_msg = rdma_recv();
 	if (!recv_msg) {
-	    goto out_disconnect;
+		goto out_disconnect;
 	}
 
 	// First message is the meta information (i.e. rkey) about the shmem DMA region

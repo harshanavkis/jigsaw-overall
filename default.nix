@@ -65,6 +65,8 @@ pkgs.mkShell {
 
     nmap
     rdma-core
+    ncurses
+    OVMF
   ];
 
   hardeningDisable = [ "all" ];
