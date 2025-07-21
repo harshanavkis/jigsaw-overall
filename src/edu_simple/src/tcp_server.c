@@ -173,8 +173,8 @@ int init_tcp(int argc, char **argv)
 {
     int op, ret = 0;
     uint32_t ret_size;
-    char *serverAddrString = NULL, *serverPortString = NULL;
-    int serverPort = -1;
+    char *localAddrString = NULL, *localPortString = NULL;
+    int localPort = -1;
     struct sockaddr_in ssaddr, csaddr; // server/client sock addr
     char csaddrString[INET_ADDRSTRLEN + 1]; // Used to print the client address
 
@@ -194,38 +194,38 @@ int init_tcp(int argc, char **argv)
 
     /*** Read ip address and port for listening socket from command line arguments ***/
     struct option long_opts[] = {
-	{ "serverAddr", 1, NULL, 'a' },
-	{ "serverPort", 1, NULL, 'b' },
+	{ "localAddr", 1, NULL, 'a' },
+	{ "local", 1, NULL, 'b' },
 	{ NULL, 0, NULL, 0 }
     };
 
     while ((op = getopt_long(argc, argv, "a:b:c:d:", long_opts, NULL)) != -1) {
 	switch (op) {
 	case 'a':
-	    serverAddrString = optarg;
+	    localAddrString = optarg;
 	    break;
 	case 'b':
-	    serverPortString = optarg;
+	    localPortString = optarg;
 	    break;
 	default:
 	    printf("usage: %s\n", argv[0]);
-	    printf("\t[--serverAddr [Server's IP address]       or -a]\n");
-	    printf("\t[--serverPort [Server's Port]             or -b]\n");
+	    printf("\t[--localAddr [IP address of local interface]              or -a]\n");
+	    printf("\t[--localPort [Port to use]                                or -b]\n");
 	    goto out;
 	}
     }
 
-    if (!serverAddrString || !serverPortString) {
+    if (!localAddrString || !localPortString) {
 	printf("All two arguments have to be specified\n");
 	printf("usage: %s\n", argv[0]);
-	printf("\t[--serverAddr [Server's IP address]       or -a]\n");
-	printf("\t[--serverPort [Server's Port]             or -b]\n");
+	printf("\t[--localAddr [IP address of local interface]              or -a]\n");
+	printf("\t[--localPort [Port to use]                                or -b]\n");
 	goto out;
     }
 
-    serverPort = atoi(serverPortString);
-    if (serverPort < 1024 || serverPort >= 65536) {
-	printf("Invalid port number for serverPort\n");
+    localPort = atoi(localPortString);
+    if (localPort < 1024 || localPort >= 65536) {
+	printf("Invalid port number for localPort\n");
 	goto out;
     }
 
@@ -238,9 +238,9 @@ int init_tcp(int argc, char **argv)
 
     // Convert command line arguments to address info for server address (address of this interface)
     ssaddr.sin_family = AF_INET;
-    ssaddr.sin_port = htons(serverPort);
-    if (0 == inet_aton(serverAddrString, &ssaddr.sin_addr)) {
-	printf("Invalid serverAddr: %s\n", serverAddrString);
+    ssaddr.sin_port = htons(localPort);
+    if (0 == inet_aton(localAddrString, &ssaddr.sin_addr)) {
+	printf("Invalid localAddr: %s\n", localAddrString);
 	goto err_sock;
     }
 

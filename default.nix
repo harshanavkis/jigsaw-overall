@@ -64,6 +64,8 @@ pkgs.mkShell {
     # libclang
 
     nmap
+    ncurses
+    OVMF
   ];
 
   hardeningDisable = [ "all" ];

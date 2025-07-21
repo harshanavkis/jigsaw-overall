@@ -59,9 +59,9 @@ int tcp_send_buf(const char *buf, size_t size) {
 int init_tcp(int argc, char **argv) 
 {
     int op, ret = 0;
-    char *serverAddrString = NULL, *serverPortString = NULL;
+    char *remoteAddrString = NULL, *remotePortString = NULL;
     char *localAddrString = NULL, *localPortString = NULL;
-    int serverPort = -1;
+    int remotePort = -1;
     int localPort = -1;
     struct sockaddr_in lsaddr, ssaddr; // listening/server sock addr
 
@@ -81,8 +81,8 @@ int init_tcp(int argc, char **argv)
 
     /*** Read command line arguments ***/
     struct option long_opts[] = {
-	{ "serverAddr", 1, NULL, 'a' },
-	{ "serverPort", 1, NULL, 'b' },
+	{ "remoteAddr", 1, NULL, 'a' },
+	{ "remotePort", 1, NULL, 'b' },
 	{ "localAddr", 1, NULL, 'c' },
 	{ "localPort", 1, NULL, 'd' },
 	{ NULL, 0, NULL, 0 }
@@ -91,10 +91,10 @@ int init_tcp(int argc, char **argv)
     while ((op = getopt_long(argc, argv, "a:b:c:d:", long_opts, NULL)) != -1) {
 	switch (op) {
 	case 'a':
-	    serverAddrString = optarg;
+	    remoteAddrString = optarg;
 	    break;
 	case 'b':
-	    serverPortString = optarg;
+	    remotePortString = optarg;
 	    break;
 	case 'c':
 	    localAddrString = optarg;
@@ -104,27 +104,27 @@ int init_tcp(int argc, char **argv)
 	    break;
 	default:
 	    printf("usage: %s\n", argv[0]);
-	    printf("\t[--serverAddr [Server's IP address]       or -a]\n");
-	    printf("\t[--serverPort [Server's Port]             or -b]\n");
-	    printf("\t[--localAddr [Local IP address]           or -c]\n");
-	    printf("\t[--localPort [Local Port]                 or -d]\n");
+	    printf("\t[--remoteAddr [IP address of remote host's interface]      or -a]\n");
+	    printf("\t[--remotePort [Port of remote host]                        or -b]\n");
+	    printf("\t[--localAddr [IP address of local interface]               or -c]\n");
+	    printf("\t[--localPort [Local port to use]                           or -d]\n");
 	    goto out;
 	}
     }
 
-    if (!serverAddrString || !serverPortString || !localAddrString || !localPortString) {
+    if (!remoteAddrString || !remotePortString || !localAddrString || !localPortString) {
 	printf("All four arguments have to be specified\n");
 	printf("usage: %s\n", argv[0]);
-	printf("\t[--serverAddr [Server's IP address]       or -a]\n");
-	printf("\t[--serverPort [Server's Port]             or -b]\n");
-	printf("\t[--localAddr [Local IP address]           or -c]\n");
-	printf("\t[--localPort [Local Port]                 or -d]\n");
+	printf("\t[--remoteAddr [IP address of remote host's interface]      or -a]\n");
+        printf("\t[--remotePort [Port of remote host]                        or -b]\n");
+        printf("\t[--localAddr [IP address of local interface]               or -c]\n");
+        printf("\t[--localPort [Local port to use]                           or -d]\n");
 	goto out;
     }
 
-    serverPort = atoi(serverPortString);
-    if (serverPort < 1024 || serverPort >= 65536) {
-	printf("Invalid port number for serverPort\n");
+    remotePort = atoi(remotePortString);
+    if (remotePort < 1024 || remotePort >= 65536) {
+	printf("Invalid port number for remotePort\n");
 	goto out;
     }
 
@@ -158,9 +158,9 @@ int init_tcp(int argc, char **argv)
     /*** Connect to server ***/
     // Convert command line arguments to address info for remote server address
     ssaddr.sin_family = AF_INET;
-    ssaddr.sin_port = htons(serverPort);
-    if (0 == inet_aton(serverAddrString, &ssaddr.sin_addr)) {
-	printf("Invalid serverAddr: %s\n", serverAddrString);
+    ssaddr.sin_port = htons(remotePort);
+    if (0 == inet_aton(remoteAddrString, &ssaddr.sin_addr)) {
+	printf("Invalid remoteAddr: %s\n", remoteAddrString);
 	goto err_sock;
     }
 
