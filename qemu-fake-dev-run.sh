@@ -13,11 +13,13 @@
         -net nic,model=e1000 \
         -enable-kvm \
         -nographic \
-	-machine q35 \
 	-cpu host \
+	-drive if=pflash,format=raw,unit=0,readonly=on,file=OVMF_CODE.fd \
+	-drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+	-machine q35,confidential-guest-support=sev0 \
+	-object sev-guest,id=sev0,cbitpos=51,reduced-phys-bits=4,policy=0x0 \
+	-d guest_errors,cpu_reset -D qemu.log \
 	-device disagg-fake-pci,bar-size=1048576 \
         2>&1 | tee vm.log
 
 
-	#-bios seabios/out/bios.bin \
-	#-chardev file,path=debug_seabios.log,id=seabios -device isa-debugcon,iobase=0x402,chardev=seabios \
