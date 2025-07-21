@@ -2,7 +2,7 @@
 
 ## One-time setup (for two-host version):
 
-Following generic instructions are applicable to the rdma, tcp and ethernet version. Thus if you have already used one of those, skip the [One-time setup](#one-time-setup-for-two-host-version) part and continue at [TCP specifc setup](#tcp-specific-setup).
+Following generic instructions are applicable to the rdma, tcp and ethernet version. Thus if you have already used one of those, skip the [One-time setup](#one-time-setup-for-two-host-version) part and continue at [RDMA specifc setup](#rdma-specific-setup).
 
 [One-time setup](#one-time-setup-for-two-host-version) only covers the VM-host server.
 
@@ -94,9 +94,9 @@ cp $(nix eval --raw nixpkgs#OVMF)/FV/OVMF_CODE.fd $PRJ_DIR/OVMF_CODE.fd
 cp $(nix eval --raw nixpkgs#OVMF)/FV/OVMF_VARS.fd $PRJ_DIR/OVMF_VARS.fd
 ```
 
-## TCP specific setup
+## RDMA specific setup
 
-Following instructions are only valid for the TCP version.
+Following instructions are only valid for the RDMA version.
 
 #### On VM-Host server
 
@@ -129,6 +129,8 @@ cd $PRJ_DIR/src/edu_simple
         --localPort [Port to use]
 ```
 
+The interface has to be capable of RDMA. Use `rdma link` to list RDMA interfaces.
+
 ### VM-Host (e.g. amy)
 
 #### Proxy:
@@ -137,14 +139,9 @@ cd $PRJ_DIR/src/proxy
 ./bin/proxy
         --remoteAddr [IP address of remote host's interface]
         --remotePort [Port of remote host]
-        --localAddr [IP address of local interface]
-        --localPort [Local port to use]
 ```
-The ip address
- of the interface can be found with e.g. 
-```
-ip a
-```
+
+The interface has to be capable of RDMA. Use `rdma link` to list RDMA interfaces.
 
 #### VM:
 
