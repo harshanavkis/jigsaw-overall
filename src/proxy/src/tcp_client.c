@@ -170,37 +170,12 @@ int init_tcp(int argc, char **argv)
 	goto err_sock;
     }
 
-
-#if 0
-    /*** send/recv tests ***/
-    {
-	char recvBuf[64] = { 0 };
-	char *sendBuf = "World";
-	ssize_t ret;
-
-	// Recv message "Hello"
-	ret = recv_data(fd, recvBuf, 5, 0);
-	if (ret != 0)
-	    goto err_sock;
-
-
-	// Send message "World"
-	ret = send(fd, sendBuf, 5, 0);	
-	if (ret != 5)
-	    goto err_sock;
-
-	printf("received message %s\n", recvBuf);
-    }
-
-    while(1) { }
-#endif
-
     return 0;
 
 err_sock:
     if (fd != -1)
 	close(fd);
 out:
-    return ret;
+    return 1;
 } 
 
