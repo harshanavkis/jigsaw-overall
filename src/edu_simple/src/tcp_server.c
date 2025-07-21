@@ -306,5 +306,5 @@ err_sock:
     if (lfd != -1)
 	close(lfd);
 out:
-    return ret;
+    return 1;
 }
