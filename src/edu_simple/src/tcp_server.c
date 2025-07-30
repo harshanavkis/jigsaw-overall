@@ -59,7 +59,7 @@ static int recv_data(int ifd, void *buf, size_t size, int flags)
 		// Peer closed connection
 		printf("Connection was closed by peer\n");
 		close(ifd);
-		close(ldf);
+		close(lfd);
 		exit(EXIT_SUCCESS);
 	    } else if (ret == -1) {
 		// Error
