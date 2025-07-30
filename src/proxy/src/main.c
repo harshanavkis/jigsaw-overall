@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 
 
 	    // Read first byte, if available, to determine type of message
+	    errno = 0;
 	    ret = tcp_recv_data(&type, 1, MSG_DONTWAIT);
 	    if (ret == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
