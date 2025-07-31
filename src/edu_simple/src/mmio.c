@@ -9,7 +9,6 @@
 #include <time.h>
 
 #include "mmio.h"
-#include "sec_disagg.h"
 #include "rdma_server.h"
 
 //#define CONFIG_DISAGG_DEBUG_MMIO
@@ -25,22 +24,20 @@ static ssize_t mmio_recv(struct guest_message_header *hdr) {
 	}
 
 	if (*((uint8_t *)res) == OP_READ)
-		return disagg_mmio_decrypt(res + 1, hdr, sizeof(struct guest_message_header) - sizeof(uint64_t));
+		memcpy(hdr, res + 1, sizeof(struct guest_message_header) - sizeof(uint64_t));
 	else 
-		return disagg_mmio_decrypt(res + 1, hdr, sizeof(struct guest_message_header));
+		memcpy(hdr, res + 1, sizeof(struct guest_message_header));
+
+	return 0;
 }
 
 static ssize_t mmio_send(void *buf, size_t count) {
-	void *enc_send_buf = disagg_mmio_encrypt(buf, regions_rdma.enc_send_buf + 1, count);
-
-	if (!enc_send_buf) {
-		return -1;
-	}
+	memcpy(regions_rdma.enc_send_buf + 1, buf, count);
 
 	// Set first byte to OP_READ
 	*((uint8_t *)regions_rdma.enc_send_buf) = OP_READ;
 
-	int ret = rdma_send(regions_rdma.enc_send_buf, 1 + count + disagg_crypto_mmio_global.authsize);
+	int ret = rdma_send(regions_rdma.enc_send_buf, 1 + count);
 
 	if (ret != 0)
 		return -1;
@@ -49,10 +46,6 @@ static ssize_t mmio_send(void *buf, size_t count) {
 }
 
 void *run_mmio_app(disagg_pci_dev_info *pci_info, void *opaque) {
-	if (disagg_init_crypto()) {
-		printf("disagg_init_crypto failed\n");
-	}
-
 	printf("MMIO communication application started. Waiting for messages...\n");
 
 	bool is_write = false;

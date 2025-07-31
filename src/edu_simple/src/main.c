@@ -6,7 +6,6 @@
 
 #include "edu.h"
 #include "mmio.h"
-#include "sec_disagg.h"
 #include "rdma_server.h"
 
 int main(int argc, char **argv) {
