@@ -23,12 +23,14 @@ static ssize_t mmio_recv(struct guest_message_header *hdr) {
 		return -1;
 	}
 
-	if (*((uint8_t *)res) == OP_READ)
+	if (*((uint8_t *)res) == OP_READ) {
 		memcpy(hdr, res + 1, sizeof(struct guest_message_header) - sizeof(uint64_t));
-	else 
+		return sizeof(struct guest_message_header) - sizeof(uint64_t);
+	} else {
 		memcpy(hdr, res + 1, sizeof(struct guest_message_header));
+		return sizeof(struct guest_message_header);
+	}
 
-	return 0;
 }
 
 static ssize_t mmio_send(void *buf, size_t count) {
