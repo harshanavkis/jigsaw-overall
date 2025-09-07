@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 
 	/*** Read command line arguments ***/
 	struct option long_opts[] = {
-		{ "localAddr", 1, NULL, 'a' },
+		{ "localAddress", 1, NULL, 'a' },
 		{ "localPort", 1, NULL, 'b' },
 		{ NULL, 0, NULL, 0 }
 	};

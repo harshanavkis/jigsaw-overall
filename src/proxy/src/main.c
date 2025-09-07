@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 
 	/*** Read command line arguments ***/
 	struct option long_opts[] = {
-		{ "remoteAddr", 1, NULL, 'a' },
+		{ "remoteAddress", 1, NULL, 'a' },
 		{ "remotePort", 1, NULL, 'b' },
 		{ NULL, 0, NULL, 0 }
 	};
