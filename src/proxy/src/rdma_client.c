@@ -42,24 +42,29 @@
 #include "../../include/common.h"
 
 static struct rdma_cm_id *id;
-static struct ibv_mr *mr_recv[NUM_RECV_BUFS];
-static int send_flags;
-static uint8_t recv_msg[NUM_RECV_BUFS][BUFS_SIZE];
 
-struct ibv_mr *mr_shmem;
+static uint8_t recv_msg[NUM_RECV_BUFS][BUFS_SIZE];
+static struct ibv_mr *mr_recv[NUM_RECV_BUFS];
+
+static int send_flags;
+
+struct ibv_mr *mr_local_buf;
+struct ibv_mr *mr_send_buf;
 
 static void deregister_mregions(void)
 {
-	rdma_dereg_mr(mr_shmem);
+	rdma_dereg_mr(mr_local_buf);
 
 	for (int i = 0; i < NUM_RECV_BUFS; ++i) {
 		rdma_dereg_mr(mr_recv[i]);
 	}
 }
 
-// Allocates regions and
-// Registers regions in struct regions_dma with the RDMA side
-static int register_mregions(void *shmem)
+/*
+ * Allocates receive region.
+ * Registers all regions (receive/send/local_buf) with RDMA
+ */
+static int register_mregions(void *local_buf, size_t local_buf_size, void *send_buf, size_t send_buf_size)
 {
 	struct ibv_mr *res_mr;
 
@@ -74,18 +79,28 @@ static int register_mregions(void *shmem)
 		mr_recv[i] = res_mr;
 	}
 
-	// The shmem buffer; contains decrypted DMA region
-	res_mr = ibv_reg_mr(id->pd, shmem + DMA_REGION_OFFSET, DMA_SIZE, IBV_ACCESS_LOCAL_WRITE | 
+	// Send buffers, used in rdma_post_send
+    res_mr = rdma_reg_msgs(id, send_buf, send_buf_size);
+    if (!res_mr) {
+        perror("rdma_reg_msgs");
+        goto free_dereg;
+    }
+    mr_send_buf = res_mr;
+
+	// The local_buf buffer; source/destination for remotes' write/read
+	res_mr = ibv_reg_mr(id->pd, local_buf, local_buf_size, IBV_ACCESS_LOCAL_WRITE | 
 			IBV_ACCESS_REMOTE_READ |
 			IBV_ACCESS_REMOTE_WRITE);
 	if (!res_mr) {
 		perror("rdma_reg_msgs for remote DMA");
-		goto free_dereg;
+		goto free_send;
 	}
-	mr_shmem = res_mr;
+	mr_local_buf = res_mr;
 
 	return 0;
 
+free_send:
+    rdma_dereg_mr(mr_send_buf);
 free_dereg:
 	--i;
 	for (; i >= 0; --i) {
@@ -106,7 +121,7 @@ int rdma_send(void *buf, size_t size)
 	int ret; 
 	struct ibv_wc wc;
 
-	ret = rdma_post_send(id, NULL, buf, size, mr_shmem, send_flags);
+	ret = rdma_post_send(id, NULL, buf, size, mr_send_buf, send_flags);
 	if (ret) {
 		perror("rdma_post_send");
 		goto out;
@@ -124,7 +139,7 @@ out:
 
 
 // This is the rdma_get_recv_comp from the rdma-core library (https://github.com/linux-rdma/rdma-core/blob/5abc21f894bf39eaaa3ecee14a0a3358eabfd121/librdmacm/rdma_verbs.h#L283) with the exception that it only does one iteration and not loop until recv is available. This allows non-blocking implementation.
-	static inline int
+static inline int
 rdma_get_recv_comp_one_iter(struct rdma_cm_id *id, struct ibv_wc *wc)
 {
 	struct ibv_cq *cq;
@@ -200,7 +215,7 @@ ssize_t rdma_recv(void **ret_buf)
 	return wc.byte_len;
 }
 
-int init_rdma(char *server, char *port, void *shmem)
+int init_rdma(char *server, char *port, void *local_buf, size_t local_buf_size, void *send_buf, size_t size_send_buf)
 {
 	struct rdma_addrinfo hints, *res;
 	struct ibv_qp_init_attr attr;
@@ -236,7 +251,7 @@ int init_rdma(char *server, char *port, void *shmem)
 	}
 
 	// Register all regions
-	ret = register_mregions(shmem);
+	ret = register_mregions(local_buf, local_buf_size, send_buf, size_send_buf);
 	if (ret != 0)
 		goto out_dereg;
 
@@ -261,20 +276,20 @@ int init_rdma(char *server, char *port, void *shmem)
 	// The server needs this information to be able to perfrom read/writes
 
 	// Register temporary memory region
-	struct ibv_mr *rkey_mr = NULL;
+	struct ibv_mr *mr_mr_local_buf = NULL;
 
 	if ((send_flags & IBV_SEND_INLINE) == 0) {
-		rkey_mr = rdma_reg_msgs(id, &mr_shmem->rkey, sizeof(mr_shmem->rkey));
-		if (!rkey_mr) {
+		mr_mr_local_buf = rdma_reg_msgs(id, mr_local_buf, sizeof(*mr_local_buf));
+		if (!mr_mr_local_buf) {
 			perror("rdma_reg_msgs");
 			goto out_disconnect;
 		}
 	}
 
 	// Send the necessary metadata to the server
-	printf("rkey: 0x%x\n", mr_shmem->rkey);
+	printf("raddr: 0x%p, rkey: 0x%x\n", mr_local_buf->addr, mr_local_buf->rkey);
 
-	ret = rdma_post_send(id, NULL, &mr_shmem->rkey, sizeof(mr_shmem->rkey), rkey_mr, send_flags);
+	ret = rdma_post_send(id, NULL, &mr_local_buf->addr, sizeof(mr_local_buf->addr), mr_mr_local_buf, send_flags);
 	if (ret) {
 		perror("rdma_post_send");
 		goto out_meta_dma;
@@ -286,8 +301,20 @@ int init_rdma(char *server, char *port, void *shmem)
 		goto out_meta_dma;
 	}
 
-	if (rkey_mr)
-		rdma_dereg_mr(rkey_mr);
+	ret = rdma_post_send(id, NULL, &mr_local_buf->rkey, sizeof(mr_local_buf->rkey), mr_mr_local_buf, send_flags);
+	if (ret) {
+		perror("rdma_post_send");
+		goto out_meta_dma;
+	}
+
+	while ((ret = rdma_get_send_comp(id, &wc)) == 0);
+	if (ret < 0) {
+		perror("rdma_get_send_comp");
+		goto out_meta_dma;
+	}
+
+	if (mr_mr_local_buf)
+		rdma_dereg_mr(mr_mr_local_buf);
 	/***/
 
 	/* change recv queue to non-blocking */
@@ -303,8 +330,8 @@ int init_rdma(char *server, char *port, void *shmem)
 	return 0;
 
 out_meta_dma:
-	if (rkey_mr)
-		rdma_dereg_mr(rkey_mr);
+	if (mr_mr_local_buf)
+		rdma_dereg_mr(mr_mr_local_buf);
 out_disconnect:
 	rdma_disconnect(id);
 out_dereg:
