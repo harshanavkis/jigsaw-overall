@@ -63,7 +63,7 @@ pkgs.mkShell {
     # clang
     # libclang
 
-    nmap
+    rdma-core
   ];
 
   hardeningDisable = [ "all" ];
