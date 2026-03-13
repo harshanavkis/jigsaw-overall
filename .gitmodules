@@ -4,3 +4,6 @@
 [submodule "submodules/spdm-linux"]
 	path = submodules/spdm-linux
 	url = https://github.com/maxjae/spdm-linux.git
+[submodule "submodules/Coyote"]
+	path = submodules/Coyote
+	url = https://github.com/maxjae/Coyote.git
