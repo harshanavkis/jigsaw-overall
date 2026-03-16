@@ -39,7 +39,7 @@
 #include <rdma/rdma_cma.h>
 #include <rdma/rdma_verbs.h>
 
-#include "../../include/common.h"
+#include "rdma_client.h"
 
 static struct rdma_cm_id *id;
 
