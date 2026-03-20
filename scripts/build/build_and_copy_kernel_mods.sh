@@ -13,6 +13,7 @@ linux_dir="$SRC_DIR/submodules/spdm-linux"
 image=$1
 modules_dir="$linux_dir/qemu_edu"
 
+make -C $modules_dir
 mkdir mount-point
 sudo mount -o loop $image mount-point
 sudo mkdir -p mount-point/modules
