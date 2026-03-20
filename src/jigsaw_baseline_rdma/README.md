@@ -18,20 +18,43 @@ The builds for this setup (over two servers) include:
 6. Coyote SW including the RDMA server (submodules/Coyote/examples/jigsaw_baseline_rdma/sw)
 7. Coyote HW bitstream (submodules/Coyote/jigsaw_baseline/hw)
 
-These steps are combined in a single interactive build script.
+These steps are combined in a single build script.
+
 This script splits the steps into two subcommands, one for the device (Coyote HW + RDMA Server Coyote SW) and on for the host (RDMA Client SW + Kernel + QEMU).
 
-```./build.sh device``` to build the device side components.
+Running following commands does build **all** components of host device.
 
-```./build.sh host <Path of VM image>``` to build the host side components.
+```./build.py device``` to build the device side components.
 
-Note: You can also run the script with ```./build.sh single``` to be able to choose one of the targets to build (This option will do force builds, so regardless if target does already exist).
+```./build.py host <Path of VM image>``` to build the host side components.
+
+Note: You can also build only some of the components. See ```./build.py [host|device] --help``` for more information.
 
 ## Running
 
 Similiar to the split into host and device in the build script, this running script does the same distinction and runs the necessary binaries.
-```./run.sh device``` to run the device side components.
 
-```./run.sh host <Path of VM image> <Path of OVMF.fd>``` to run the host side components.
+### Device
 
-Important note: After running your application, you have to remove the driver. This can be done via running the ```./run.sh host``` script again and choosing the option to remove the driver.
+```./run.py device```
+
+### Host
+
+The host has to different components: The QEMU VM and the proxy/shmem application.
+
+This distinction is split into two different subcommands.
+
+#### VM
+
+```./run.py host VM <Path of VM image> <Path of OVMF.fd>```
+
+#### Proxy
+
+```./run.py host proxy```
+
+**Note:** Running the above command will fail, it says to specify a IP address and a port. This can be done like this: ```./run.py host proxy -- -a <IP> -p <Port>. (The -- is important)
+
+#### Cleanup
+
+After running your application, you have to remove the driver. This can be done via running ```./run.py host proxy --remove_driver``` 
+

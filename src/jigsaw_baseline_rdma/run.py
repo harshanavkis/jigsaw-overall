@@ -43,6 +43,8 @@ def create_parsers():
     parser_host_vm.add_argument('image_path')
     parser_host_vm.add_argument('ovmf_path')
 
+    parser_host_proxy.add_argument('extra', nargs='*')
+
     return parser
 
 parser = create_parsers()
@@ -54,7 +56,7 @@ if args.command == 'host':
         subprocess.run([SCRIPTS_RUN_DIR / "vm.sh", "VM", image_path, ovmf_path], check=True)
 
     elif args.host_command == 'proxy':
-        subprocess.run([SCRIPT_DIR / "rdma_client" / "bin" / "proxy"], check=True)
+        subprocess.run([SCRIPT_DIR / "rdma_client" / "bin" / "proxy", *args.extra], check=True)
 
 elif args.command == 'device':
     # Cannot do teardown while flashing, setup or running the software
