@@ -22,7 +22,7 @@ build_coyote_sw() {
     )
 }
 
-if [ ! -x "$COYOTE_SW_DIR/build/bin/$BIN_NAME" ]; then
+if [ ! -x "$COYOTE_SW_DIR/build/$BIN_NAME" ]; then
     build_coyote_sw
 else
     if [ $# -ge 2 ]; then

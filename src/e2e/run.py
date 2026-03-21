@@ -86,7 +86,7 @@ if args.command == 'host':
 
         if args.run_software:
             print("Running software:")
-            subprocess.run([COYOTE_HOST_DIR / "sw" / "build" / "bin" / "test", *args.extra_proxy], check=True)
+            subprocess.run([COYOTE_HOST_DIR / "sw" / "build" / "test", *args.extra_proxy], check=True)
 
 elif args.command == 'device':
     # Cannot do teardown while flashing, setup or running the software
@@ -113,5 +113,5 @@ elif args.command == 'device':
 
     if args.run_software:
         print("Running software:")
-        subprocess.run([COYOTE_DEVICE_DIR / "sw" / "build" / "bin" / "test", *args.extra_device], check=True)
+        subprocess.run([COYOTE_DEVICE_DIR / "sw" / "build" / "test", *args.extra_device], check=True)
 

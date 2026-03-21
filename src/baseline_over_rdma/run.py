@@ -41,9 +41,6 @@ def create_parsers():
     #
     # Options for host subcommand
     #
-    parser_host_vm.add_argument('image_path')
-    parser_host_vm.add_argument('ovmf_path')
-
     parser_host_proxy.add_argument('extra_proxy', nargs='*')
 
     return parser
