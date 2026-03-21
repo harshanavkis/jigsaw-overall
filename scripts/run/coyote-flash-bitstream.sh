@@ -14,8 +14,7 @@ COYOTE_HW_DIR="$SRC_DIR/submodules/Coyote/examples/$1/hw"
 
 flash_bitstream() {
     (
-        xilinx-shell
-        vivado -mode batch -nolog -nojournal -source $COYOTE_DIR/program_fpga.tcl -tclargs $COYOTE_HW_DIR/build/bitstreams/cyt_top.bit
+        echo "vivado -mode batch -nolog -nojournal -source $COYOTE_DIR/program_fpga.tcl -tclargs $COYOTE_HW_DIR/build/bitstreams/cyt_top.bit" | xilinx-shell
     )
 }
 

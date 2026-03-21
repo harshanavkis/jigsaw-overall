@@ -36,6 +36,7 @@ def create_parsers():
     parser_device.add_argument('-f', '--flash_bitstream', help='Flash the Coyote bitstream', action='store_true')
     parser_device.add_argument('-s', '--run_software', help='Run the Coyote Software', action='store_true')
 
+    parser_device.add_argument('extra_device', nargs='*')
 
     #
     # Options for host subcommand
@@ -43,7 +44,7 @@ def create_parsers():
     parser_host_vm.add_argument('image_path')
     parser_host_vm.add_argument('ovmf_path')
 
-    parser_host_proxy.add_argument('extra', nargs='*')
+    parser_host_proxy.add_argument('extra_proxy', nargs='*')
 
     return parser
 
@@ -56,24 +57,32 @@ if args.command == 'host':
         subprocess.run([SCRIPTS_RUN_DIR / "vm.sh", "VM", image_path, ovmf_path], check=True)
 
     elif args.host_command == 'proxy':
-        subprocess.run([SCRIPT_DIR / "rdma_client" / "bin" / "proxy", *args.extra], check=True)
+        subprocess.run([SCRIPT_DIR / "rdma_client" / "bin" / "proxy", *args.extra_proxy], check=True)
 
 elif args.command == 'device':
     # Cannot do teardown while flashing, setup or running the software
     if args.remove_driver and (args.load_driver or args.flash_bitstream or args.run_software):
         parser.error("Cannot remove driver (--remove_driver) while doing one of the other actions")
 
-        if args.remove_driver:
-            subprocess.run([SCRIPTS_RUN_DIR / "teardown_coyote.sh"], check=True)
+    # If user did not specify anything, just run in order
+    if not (args.remove_driver or args.load_driver or args.flash_bitstream or args.run_software):
+        args.flash_bitstream = True
+        args.load_driver = True
+        args.run_software = True
 
-        if args.flash_bitstream:
-            subprocess.run([SCRIPTS_RUN_DIR / "coyote-flash-bitstream.sh"], check=True)
+    if args.remove_driver:
+        print("Removing driver:")
+        subprocess.run([SCRIPTS_RUN_DIR / "teardown_coyote.sh"], check=True)
 
-        if args.load_driver:
-            subprocess.run([SCRIPTS_RUN_DIR / "setup_coyote.sh"], check=True)
+    if args.flash_bitstream:
+        print("Flashing bitstream:")
+        subprocess.run([SCRIPTS_RUN_DIR / "coyote-flash-bitstream.sh", "jigsaw_baseline"], check=True)
 
-        if args.run_software:
-            subprocess.run([COYOTE_EXAMPLE_DIR / "sw" / "build" / "bin" / "test"], check=True)
+    if args.load_driver:
+        print("Loading driver:")
+        subprocess.run([SCRIPTS_RUN_DIR / "setup_coyote.sh"], check=True)
 
-print(args)
+    if args.run_software:
+        print("Running software:")
+        subprocess.run([COYOTE_EXAMPLE_DIR / "sw" / "build" / "bin" / "test", *args.extra_device], check=True)
 
