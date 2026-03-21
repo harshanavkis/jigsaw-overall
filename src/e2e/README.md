@@ -1,10 +1,6 @@
-# Baseline over RDMA
+# End to End
 
-This setup runs the Coyote/jigsaw_baseline_rdma/sw software and the client connection in this subdirectory to do baseline tests with the hardware in Coyote/jigsaw_baseline/hw.
-
-It runs the Linux guest kernel within a qemu instance, exposes the shmem and communicates with this "proxy" rdma client with the remote fpga.
-
-Note: This setup does not involve a RDMA connection handled by the Coyote HW implementation, instead this is implemented with the normal RDMA CPU API.
+This setup requires two hosts with an FPGA each and a RDMA capable connection between them.
 
 ## Building
 
@@ -13,21 +9,25 @@ The builds for this setup (over two servers) include:
 1. Kernel (branch ```jigsaw```)
 2. Kernel modules
 3. QEMU (branch ```disagg_fake_device```)
-5. Coyote driver
-6. Coyote SW including the RDMA server (submodules/Coyote/examples/jigsaw_baseline_rdma/sw)
-7. Coyote HW bitstream (submodules/Coyote/jigsaw_baseline/hw)
+4. Coyote driver
+5. Coyote SW Device (submodules/Coyote/examples/jigsaw_device_controller/sw)
+6. Coyote SW Host (submodules/Coyote/examples/jigsaw_host_controller/sw)
+7. Coyote HW bitstream Device (submodules/Coyote/jigsaw_device_controller/hw)
+8. Coyote HW bitstream Host (submodules/Coyote/jigsaw_host_controller/hw)
 
 These steps are combined in a single build script.
 
-This script splits the steps into two subcommands, one for the device (Coyote HW + RDMA Server Coyote SW) and on for the host (RDMA Client SW + Kernel + QEMU).
+This script splits the steps into two subcommands, one for the device (Coyote Device HW + Coyote Device SW) and on for the host (Coyote Host SW + Coyote Host SW + Kernel + QEMU).
 
-Running following commands does build **all** components of host device.
-
-```./build.py device``` to build the device side components.
+### Host
 
 ```./build.py host <Path of VM image>``` to build the host side components.
 
-Note: You can also build only some of the components. See ```./build.py [host|device] --help``` for more information.
+### Device
+
+```./build.py device``` to build the device side components.
+
+**Note**: You can also build only some of the components. See ```./build.py [host|device] --help``` for more information.
 
 ## Running
 
@@ -41,20 +41,19 @@ Similiar to the split into host and device in the build script, this running scr
 
 After running your application, you have to remove the driver. This can be done via running ```./run.py device --remove_driver``` 
 
-
 ### Host
 
-The host has to different components: The QEMU VM and the proxy/shmem application.
+The host has to different components: The QEMU VM and the host FPGA application.
 
 This distinction is split into two different subcommands.
 
 #### VM
 
-```./run.py host VM <Path of VM image> <Path of OVMF.fd>```
+```./run.py host vm <Path of VM image> <Path of OVMF.fd>```
 
 #### Proxy
 
 ```./run.py host proxy```
 
-**Note:** Running the above command will fail, it says to specify a IP address and a port. This can be done like this: ```./run.py host proxy -- -a <IP> -p <Port>. (The -- is important)
+**Note:** Running the above command will fail. You have to provide an ip address of the device server interface like this: ```./run.py host proxy -- -i 131.159.102.20```
 
