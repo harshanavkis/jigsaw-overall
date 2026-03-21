@@ -11,7 +11,7 @@ SCRIPTS_BUILD_DIR = ROOT_DIR / "scripts" / "build"
 def create_parsers():
 
     parser = argparse.ArgumentParser(
-            description="Build script for baseline with CPU-side RDMA",
+            description="Build script for end to end setup.",
             epilog="You can also do \'build.py device -h\' to get the device specific option.\n"
                    "Similiarly, \'build.py host -h\' for the host subcommand.",
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -34,10 +34,12 @@ def create_parsers():
     #
     # Options for host subcommand
     #
+    parser_host.add_argument('-d', '--driver', help='Coyote Driver', action='store_true')
+    parser_host.add_argument('-c', '--coyote_sw', help='Coyote Software', action='store_true')
+    parser_host.add_argument('-b', '--bitstream', help='Coyote Hardware Bitstream', action='store_true')
     parser_host.add_argument('-k', '--kernel', help='Linux Kernel', action='store_true')
     parser_host.add_argument('-m', '--modules', help='Kernel Modules + Copying into image', action='store_true')
     parser_host.add_argument('-q', '--qemu', help='QEMU', action='store_true')
-    parser_host.add_argument('-c', '--client', help='RDMA Client', action='store_true')
     parser_host.add_argument('image', nargs="?", help='Path to VM image. Only needed when building and copying modules')
 
     return parser
@@ -45,7 +47,7 @@ def create_parsers():
 # Check if the image path is specified when building and copying modules
 def validate(parser, args):
     if args.command == 'host':
-        flags_given = args.image is not None or args.kernel or args.modules or args.qemu or args.client
+        flags_given = args.image is not None or args.kernel or args.modules or args.qemu or args.driver or args.coyote_sw or args.bitstream
         needs_target = not flags_given or args.modules 
 
         if needs_target and args.image is None:
@@ -75,25 +77,39 @@ if args.command == 'device':
 
     if args.coyote_sw:
         print("Building Coyote software:")
-        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-sw.sh", "jigsaw_baseline_rdma", REBUILD], check=True)
+        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-sw.sh", "jigsaw_device_controller", REBUILD], check=True)
 
     if args.bitstream:
         print("Generating bitstream:")
-        #subprocess.run([SCRIPTS_BUILD_DIR / "coyote-hw.sh", "jigsaw_baseline", REBUILD], check=True)
+        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-hw.sh", "jigsaw_device_controller", REBUILD], check=True)
 
 
 elif args.command == 'host':
 
     # If none of the flags is set, just build all of them
-    if not (args.kernel or args.modules or args.qemu or args.client):
+    if not (args.kernel or args.modules or args.qemu or args.driver or args.coyote_sw or args.bitstream):
+        args.driver = True
+        args.coyote_sw = True
+        args.bitstream = True
         args.kernel = True
         args.modules = True
         args.qemu = True
-        args.client = True
+
+    if args.driver:
+        print("Building Coyote Driver:")
+        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-driver.sh"], check=True)
+
+    if args.coyote_sw:
+        print("Building Coyote software:")
+        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-sw.sh", "jigsaw_host_controller", REBUILD], check=True)
+
+    if args.bitstream:
+        print("Generating bitstream:")
+        subprocess.run([SCRIPTS_BUILD_DIR / "coyote-hw.sh", "jigsaw_host_controller", REBUILD], check=True)
 
     if args.kernel:
         print("Building kernel:")
-        subprocess.run([SCRIPTS_BUILD_DIR / "kernel.sh", "baseline", REBUILD], check=True)
+        subprocess.run([SCRIPTS_BUILD_DIR / "kernel.sh", "jigsaw", REBUILD], check=True)
 
     if args.modules:
         print("Building and copying kernel modules:")
@@ -102,8 +118,4 @@ elif args.command == 'host':
     if args.qemu:
         print("Building QEMU:")
         subprocess.run([SCRIPTS_BUILD_DIR / "qemu.sh", REBUILD], check=True)
-
-    if args.client:
-        print("Building Client:")
-        subprocess.run(["make"], cwd=SCRIPT_DIR / "rdma_client", check=True)
 

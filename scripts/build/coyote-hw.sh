@@ -13,12 +13,13 @@ COYOTE_HW_DIR="$SRC_DIR/submodules/Coyote/examples/$1/hw"
 
 build_coyote_hw() {
     (
-        xilinx-shell
+     xilinx-shell <<EOF
         cd $COYOTE_HW_DIR
         mkdir build
         cd build
-        /usr/bin/cmake .. -DFDEV=u280
+        /usr/bin/cmake .. -DFDEV_NAME=u280
         make project && make bitgen
+EOF
     )
 }
 
