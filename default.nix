@@ -19,6 +19,8 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     python3
     libudev-zero
+    boost.dev
+    boost
   ];
 
   nativeBuildInputs = with pkgs; [
@@ -43,6 +45,7 @@ pkgs.mkShell {
     # QEMU build stuff
     python3.pkgs.sphinx
     python3.pkgs.sphinx-rtd-theme
+    python313Packages.distlib
     meson
     ninja
     glib
@@ -63,8 +66,14 @@ pkgs.mkShell {
     # clang
     # libclang
 
-    nmap
+    rdma-core
   ];
+
+  shellHook = ''
+    export Boost_INCLUDE_DIR="${pkgs.boost.dev}/include"
+    export BOOST_ROOT="${pkgs.boost}"
+  '';
+
 
   hardeningDisable = [ "all" ];
 }
