@@ -22,7 +22,7 @@ export PRJ_DIR=$PWD
 
 ### Clone repositories
 ```
-git clone --recursive https://github.com/maxjae/spdm-linux.git
+git clone --recursive https://github.com/harshanavkis/spdm-linux.git
 git clone --recursive https://github.com/maxjae/multiproc-qemu.git
 ```
 
@@ -43,7 +43,7 @@ make -j$(nproc)
 
 ```
 cd $PRJ_DIR/spdm-linux
-git checkout disagg-two-hosts
+git checkout disagg-shmem
 cp linux-disagg-shmem-config .config
 make olddefconfig
 ```
