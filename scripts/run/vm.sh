@@ -45,7 +45,7 @@ case $1 in
 			-kernel $KERNEL_BIN \
 			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off" \
 			-drive file=$2,format=raw \
-			-object memory-backend-file,size=1M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem \
+			-object memory-backend-file,size=2M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem \
 			-device ivshmem-plain,memdev=hostmem \
 			-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
 			-net nic,model=e1000 \
@@ -54,7 +54,7 @@ case $1 in
 			-cpu EPYC-v4,+vpclmulqdq \
 			-no-reboot \
 			-machine q35 \
-			-device disagg-fake-pci,bar-size=1048576 \
+			-device disagg-fake-pci,bar-size=2097152 \
 			2>&1 | tee "$4"
 		;;
 	*)
