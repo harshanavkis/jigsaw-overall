@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if [ $# -lt 3 ]; then
+if [ $# -lt 4 ]; then
 	echo "Error: missing command line arguments"
-	echo "Usage: ./vm.sh <VM type: [CVM|VM]> <Path of VM image> <Path of OVMF.fd>"
+	echo "Usage: ./vm.sh <VM type: [CVM|VM]> <Path of VM image> <Path of OVMF.fd> <Log name>"
 	exit 1
 fi
 
@@ -34,7 +34,7 @@ case $1 in
 			-bios $3 \
 			-device disagg-fake-pci,bar-size=1048576 \
 			-object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,policy=0x30000 \
-			2>&1 | tee vm.log
+			2>&1 | tee "$4"
 		;;
 	VM)
 		$QEMU_BIN \
@@ -43,7 +43,7 @@ case $1 in
 			-numa node,memdev=sysmem-file \
 			-smp 8 \
 			-kernel $KERNEL_BIN \
-			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr" \
+			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off" \
 			-drive file=$2,format=raw \
 			-object memory-backend-file,size=1M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem \
 			-device ivshmem-plain,memdev=hostmem \
@@ -54,13 +54,12 @@ case $1 in
 			-cpu EPYC-v4,+vpclmulqdq \
 			-no-reboot \
 			-machine q35 \
-			-bios $3 \
 			-device disagg-fake-pci,bar-size=1048576 \
-			2>&1 | tee vm.log
+			2>&1 | tee "$4"
 		;;
 	*)
 		echo "Error: Invalid option for VM type"
-		echo "Usage: ./copy-modules.sh <VM type: [CVM|VM]> <Path of VM image> <Path of OVMF.fd>"
+		echo "Usage: ./vm.sh <VM type: [CVM|VM]> <Path of VM image> <Path of OVMF.fd> <Log name>"
 		exit 1
 		;;
 esac
