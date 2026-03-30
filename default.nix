@@ -21,6 +21,7 @@ pkgs.mkShell {
     libudev-zero
     boost.dev
     boost
+    rdma-core
   ];
 
   nativeBuildInputs = with pkgs; [
