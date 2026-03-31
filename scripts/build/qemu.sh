@@ -14,7 +14,7 @@ build_qemu() {
         git checkout $QEMU_EXPECTED_BRANCH
         mkdir -p $QEMU_DIR/build
         cd build
-        ../configure --target-list=x86_64-softmmu --enable-kvm
+        ../configure --target-list=x86_64-softmmu --enable-kvm --enable-numa
         make -j$(nproc)
     )
 }

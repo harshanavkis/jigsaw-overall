@@ -37,23 +37,21 @@ case $1 in
 			2>&1 | tee "$4"
 		;;
 	VM)
-		$QEMU_BIN \
+		numactl --cpunodebind=1 --membind=1 taskset -c 38-45 $QEMU_BIN \
 			-m 8G \
-			-object memory-backend-memfd,id=sysmem-file,size=8G \
+			-object memory-backend-memfd,id=sysmem-file,size=8G,host-nodes=1,policy=bind,hugetlb=on,hugetlbsize=2M \
 			-numa node,memdev=sysmem-file \
 			-smp 8 \
 			-kernel $KERNEL_BIN \
 			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off" \
 			-drive file=$2,format=raw \
-			-object memory-backend-file,size=2M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem \
+			-object memory-backend-file,size=2M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem,host-nodes=1,policy=bind \
 			-device ivshmem-plain,memdev=hostmem \
-			-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
-			-net nic,model=e1000 \
 			-enable-kvm \
 			-nographic \
-			-cpu EPYC-v4,+vpclmulqdq \
+			-cpu EPYC-v4,+vpclmulqdq,+invtsc \
 			-no-reboot \
-			-machine q35 \
+			-machine q35,accel=kvm,kernel_irqchip=on \
 			-device disagg-fake-pci,bar-size=2097152 \
 			2>&1 | tee "$4"
 		;;

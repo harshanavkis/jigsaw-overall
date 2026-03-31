@@ -68,6 +68,13 @@ pkgs.mkShell {
     # libclang
 
     rdma-core
+
+    python3.pkgs.numpy
+    python3.pkgs.pandas
+    python3.pkgs.seaborn
+    python3.pkgs.matplotlib
+
+    numactl
   ];
 
   shellHook = ''
