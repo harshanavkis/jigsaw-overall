@@ -1,0 +1,914 @@
+Device OOB IP : 131.159.102.20
+
+Queue pair: 
+Local: : QPN 0x000000, PSN 0x164211, VADDR 000075ef07200000, SIZE 00200000, IP 0x0a000002
+Remote: : QPN 0x000000, PSN 0xfce605, VADDR 0000724e41600000, SIZE 00200000, IP 0x0a000001
+Client registered
+RDMA connection established (PID 0).
+  Remote VADDR = 0x724e41600000
+
+=== DMA BENCHMARKS ===
+H2D Size: 4 KiB... Done.
+H2D Size: 8 KiB... Done.
+H2D Size: 16 KiB... Done.
+H2D Size: 32 KiB... Done.
+H2D Size: 64 KiB... Done.
+H2D Size: 128 KiB... Done.
+H2D Size: 256 KiB... Done.
+H2D Size: 512 KiB... Done.
+H2D Size: 1024 KiB... Done.
+D2H Size: 4 KiB... Done.
+D2H Size: 8 KiB... Done.
+D2H Size: 16 KiB... Done.
+D2H Size: 32 KiB... Done.
+D2H Size: 64 KiB... Done.
+D2H Size: 128 KiB... Done.
+D2H Size: 256 KiB... Done.
+D2H Size: 512 KiB... Done.
+D2H Size: 1024 KiB... Done.
+
+=== COMPUTATION BENCHMARKS ===
+Comp Size: 4 KiB... Computation status:3
+Size: 4096 bytes, Cycles: 100, Iteration: 0, Latency: 38.07 us, Throughput: 0.100202 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100, Iteration: 1, Latency: 38.18 us, Throughput: 0.0999135 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100, Iteration: 2, Latency: 40.05 us, Throughput: 0.0952484 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100, Iteration: 3, Latency: 37.939 us, Throughput: 0.100548 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100, Iteration: 4, Latency: 37.899 us, Throughput: 0.100654 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000, Iteration: 0, Latency: 39.04 us, Throughput: 0.0977125 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000, Iteration: 1, Latency: 38.01 us, Throughput: 0.10036 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000, Iteration: 2, Latency: 37.87 us, Throughput: 0.100731 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000, Iteration: 3, Latency: 37.92 us, Throughput: 0.100599 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000, Iteration: 4, Latency: 40.02 us, Throughput: 0.0953198 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 10000, Iteration: 0, Latency: 72.909 us, Throughput: 0.0523213 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 10000, Iteration: 1, Latency: 80.589 us, Throughput: 0.0473352 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 10000, Iteration: 2, Latency: 72.87 us, Throughput: 0.0523494 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 10000, Iteration: 3, Latency: 74.999 us, Throughput: 0.0508633 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 10000, Iteration: 4, Latency: 72.84 us, Throughput: 0.0523709 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100000, Iteration: 0, Latency: 443.178 us, Throughput: 0.0086076 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100000, Iteration: 1, Latency: 441.798 us, Throughput: 0.00863448 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100000, Iteration: 2, Latency: 443.038 us, Throughput: 0.00861032 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100000, Iteration: 3, Latency: 438.607 us, Throughput: 0.0086973 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 100000, Iteration: 4, Latency: 443.167 us, Throughput: 0.00860781 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000000, Iteration: 0, Latency: 4043.45 us, Throughput: 0.000943426 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000000, Iteration: 1, Latency: 4044.75 us, Throughput: 0.000943123 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000000, Iteration: 2, Latency: 4048.15 us, Throughput: 0.000942331 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000000, Iteration: 3, Latency: 4047.04 us, Throughput: 0.000942589 GiBps
+Computation status:3
+Size: 4096 bytes, Cycles: 1000000, Iteration: 4, Latency: 4042.26 us, Throughput: 0.000943704 GiBps
+Done.
+Comp Size: 8 KiB... Computation status:3
+Size: 8192 bytes, Cycles: 100, Iteration: 0, Latency: 38 us, Throughput: 0.200774 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100, Iteration: 1, Latency: 37.89 us, Throughput: 0.201356 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100, Iteration: 2, Latency: 38.419 us, Throughput: 0.198584 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100, Iteration: 3, Latency: 38.46 us, Throughput: 0.198372 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100, Iteration: 4, Latency: 38.19 us, Throughput: 0.199775 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000, Iteration: 0, Latency: 39.34 us, Throughput: 0.193935 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000, Iteration: 1, Latency: 39.9 us, Throughput: 0.191213 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000, Iteration: 2, Latency: 37.85 us, Throughput: 0.201569 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000, Iteration: 3, Latency: 37.92 us, Throughput: 0.201197 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000, Iteration: 4, Latency: 39.96 us, Throughput: 0.190926 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 10000, Iteration: 0, Latency: 73.289 us, Throughput: 0.1041 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 10000, Iteration: 1, Latency: 74.57 us, Throughput: 0.102312 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 10000, Iteration: 2, Latency: 72.889 us, Throughput: 0.104671 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 10000, Iteration: 3, Latency: 75 us, Throughput: 0.101725 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 10000, Iteration: 4, Latency: 73.899 us, Throughput: 0.103241 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100000, Iteration: 0, Latency: 437.858 us, Throughput: 0.0174244 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100000, Iteration: 1, Latency: 444.508 us, Throughput: 0.0171637 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100000, Iteration: 2, Latency: 437.808 us, Throughput: 0.0174263 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100000, Iteration: 3, Latency: 444.868 us, Throughput: 0.0171498 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 100000, Iteration: 4, Latency: 443.208 us, Throughput: 0.017214 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000000, Iteration: 0, Latency: 4042.55 us, Throughput: 0.00188727 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000000, Iteration: 1, Latency: 4040.71 us, Throughput: 0.00188813 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000000, Iteration: 2, Latency: 4040.85 us, Throughput: 0.00188807 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000000, Iteration: 3, Latency: 4046.3 us, Throughput: 0.00188552 GiBps
+Computation status:3
+Size: 8192 bytes, Cycles: 1000000, Iteration: 4, Latency: 4042.28 us, Throughput: 0.0018874 GiBps
+Done.
+Comp Size: 16 KiB... Computation status:3
+Size: 16384 bytes, Cycles: 100, Iteration: 0, Latency: 38.12 us, Throughput: 0.400283 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100, Iteration: 1, Latency: 38.02 us, Throughput: 0.401336 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100, Iteration: 2, Latency: 37.91 us, Throughput: 0.4025 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100, Iteration: 3, Latency: 38.34 us, Throughput: 0.397986 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100, Iteration: 4, Latency: 38.14 us, Throughput: 0.400073 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000, Iteration: 0, Latency: 38.12 us, Throughput: 0.400283 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000, Iteration: 1, Latency: 40.32 us, Throughput: 0.378442 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000, Iteration: 2, Latency: 38.07 us, Throughput: 0.400809 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000, Iteration: 3, Latency: 38.149 us, Throughput: 0.399979 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000, Iteration: 4, Latency: 40.359 us, Throughput: 0.378076 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 10000, Iteration: 0, Latency: 81.87 us, Throughput: 0.186378 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 10000, Iteration: 1, Latency: 84.109 us, Throughput: 0.181417 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 10000, Iteration: 2, Latency: 81.97 us, Throughput: 0.186151 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 10000, Iteration: 3, Latency: 85.019 us, Throughput: 0.179475 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 10000, Iteration: 4, Latency: 81.6 us, Throughput: 0.186995 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100000, Iteration: 0, Latency: 444.188 us, Throughput: 0.0343521 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100000, Iteration: 1, Latency: 440.128 us, Throughput: 0.034669 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100000, Iteration: 2, Latency: 443.848 us, Throughput: 0.0343784 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100000, Iteration: 3, Latency: 437.788 us, Throughput: 0.0348543 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 100000, Iteration: 4, Latency: 443.747 us, Throughput: 0.0343862 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000000, Iteration: 0, Latency: 4038.84 us, Throughput: 0.00377801 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000000, Iteration: 1, Latency: 4044.71 us, Throughput: 0.00377253 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000000, Iteration: 2, Latency: 4039.8 us, Throughput: 0.00377711 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000000, Iteration: 3, Latency: 4057.85 us, Throughput: 0.00376031 GiBps
+Computation status:3
+Size: 16384 bytes, Cycles: 1000000, Iteration: 4, Latency: 4045.52 us, Throughput: 0.00377178 GiBps
+Done.
+Comp Size: 32 KiB... Computation status:3
+Size: 32768 bytes, Cycles: 100, Iteration: 0, Latency: 38.07 us, Throughput: 0.801617 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100, Iteration: 1, Latency: 38.14 us, Throughput: 0.800146 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100, Iteration: 2, Latency: 38.09 us, Throughput: 0.801197 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100, Iteration: 3, Latency: 38.549 us, Throughput: 0.791657 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100, Iteration: 4, Latency: 38.38 us, Throughput: 0.795143 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000, Iteration: 0, Latency: 47.12 us, Throughput: 0.647657 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000, Iteration: 1, Latency: 48.499 us, Throughput: 0.629241 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000, Iteration: 2, Latency: 46.99 us, Throughput: 0.649448 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000, Iteration: 3, Latency: 47.09 us, Throughput: 0.648069 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000, Iteration: 4, Latency: 47.189 us, Throughput: 0.64671 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 10000, Iteration: 0, Latency: 80.83 us, Throughput: 0.377553 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 10000, Iteration: 1, Latency: 86.01 us, Throughput: 0.354814 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 10000, Iteration: 2, Latency: 84.21 us, Throughput: 0.362399 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 10000, Iteration: 3, Latency: 81.849 us, Throughput: 0.372852 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 10000, Iteration: 4, Latency: 83.65 us, Throughput: 0.364825 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100000, Iteration: 0, Latency: 443.918 us, Throughput: 0.068746 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100000, Iteration: 1, Latency: 439.707 us, Throughput: 0.0694043 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100000, Iteration: 2, Latency: 444.028 us, Throughput: 0.0687289 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100000, Iteration: 3, Latency: 450.228 us, Throughput: 0.0677825 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 100000, Iteration: 4, Latency: 443.578 us, Throughput: 0.0687987 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000000, Iteration: 0, Latency: 4047.43 us, Throughput: 0.00753999 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000000, Iteration: 1, Latency: 4053.25 us, Throughput: 0.00752916 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000000, Iteration: 2, Latency: 4047.18 us, Throughput: 0.00754046 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000000, Iteration: 3, Latency: 4046.3 us, Throughput: 0.00754209 GiBps
+Computation status:3
+Size: 32768 bytes, Cycles: 1000000, Iteration: 4, Latency: 4045.41 us, Throughput: 0.00754375 GiBps
+Done.
+Comp Size: 64 KiB... Computation status:3
+Size: 65536 bytes, Cycles: 100, Iteration: 0, Latency: 39.85 us, Throughput: 1.53162 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100, Iteration: 1, Latency: 39.8 us, Throughput: 1.53355 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100, Iteration: 2, Latency: 39.73 us, Throughput: 1.53625 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100, Iteration: 3, Latency: 46.059 us, Throughput: 1.32515 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100, Iteration: 4, Latency: 39.66 us, Throughput: 1.53896 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000, Iteration: 0, Latency: 48.44 us, Throughput: 1.26002 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000, Iteration: 1, Latency: 49.86 us, Throughput: 1.22413 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000, Iteration: 2, Latency: 48.27 us, Throughput: 1.26445 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000, Iteration: 3, Latency: 48.27 us, Throughput: 1.26445 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000, Iteration: 4, Latency: 48.349 us, Throughput: 1.26239 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 10000, Iteration: 0, Latency: 83.57 us, Throughput: 0.730348 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 10000, Iteration: 1, Latency: 84.909 us, Throughput: 0.71883 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 10000, Iteration: 2, Latency: 84.43 us, Throughput: 0.722908 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 10000, Iteration: 3, Latency: 83.449 us, Throughput: 0.731407 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 10000, Iteration: 4, Latency: 84.98 us, Throughput: 0.71823 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100000, Iteration: 0, Latency: 442.877 us, Throughput: 0.137815 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100000, Iteration: 1, Latency: 445.487 us, Throughput: 0.137008 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100000, Iteration: 2, Latency: 442.238 us, Throughput: 0.138014 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100000, Iteration: 3, Latency: 447.318 us, Throughput: 0.136447 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 100000, Iteration: 4, Latency: 444.467 us, Throughput: 0.137322 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000000, Iteration: 0, Latency: 4041.91 us, Throughput: 0.0151006 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000000, Iteration: 1, Latency: 4047.88 us, Throughput: 0.0150783 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000000, Iteration: 2, Latency: 4045.81 us, Throughput: 0.015086 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000000, Iteration: 3, Latency: 4050.69 us, Throughput: 0.0150678 GiBps
+Computation status:3
+Size: 65536 bytes, Cycles: 1000000, Iteration: 4, Latency: 4042.92 us, Throughput: 0.0150968 GiBps
+Done.
+Comp Size: 128 KiB... Computation status:3
+Size: 131072 bytes, Cycles: 100, Iteration: 0, Latency: 45.42 us, Throughput: 2.68759 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100, Iteration: 1, Latency: 45.22 us, Throughput: 2.69948 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100, Iteration: 2, Latency: 47.489 us, Throughput: 2.5705 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100, Iteration: 3, Latency: 45.26 us, Throughput: 2.69709 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100, Iteration: 4, Latency: 46.41 us, Throughput: 2.63026 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000, Iteration: 0, Latency: 55.159 us, Throughput: 2.21306 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000, Iteration: 1, Latency: 53.9 us, Throughput: 2.26476 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000, Iteration: 2, Latency: 54.68 us, Throughput: 2.23245 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000, Iteration: 3, Latency: 53.719 us, Throughput: 2.27239 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000, Iteration: 4, Latency: 53.8 us, Throughput: 2.26896 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 10000, Iteration: 0, Latency: 90.739 us, Throughput: 1.34529 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 10000, Iteration: 1, Latency: 89.02 us, Throughput: 1.37127 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 10000, Iteration: 2, Latency: 87.97 us, Throughput: 1.38764 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 10000, Iteration: 3, Latency: 90.62 us, Throughput: 1.34706 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 10000, Iteration: 4, Latency: 88.899 us, Throughput: 1.37313 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100000, Iteration: 0, Latency: 453.798 us, Throughput: 0.268997 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100000, Iteration: 1, Latency: 451.318 us, Throughput: 0.270475 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100000, Iteration: 2, Latency: 450.587 us, Throughput: 0.270914 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100000, Iteration: 3, Latency: 449.928 us, Throughput: 0.271311 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 100000, Iteration: 4, Latency: 459.398 us, Throughput: 0.265718 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000000, Iteration: 0, Latency: 4058.19 us, Throughput: 0.03008 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000000, Iteration: 1, Latency: 4053.85 us, Throughput: 0.0301122 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000000, Iteration: 2, Latency: 4053.32 us, Throughput: 0.0301161 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000000, Iteration: 3, Latency: 4055.59 us, Throughput: 0.0300993 GiBps
+Computation status:3
+Size: 131072 bytes, Cycles: 1000000, Iteration: 4, Latency: 4052.49 us, Throughput: 0.0301223 GiBps
+Done.
+Comp Size: 256 KiB... Computation status:3
+Size: 262144 bytes, Cycles: 100, Iteration: 0, Latency: 55.33 us, Throughput: 4.41245 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100, Iteration: 1, Latency: 55.15 us, Throughput: 4.42685 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100, Iteration: 2, Latency: 57.159 us, Throughput: 4.27125 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100, Iteration: 3, Latency: 55.19 us, Throughput: 4.42364 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100, Iteration: 4, Latency: 56.34 us, Throughput: 4.33334 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000, Iteration: 0, Latency: 63.02 us, Throughput: 3.87402 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000, Iteration: 1, Latency: 63.93 us, Throughput: 3.81887 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000, Iteration: 2, Latency: 65.489 us, Throughput: 3.72796 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000, Iteration: 3, Latency: 63.93 us, Throughput: 3.81887 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000, Iteration: 4, Latency: 66.1 us, Throughput: 3.6935 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 10000, Iteration: 0, Latency: 98.47 us, Throughput: 2.47934 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 10000, Iteration: 1, Latency: 102.73 us, Throughput: 2.37653 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 10000, Iteration: 2, Latency: 100.54 us, Throughput: 2.42829 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 10000, Iteration: 3, Latency: 97.759 us, Throughput: 2.49737 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 10000, Iteration: 4, Latency: 101.11 us, Throughput: 2.4146 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100000, Iteration: 0, Latency: 464.677 us, Throughput: 0.525399 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100000, Iteration: 1, Latency: 460.828 us, Throughput: 0.529787 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100000, Iteration: 2, Latency: 465.167 us, Throughput: 0.524845 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100000, Iteration: 3, Latency: 460.537 us, Throughput: 0.530122 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 100000, Iteration: 4, Latency: 464.448 us, Throughput: 0.525658 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000000, Iteration: 0, Latency: 4064.61 us, Throughput: 0.060065 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000000, Iteration: 1, Latency: 4062.77 us, Throughput: 0.0600922 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000000, Iteration: 2, Latency: 4067.03 us, Throughput: 0.0600292 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000000, Iteration: 3, Latency: 4060.7 us, Throughput: 0.0601228 GiBps
+Computation status:3
+Size: 262144 bytes, Cycles: 1000000, Iteration: 4, Latency: 4064.37 us, Throughput: 0.0600685 GiBps
+Done.
+Comp Size: 512 KiB... Computation status:3
+Size: 524288 bytes, Cycles: 100, Iteration: 0, Latency: 75.8 us, Throughput: 6.44171 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100, Iteration: 1, Latency: 87.229 us, Throughput: 5.59769 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100, Iteration: 2, Latency: 76.78 us, Throughput: 6.35948 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100, Iteration: 3, Latency: 77.739 us, Throughput: 6.28103 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100, Iteration: 4, Latency: 76.33 us, Throughput: 6.39698 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000, Iteration: 0, Latency: 87.259 us, Throughput: 5.59577 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000, Iteration: 1, Latency: 84.28 us, Throughput: 5.79356 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000, Iteration: 2, Latency: 87.42 us, Throughput: 5.58546 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000, Iteration: 3, Latency: 84.28 us, Throughput: 5.79356 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000, Iteration: 4, Latency: 85.71 us, Throughput: 5.6969 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 10000, Iteration: 0, Latency: 121.5 us, Throughput: 4.01878 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 10000, Iteration: 1, Latency: 121.479 us, Throughput: 4.01947 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 10000, Iteration: 2, Latency: 119.759 us, Throughput: 4.0772 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 10000, Iteration: 3, Latency: 124.87 us, Throughput: 3.91032 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 10000, Iteration: 4, Latency: 122.269 us, Throughput: 3.9935 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100000, Iteration: 0, Latency: 481.438 us, Throughput: 1.01421 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100000, Iteration: 1, Latency: 487.357 us, Throughput: 1.0019 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100000, Iteration: 2, Latency: 481.778 us, Throughput: 1.0135 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100000, Iteration: 3, Latency: 486.828 us, Throughput: 1.00299 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 100000, Iteration: 4, Latency: 481.408 us, Throughput: 1.01428 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000000, Iteration: 0, Latency: 4089.04 us, Throughput: 0.119412 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000000, Iteration: 1, Latency: 4086.97 us, Throughput: 0.119473 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000000, Iteration: 2, Latency: 4081.53 us, Throughput: 0.119632 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000000, Iteration: 3, Latency: 4080.59 us, Throughput: 0.11966 GiBps
+Computation status:3
+Size: 524288 bytes, Cycles: 1000000, Iteration: 4, Latency: 4082.78 us, Throughput: 0.119595 GiBps
+Done.
+Comp Size: 1024 KiB... Computation status:3
+Size: 1048576 bytes, Cycles: 100, Iteration: 0, Latency: 128.63 us, Throughput: 7.59203 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100, Iteration: 1, Latency: 130.889 us, Throughput: 7.461 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100, Iteration: 2, Latency: 130.49 us, Throughput: 7.48381 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100, Iteration: 3, Latency: 130.78 us, Throughput: 7.46722 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100, Iteration: 4, Latency: 130.369 us, Throughput: 7.49076 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000, Iteration: 0, Latency: 130.459 us, Throughput: 7.48559 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000, Iteration: 1, Latency: 128.66 us, Throughput: 7.59026 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000, Iteration: 2, Latency: 131.07 us, Throughput: 7.45069 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000, Iteration: 3, Latency: 130.469 us, Throughput: 7.48502 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000, Iteration: 4, Latency: 320.639 us, Throughput: 3.04568 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 10000, Iteration: 0, Latency: 174.61 us, Throughput: 5.59282 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 10000, Iteration: 1, Latency: 167.22 us, Throughput: 5.83999 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 10000, Iteration: 2, Latency: 167.35 us, Throughput: 5.83545 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 10000, Iteration: 3, Latency: 167.17 us, Throughput: 5.84173 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 10000, Iteration: 4, Latency: 354.738 us, Throughput: 2.75291 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100000, Iteration: 0, Latency: 526.277 us, Throughput: 1.85561 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100000, Iteration: 1, Latency: 533.057 us, Throughput: 1.832 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100000, Iteration: 2, Latency: 525.968 us, Throughput: 1.8567 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100000, Iteration: 3, Latency: 529.678 us, Throughput: 1.84369 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 100000, Iteration: 4, Latency: 525.687 us, Throughput: 1.85769 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000000, Iteration: 0, Latency: 4126.6 us, Throughput: 0.236651 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000000, Iteration: 1, Latency: 4131.58 us, Throughput: 0.236365 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000000, Iteration: 2, Latency: 4130.67 us, Throughput: 0.236418 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000000, Iteration: 3, Latency: 4134.39 us, Throughput: 0.236205 GiBps
+Computation status:3
+Size: 1048576 bytes, Cycles: 1000000, Iteration: 4, Latency: 4132.94 us, Throughput: 0.236288 GiBps
+Done.
+
+=== TRACE BENCHMARK ===
+
+# per-app summary (one row per (app, run))
+app, run, n_events, n_bulk_h2d, n_bulk_d2h, n_bundle, total_h2d_us, total_d2h_us, total_bundle_us, total_us, total_h2d_bytes, total_d2h_bytes, total_cycles
+bfs, 0, 30, 13, 1, 16, 353.817, 28.040, 10844.416, 11226.273, 350481, 16392, 2620951
+bfs, 1, 30, 13, 1, 16, 338.750, 28.010, 10859.355, 11226.115, 350481, 16392, 2620951
+bfs, 2, 30, 13, 1, 16, 352.390, 28.010, 10858.646, 11239.046, 350481, 16392, 2620951
+bfs, 3, 30, 13, 1, 16, 376.588, 27.940, 10926.527, 11331.055, 350481, 16392, 2620951
+bfs, 4, 30, 13, 1, 16, 347.179, 27.920, 10868.136, 11243.235, 350481, 16392, 2620951
+blackscholes, 0, 7, 4, 2, 1, 101.480, 33.241, 12429.648, 12564.369, 36756, 2048, 3102206
+blackscholes, 1, 7, 4, 2, 1, 101.060, 33.019, 12430.238, 12564.317, 36756, 2048, 3102206
+blackscholes, 2, 7, 4, 2, 1, 101.319, 32.950, 12430.347, 12564.616, 36756, 2048, 3102206
+blackscholes, 3, 7, 4, 2, 1, 101.850, 33.130, 12431.967, 12566.947, 36756, 2048, 3102206
+blackscholes, 4, 7, 4, 2, 1, 101.240, 33.220, 12436.408, 12570.868, 36756, 2048, 3102206
+conv3, 0, 4, 2, 1, 1, 67.379, 47.740, 9672.481, 9787.600, 296092, 262144, 2410300
+conv3, 1, 4, 2, 1, 1, 67.430, 47.900, 9667.091, 9782.421, 296092, 262144, 2410300
+conv3, 2, 4, 2, 1, 1, 66.430, 47.940, 9664.802, 9779.172, 296092, 262144, 2410300
+conv3, 3, 4, 2, 1, 1, 67.660, 47.999, 9661.652, 9777.311, 296092, 262144, 2410300
+conv3, 4, 4, 2, 1, 1, 66.849, 47.870, 9660.742, 9775.461, 296092, 262144, 2410300
+dotproduct, 0, 5, 3, 1, 1, 238.099, 47.990, 12247.559, 12533.648, 2126804, 262144, 3056195
+dotproduct, 1, 5, 3, 1, 1, 238.548, 47.990, 12244.178, 12530.716, 2126804, 262144, 3056195
+dotproduct, 2, 5, 3, 1, 1, 238.778, 47.920, 12245.508, 12532.206, 2126804, 262144, 3056195
+dotproduct, 3, 5, 3, 1, 1, 238.889, 48.819, 12246.269, 12533.977, 2126804, 262144, 3056195
+dotproduct, 4, 5, 3, 1, 1, 239.440, 52.199, 12244.069, 12535.708, 2126804, 262144, 3056195
+guassian, 0, 261, 4, 3, 254, 105.480, 79.969, 284383.366, 284568.815, 177720, 131584, 69513236
+guassian, 1, 261, 4, 3, 254, 102.909, 79.520, 284107.094, 284289.523, 177720, 131584, 69513236
+guassian, 2, 261, 4, 3, 254, 103.019, 79.220, 284418.628, 284600.867, 177720, 131584, 69513236
+guassian, 3, 261, 4, 3, 254, 103.869, 84.110, 284205.980, 284393.959, 177720, 131584, 69513236
+guassian, 4, 261, 4, 3, 254, 108.209, 79.669, 284409.429, 284597.307, 177720, 131584, 69513236
+kmeans, 0, 9, 4, 2, 3, 269.598, 35.270, 177239.770, 177544.638, 4244916, 16384, 44291910
+kmeans, 1, 9, 4, 2, 3, 269.728, 35.230, 177241.070, 177546.028, 4244916, 16384, 44291910
+kmeans, 2, 9, 4, 2, 3, 269.899, 35.250, 177231.271, 177536.420, 4244916, 16384, 44291910
+kmeans, 3, 9, 4, 2, 3, 269.648, 35.239, 177229.490, 177534.377, 4244916, 16384, 44291910
+kmeans, 4, 9, 4, 2, 3, 269.389, 35.210, 177235.622, 177540.221, 4244916, 16384, 44291910
+lbm, 0, 5, 3, 1, 1, 270.048, 129.359, 12816.056, 13215.463, 2488484, 1228800, 3198780
+lbm, 1, 5, 3, 1, 1, 269.328, 129.769, 12816.296, 13215.393, 2488484, 1228800, 3198780
+lbm, 2, 5, 3, 1, 1, 270.108, 129.659, 12821.156, 13220.923, 2488484, 1228800, 3198780
+lbm, 3, 5, 3, 1, 1, 275.009, 129.700, 12814.176, 13218.885, 2488484, 1228800, 3198780
+lbm, 4, 5, 3, 1, 1, 269.399, 135.589, 12817.175, 13222.163, 2488484, 1228800, 3198780
+nearn, 0, 4, 2, 1, 1, 73.960, 40.420, 4903.676, 5018.056, 371712, 171056, 1219129
+nearn, 1, 4, 2, 1, 1, 72.970, 40.470, 4904.145, 5017.585, 371712, 171056, 1219129
+nearn, 2, 4, 2, 1, 1, 73.640, 40.350, 4900.395, 5014.385, 371712, 171056, 1219129
+nearn, 3, 4, 2, 1, 1, 74.129, 40.309, 4900.756, 5015.194, 371712, 171056, 1219129
+nearn, 4, 4, 2, 1, 1, 74.129, 40.270, 4896.776, 5011.175, 371712, 171056, 1219129
+oclprintf, 0, 2, 1, 0, 1, 25.300, 0.000, 328.699, 353.999, 29736, 0, 74989
+oclprintf, 1, 2, 1, 0, 1, 24.340, 0.000, 322.298, 346.638, 29736, 0, 74989
+oclprintf, 2, 2, 1, 0, 1, 24.370, 0.000, 321.618, 345.988, 29736, 0, 74989
+oclprintf, 3, 2, 1, 0, 1, 24.330, 0.000, 322.829, 347.159, 29736, 0, 74989
+oclprintf, 4, 2, 1, 0, 1, 25.220, 0.000, 321.239, 346.459, 29736, 0, 74989
+psort, 0, 4, 2, 1, 1, 50.240, 16.380, 4483.828, 4550.448, 31868, 2048, 1114640
+psort, 1, 4, 2, 1, 1, 49.420, 16.370, 4484.498, 4550.288, 31868, 2048, 1114640
+psort, 2, 4, 2, 1, 1, 50.820, 16.360, 4477.518, 4544.698, 31868, 2048, 1114640
+psort, 3, 4, 2, 1, 1, 49.440, 16.350, 4484.877, 4550.667, 31868, 2048, 1114640
+psort, 4, 4, 2, 1, 1, 49.450, 16.400, 4482.037, 4547.887, 31868, 2048, 1114640
+psum, 0, 4, 2, 1, 1, 67.309, 28.520, 20221.818, 20317.647, 292032, 32768, 5048647
+psum, 1, 4, 2, 1, 1, 66.659, 28.740, 20215.788, 20311.187, 292032, 32768, 5048647
+psum, 2, 4, 2, 1, 1, 66.560, 29.460, 20220.918, 20316.938, 292032, 32768, 5048647
+psum, 3, 4, 2, 1, 1, 69.469, 28.710, 20215.808, 20313.987, 292032, 32768, 5048647
+psum, 4, 4, 2, 1, 1, 66.549, 28.920, 20216.188, 20311.657, 292032, 32768, 5048647
+saxpy, 0, 5, 3, 1, 1, 108.691, 48.219, 8830.636, 8987.546, 553840, 262144, 2200793
+saxpy, 1, 5, 3, 1, 1, 109.790, 48.220, 8824.536, 8982.546, 553840, 262144, 2200793
+saxpy, 2, 5, 3, 1, 1, 107.589, 48.300, 8822.675, 8978.564, 553840, 262144, 2200793
+saxpy, 3, 5, 3, 1, 1, 109.019, 47.930, 8830.366, 8987.315, 553840, 262144, 2200793
+saxpy, 4, 5, 3, 1, 1, 109.140, 48.119, 8829.666, 8986.925, 553840, 262144, 2200793
+sfilter, 0, 5, 3, 1, 1, 108.620, 47.940, 9264.863, 9421.423, 554128, 262144, 2310785
+sfilter, 1, 5, 3, 1, 1, 109.929, 48.339, 9268.234, 9426.502, 554128, 262144, 2310785
+sfilter, 2, 5, 3, 1, 1, 109.510, 47.900, 9268.713, 9426.123, 554128, 262144, 2310785
+sfilter, 3, 5, 3, 1, 1, 116.319, 48.000, 9264.884, 9429.203, 554128, 262144, 2310785
+sfilter, 4, 5, 3, 1, 1, 109.789, 47.850, 9271.433, 9429.072, 554128, 262144, 2310785
+sgemm, 0, 5, 3, 1, 1, 78.310, 31.399, 31200.694, 31310.403, 160716, 65536, 7793804
+sgemm, 1, 5, 3, 1, 1, 77.710, 31.470, 31196.393, 31305.573, 160716, 65536, 7793804
+sgemm, 2, 5, 3, 1, 1, 77.669, 31.430, 31203.074, 31312.173, 160716, 65536, 7793804
+sgemm, 3, 5, 3, 1, 1, 85.639, 31.620, 31201.174, 31318.433, 160716, 65536, 7793804
+sgemm, 4, 5, 3, 1, 1, 77.580, 31.450, 31194.963, 31303.993, 160716, 65536, 7793804
+sgemm2, 0, 5, 3, 1, 1, 79.181, 31.460, 33661.591, 33772.232, 161096, 65536, 8409974
+sgemm2, 1, 5, 3, 1, 1, 78.250, 31.470, 33660.200, 33769.920, 161096, 65536, 8409974
+sgemm2, 2, 5, 3, 1, 1, 78.399, 42.579, 33660.431, 33781.409, 161096, 65536, 8409974
+sgemm2, 3, 5, 3, 1, 1, 77.729, 31.400, 33665.141, 33774.270, 161096, 65536, 8409974
+sgemm2, 4, 5, 3, 1, 1, 77.289, 31.400, 33662.701, 33771.390, 161096, 65536, 8409974
+sgemm3, 0, 5, 3, 1, 1, 77.589, 31.580, 36636.487, 36745.656, 161152, 65536, 9152849
+sgemm3, 1, 5, 3, 1, 1, 79.739, 31.440, 36631.907, 36743.086, 161152, 65536, 9152849
+sgemm3, 2, 5, 3, 1, 1, 78.571, 31.469, 36636.116, 36746.156, 161152, 65536, 9152849
+sgemm3, 3, 5, 3, 1, 1, 78.470, 31.390, 36632.436, 36742.296, 161152, 65536, 9152849
+sgemm3, 4, 5, 3, 1, 1, 77.860, 33.620, 36636.446, 36747.926, 161152, 65536, 9152849
+spmv, 0, 9, 7, 1, 1, 644.987, 75.570, 214402.574, 215123.131, 30909852, 586756, 53595074
+spmv, 1, 9, 7, 1, 1, 645.667, 75.219, 214406.714, 215127.600, 30909852, 586756, 53595074
+spmv, 2, 9, 7, 1, 1, 646.317, 75.740, 214403.014, 215125.071, 30909852, 586756, 53595074
+spmv, 3, 9, 7, 1, 1, 646.147, 75.340, 214402.564, 215124.051, 30909852, 586756, 53595074
+spmv, 4, 9, 7, 1, 1, 644.078, 75.580, 214406.044, 215125.702, 30909852, 586756, 53595074
+stencil, 0, 5, 3, 1, 1, 90.269, 36.890, 6343.378, 6470.537, 291984, 131072, 1579224
+stencil, 1, 5, 3, 1, 1, 88.610, 37.159, 6339.718, 6465.487, 291984, 131072, 1579224
+stencil, 2, 5, 3, 1, 1, 88.879, 44.760, 6339.848, 6473.487, 291984, 131072, 1579224
+stencil, 3, 5, 3, 1, 1, 88.749, 36.860, 6336.509, 6462.118, 291984, 131072, 1579224
+stencil, 4, 5, 3, 1, 1, 95.410, 37.239, 6341.638, 6474.287, 291984, 131072, 1579224
+transpose, 0, 5, 2, 1, 2, 220.789, 202.079, 253235.419, 253658.287, 4225320, 4194304, 63296605
+transpose, 1, 5, 2, 1, 2, 220.730, 202.069, 253240.568, 253663.367, 4225320, 4194304, 63296605
+transpose, 2, 5, 2, 1, 2, 219.169, 201.539, 253228.238, 253648.946, 4225320, 4194304, 63296605
+transpose, 3, 5, 2, 1, 2, 219.429, 202.359, 253231.520, 253653.308, 4225320, 4194304, 63296605
+transpose, 4, 5, 2, 1, 2, 219.899, 201.329, 253229.878, 253651.106, 4225320, 4194304, 63296605
+vecadd, 0, 5, 3, 1, 1, 109.090, 47.639, 8864.016, 9020.745, 553840, 262144, 2209879
+vecadd, 1, 5, 3, 1, 1, 109.409, 48.020, 8864.685, 9022.114, 553840, 262144, 2209879
+vecadd, 2, 5, 3, 1, 1, 108.259, 48.020, 8868.906, 9025.185, 553840, 262144, 2209879
+vecadd, 3, 5, 3, 1, 1, 108.759, 47.930, 8858.925, 9015.614, 553840, 262144, 2209879
+vecadd, 4, 5, 3, 1, 1, 108.569, 47.979, 8861.126, 9017.674, 553840, 262144, 2209879
+
+Results (DMA-only) (size, direction, iteration, latency [us], mmio_setup [us], throughput [GiBps]):
+4096, h2d, 0, 26.080, 1.400, 0.146
+4096, h2d, 1, 26.920, 2.380, 0.142
+4096, h2d, 2, 27.009, 2.429, 0.141
+4096, h2d, 3, 27.030, 2.470, 0.141
+4096, h2d, 4, 28.160, 2.410, 0.135
+8192, h2d, 0, 27.549, 2.410, 0.277
+8192, h2d, 1, 37.630, 2.430, 0.203
+8192, h2d, 2, 27.140, 2.510, 0.281
+8192, h2d, 3, 27.560, 2.400, 0.277
+8192, h2d, 4, 27.620, 2.400, 0.276
+16384, h2d, 0, 27.310, 2.400, 0.559
+16384, h2d, 1, 28.090, 2.860, 0.543
+16384, h2d, 2, 26.950, 2.520, 0.566
+16384, h2d, 3, 27.890, 2.411, 0.547
+16384, h2d, 4, 27.030, 2.400, 0.565
+32768, h2d, 0, 27.240, 2.400, 1.120
+32768, h2d, 1, 27.230, 2.420, 1.121
+32768, h2d, 2, 27.020, 2.391, 1.129
+32768, h2d, 3, 27.250, 2.420, 1.120
+32768, h2d, 4, 27.400, 2.400, 1.114
+65536, h2d, 0, 28.710, 2.570, 2.126
+65536, h2d, 1, 28.589, 2.469, 2.135
+65536, h2d, 2, 28.430, 2.400, 2.147
+65536, h2d, 3, 28.390, 2.390, 2.150
+65536, h2d, 4, 28.640, 2.490, 2.131
+131072, h2d, 0, 43.030, 2.680, 2.837
+131072, h2d, 1, 33.430, 2.380, 3.652
+131072, h2d, 2, 33.430, 2.400, 3.652
+131072, h2d, 3, 33.459, 2.420, 3.648
+131072, h2d, 4, 34.150, 2.410, 3.575
+262144, h2d, 0, 45.930, 2.900, 5.315
+262144, h2d, 1, 44.039, 2.900, 5.544
+262144, h2d, 2, 43.980, 2.410, 5.551
+262144, h2d, 3, 43.470, 2.390, 5.616
+262144, h2d, 4, 43.529, 2.430, 5.609
+524288, h2d, 0, 250.279, 2.590, 1.951
+524288, h2d, 1, 63.759, 1.630, 7.658
+524288, h2d, 2, 63.989, 1.959, 7.631
+524288, h2d, 3, 63.410, 1.620, 7.700
+524288, h2d, 4, 64.249, 2.220, 7.600
+1048576, h2d, 0, 108.010, 1.630, 9.041
+1048576, h2d, 1, 107.790, 1.631, 9.060
+1048576, h2d, 2, 107.839, 1.620, 9.056
+1048576, h2d, 3, 107.170, 1.630, 9.112
+1048576, h2d, 4, 107.019, 1.620, 9.125
+4096, d2h, 0, 27.420, 1.610, 0.139
+4096, d2h, 1, 17.999, 1.620, 0.212
+4096, d2h, 2, 17.979, 1.609, 0.212
+4096, d2h, 3, 18.420, 2.090, 0.207
+4096, d2h, 4, 18.270, 2.170, 0.209
+8192, d2h, 0, 17.950, 1.600, 0.425
+8192, d2h, 1, 19.500, 1.860, 0.391
+8192, d2h, 2, 17.920, 1.610, 0.426
+8192, d2h, 3, 17.920, 1.610, 0.426
+8192, d2h, 4, 17.930, 1.620, 0.426
+16384, d2h, 0, 28.389, 1.780, 0.537
+16384, d2h, 1, 28.500, 1.990, 0.535
+16384, d2h, 2, 27.480, 1.620, 0.555
+16384, d2h, 3, 28.510, 1.620, 0.535
+16384, d2h, 4, 27.549, 1.609, 0.554
+32768, d2h, 0, 29.050, 1.600, 1.051
+32768, d2h, 1, 29.240, 1.830, 1.044
+32768, d2h, 2, 28.759, 1.620, 1.061
+32768, d2h, 3, 29.140, 1.610, 1.047
+32768, d2h, 4, 29.630, 1.620, 1.030
+65536, d2h, 0, 41.779, 1.569, 1.461
+65536, d2h, 1, 32.110, 1.610, 1.901
+65536, d2h, 2, 31.780, 1.620, 1.921
+65536, d2h, 3, 31.960, 1.820, 1.910
+65536, d2h, 4, 31.750, 1.630, 1.922
+131072, d2h, 0, 37.670, 1.600, 3.241
+131072, d2h, 1, 37.610, 1.610, 3.246
+131072, d2h, 2, 37.890, 1.620, 3.222
+131072, d2h, 3, 37.620, 1.610, 3.245
+131072, d2h, 4, 37.050, 1.620, 3.295
+262144, d2h, 0, 56.749, 2.420, 4.302
+262144, d2h, 1, 48.030, 1.600, 5.083
+262144, d2h, 2, 49.009, 1.620, 4.982
+262144, d2h, 3, 47.990, 1.620, 5.087
+262144, d2h, 4, 47.960, 1.620, 5.091
+524288, d2h, 0, 70.410, 1.610, 6.935
+524288, d2h, 1, 70.479, 1.530, 6.928
+524288, d2h, 2, 70.269, 1.589, 6.949
+524288, d2h, 3, 70.390, 1.580, 6.937
+524288, d2h, 4, 70.370, 1.540, 6.939
+1048576, d2h, 0, 114.399, 1.590, 8.536
+1048576, d2h, 1, 114.579, 1.430, 8.523
+1048576, d2h, 2, 114.900, 1.520, 8.499
+1048576, d2h, 3, 114.660, 1.430, 8.517
+1048576, d2h, 4, 114.360, 1.520, 8.539
+
+Results (Computation) (size, cycles, iteration, latency [us], mmio_setup [us], throughput [GiBps]):
+4096, 100, 0, 38.070, 3.100, 0.100
+4096, 100, 1, 38.180, 3.090, 0.100
+4096, 100, 2, 40.050, 3.090, 0.095
+4096, 100, 3, 37.939, 3.090, 0.101
+4096, 100, 4, 37.899, 3.099, 0.101
+4096, 1000, 0, 39.040, 3.090, 0.098
+4096, 1000, 1, 38.010, 3.090, 0.100
+4096, 1000, 2, 37.870, 3.090, 0.101
+4096, 1000, 3, 37.920, 3.100, 0.101
+4096, 1000, 4, 40.020, 3.090, 0.095
+4096, 10000, 0, 72.909, 3.100, 0.052
+4096, 10000, 1, 80.589, 3.089, 0.047
+4096, 10000, 2, 72.870, 3.090, 0.052
+4096, 10000, 3, 74.999, 3.089, 0.051
+4096, 10000, 4, 72.840, 3.090, 0.052
+4096, 100000, 0, 443.178, 3.100, 0.009
+4096, 100000, 1, 441.798, 3.090, 0.009
+4096, 100000, 2, 443.038, 3.090, 0.009
+4096, 100000, 3, 438.607, 3.100, 0.009
+4096, 100000, 4, 443.167, 3.089, 0.009
+4096, 1000000, 0, 4043.450, 3.090, 0.001
+4096, 1000000, 1, 4044.749, 3.090, 0.001
+4096, 1000000, 2, 4048.149, 3.099, 0.001
+4096, 1000000, 3, 4047.040, 3.090, 0.001
+4096, 1000000, 4, 4042.259, 3.090, 0.001
+8192, 100, 0, 38.000, 3.090, 0.201
+8192, 100, 1, 37.890, 3.120, 0.201
+8192, 100, 2, 38.419, 3.120, 0.199
+8192, 100, 3, 38.460, 3.120, 0.198
+8192, 100, 4, 38.190, 3.120, 0.200
+8192, 1000, 0, 39.340, 3.120, 0.194
+8192, 1000, 1, 39.900, 3.120, 0.191
+8192, 1000, 2, 37.850, 3.130, 0.202
+8192, 1000, 3, 37.920, 3.110, 0.201
+8192, 1000, 4, 39.960, 3.120, 0.191
+8192, 10000, 0, 73.289, 3.120, 0.104
+8192, 10000, 1, 74.570, 3.120, 0.102
+8192, 10000, 2, 72.889, 3.120, 0.105
+8192, 10000, 3, 75.000, 3.130, 0.102
+8192, 10000, 4, 73.899, 3.120, 0.103
+8192, 100000, 0, 437.858, 3.120, 0.017
+8192, 100000, 1, 444.508, 3.120, 0.017
+8192, 100000, 2, 437.808, 3.120, 0.017
+8192, 100000, 3, 444.868, 3.130, 0.017
+8192, 100000, 4, 443.208, 3.130, 0.017
+8192, 1000000, 0, 4042.550, 3.120, 0.002
+8192, 1000000, 1, 4040.709, 3.120, 0.002
+8192, 1000000, 2, 4040.850, 3.130, 0.002
+8192, 1000000, 3, 4046.299, 3.110, 0.002
+8192, 1000000, 4, 4042.280, 3.120, 0.002
+16384, 100, 0, 38.120, 3.120, 0.400
+16384, 100, 1, 38.020, 3.110, 0.401
+16384, 100, 2, 37.910, 3.120, 0.403
+16384, 100, 3, 38.340, 3.120, 0.398
+16384, 100, 4, 38.140, 3.110, 0.400
+16384, 1000, 0, 38.120, 3.120, 0.400
+16384, 1000, 1, 40.320, 3.120, 0.378
+16384, 1000, 2, 38.070, 3.120, 0.401
+16384, 1000, 3, 38.149, 3.120, 0.400
+16384, 1000, 4, 40.359, 3.109, 0.378
+16384, 10000, 0, 81.870, 3.120, 0.186
+16384, 10000, 1, 84.109, 3.130, 0.181
+16384, 10000, 2, 81.970, 3.120, 0.186
+16384, 10000, 3, 85.019, 3.120, 0.179
+16384, 10000, 4, 81.600, 3.120, 0.187
+16384, 100000, 0, 444.188, 3.120, 0.034
+16384, 100000, 1, 440.128, 3.120, 0.035
+16384, 100000, 2, 443.848, 3.120, 0.034
+16384, 100000, 3, 437.788, 3.110, 0.035
+16384, 100000, 4, 443.747, 3.120, 0.034
+16384, 1000000, 0, 4038.840, 3.120, 0.004
+16384, 1000000, 1, 4044.709, 3.130, 0.004
+16384, 1000000, 2, 4039.800, 3.120, 0.004
+16384, 1000000, 3, 4057.850, 3.120, 0.004
+16384, 1000000, 4, 4045.519, 3.120, 0.004
+32768, 100, 0, 38.070, 3.120, 0.802
+32768, 100, 1, 38.140, 3.120, 0.800
+32768, 100, 2, 38.090, 3.120, 0.801
+32768, 100, 3, 38.549, 3.109, 0.792
+32768, 100, 4, 38.380, 3.120, 0.795
+32768, 1000, 0, 47.120, 3.120, 0.648
+32768, 1000, 1, 48.499, 3.120, 0.629
+32768, 1000, 2, 46.990, 3.110, 0.649
+32768, 1000, 3, 47.090, 3.120, 0.648
+32768, 1000, 4, 47.189, 3.120, 0.647
+32768, 10000, 0, 80.830, 3.120, 0.378
+32768, 10000, 1, 86.010, 4.110, 0.355
+32768, 10000, 2, 84.210, 3.870, 0.362
+32768, 10000, 3, 81.849, 3.120, 0.373
+32768, 10000, 4, 83.650, 3.120, 0.365
+32768, 100000, 0, 443.918, 3.120, 0.069
+32768, 100000, 1, 439.707, 3.119, 0.069
+32768, 100000, 2, 444.028, 3.120, 0.069
+32768, 100000, 3, 450.228, 3.130, 0.068
+32768, 100000, 4, 443.578, 3.120, 0.069
+32768, 1000000, 0, 4047.430, 3.120, 0.008
+32768, 1000000, 1, 4053.249, 3.120, 0.008
+32768, 1000000, 2, 4047.179, 3.120, 0.008
+32768, 1000000, 3, 4046.300, 3.120, 0.008
+32768, 1000000, 4, 4045.410, 3.120, 0.008
+65536, 100, 0, 39.850, 3.120, 1.532
+65536, 100, 1, 39.800, 3.110, 1.534
+65536, 100, 2, 39.730, 3.120, 1.536
+65536, 100, 3, 46.059, 3.120, 1.325
+65536, 100, 4, 39.660, 3.120, 1.539
+65536, 1000, 0, 48.440, 3.120, 1.260
+65536, 1000, 1, 49.860, 3.111, 1.224
+65536, 1000, 2, 48.270, 3.130, 1.264
+65536, 1000, 3, 48.270, 3.120, 1.264
+65536, 1000, 4, 48.349, 3.109, 1.262
+65536, 10000, 0, 83.570, 3.130, 0.730
+65536, 10000, 1, 84.909, 3.120, 0.719
+65536, 10000, 2, 84.430, 3.130, 0.723
+65536, 10000, 3, 83.449, 3.120, 0.731
+65536, 10000, 4, 84.980, 3.120, 0.718
+65536, 100000, 0, 442.877, 3.110, 0.138
+65536, 100000, 1, 445.487, 3.120, 0.137
+65536, 100000, 2, 442.238, 3.120, 0.138
+65536, 100000, 3, 447.318, 3.110, 0.136
+65536, 100000, 4, 444.467, 3.120, 0.137
+65536, 1000000, 0, 4041.910, 3.120, 0.015
+65536, 1000000, 1, 4047.880, 3.110, 0.015
+65536, 1000000, 2, 4045.810, 3.120, 0.015
+65536, 1000000, 3, 4050.690, 3.120, 0.015
+65536, 1000000, 4, 4042.919, 3.120, 0.015
+131072, 100, 0, 45.420, 3.120, 2.688
+131072, 100, 1, 45.220, 3.120, 2.699
+131072, 100, 2, 47.489, 3.120, 2.570
+131072, 100, 3, 45.260, 3.120, 2.697
+131072, 100, 4, 46.410, 3.120, 2.630
+131072, 1000, 0, 55.159, 3.120, 2.213
+131072, 1000, 1, 53.900, 3.110, 2.265
+131072, 1000, 2, 54.680, 3.120, 2.232
+131072, 1000, 3, 53.719, 3.129, 2.272
+131072, 1000, 4, 53.800, 3.120, 2.269
+131072, 10000, 0, 90.739, 3.110, 1.345
+131072, 10000, 1, 89.020, 3.120, 1.371
+131072, 10000, 2, 87.970, 3.110, 1.388
+131072, 10000, 3, 90.620, 3.120, 1.347
+131072, 10000, 4, 88.899, 3.120, 1.373
+131072, 100000, 0, 453.798, 3.120, 0.269
+131072, 100000, 1, 451.318, 3.120, 0.270
+131072, 100000, 2, 450.587, 3.120, 0.271
+131072, 100000, 3, 449.928, 3.120, 0.271
+131072, 100000, 4, 459.398, 3.110, 0.266
+131072, 1000000, 0, 4058.190, 3.120, 0.030
+131072, 1000000, 1, 4053.850, 3.110, 0.030
+131072, 1000000, 2, 4053.319, 3.120, 0.030
+131072, 1000000, 3, 4055.590, 3.120, 0.030
+131072, 1000000, 4, 4052.489, 3.120, 0.030
+262144, 100, 0, 55.330, 3.120, 4.412
+262144, 100, 1, 55.150, 3.120, 4.427
+262144, 100, 2, 57.159, 3.120, 4.271
+262144, 100, 3, 55.190, 3.120, 4.424
+262144, 100, 4, 56.340, 3.130, 4.333
+262144, 1000, 0, 63.020, 3.111, 3.874
+262144, 1000, 1, 63.930, 3.120, 3.819
+262144, 1000, 2, 65.489, 3.140, 3.728
+262144, 1000, 3, 63.930, 3.120, 3.819
+262144, 1000, 4, 66.100, 3.110, 3.694
+262144, 10000, 0, 98.470, 3.120, 2.479
+262144, 10000, 1, 102.730, 3.110, 2.377
+262144, 10000, 2, 100.540, 3.120, 2.428
+262144, 10000, 3, 97.759, 3.110, 2.497
+262144, 10000, 4, 101.110, 3.120, 2.415
+262144, 100000, 0, 464.677, 3.120, 0.525
+262144, 100000, 1, 460.828, 3.120, 0.530
+262144, 100000, 2, 465.167, 3.120, 0.525
+262144, 100000, 3, 460.537, 3.120, 0.530
+262144, 100000, 4, 464.448, 3.110, 0.526
+262144, 1000000, 0, 4064.609, 3.110, 0.060
+262144, 1000000, 1, 4062.770, 3.110, 0.060
+262144, 1000000, 2, 4067.029, 3.130, 0.060
+262144, 1000000, 3, 4060.700, 3.120, 0.060
+262144, 1000000, 4, 4064.369, 3.120, 0.060
+524288, 100, 0, 75.800, 3.120, 6.442
+524288, 100, 1, 87.229, 3.110, 5.598
+524288, 100, 2, 76.780, 3.120, 6.359
+524288, 100, 3, 77.739, 3.120, 6.281
+524288, 100, 4, 76.330, 3.130, 6.397
+524288, 1000, 0, 87.259, 3.120, 5.596
+524288, 1000, 1, 84.280, 3.120, 5.794
+524288, 1000, 2, 87.420, 3.120, 5.585
+524288, 1000, 3, 84.280, 3.120, 5.794
+524288, 1000, 4, 85.710, 3.120, 5.697
+524288, 10000, 0, 121.500, 3.110, 4.019
+524288, 10000, 1, 121.479, 3.120, 4.019
+524288, 10000, 2, 119.759, 3.120, 4.077
+524288, 10000, 3, 124.870, 3.120, 3.910
+524288, 10000, 4, 122.269, 3.120, 3.993
+524288, 100000, 0, 481.438, 3.120, 1.014
+524288, 100000, 1, 487.357, 3.120, 1.002
+524288, 100000, 2, 481.778, 3.120, 1.013
+524288, 100000, 3, 486.828, 3.111, 1.003
+524288, 100000, 4, 481.408, 3.120, 1.014
+524288, 1000000, 0, 4089.040, 3.120, 0.119
+524288, 1000000, 1, 4086.969, 3.120, 0.119
+524288, 1000000, 2, 4081.530, 3.120, 0.120
+524288, 1000000, 3, 4080.589, 3.120, 0.120
+524288, 1000000, 4, 4082.780, 3.120, 0.120
+1048576, 100, 0, 128.630, 3.131, 7.592
+1048576, 100, 1, 130.889, 3.120, 7.461
+1048576, 100, 2, 130.490, 3.120, 7.484
+1048576, 100, 3, 130.780, 3.120, 7.467
+1048576, 100, 4, 130.369, 3.120, 7.491
+1048576, 1000, 0, 130.459, 3.120, 7.486
+1048576, 1000, 1, 128.660, 3.120, 7.590
+1048576, 1000, 2, 131.070, 3.120, 7.451
+1048576, 1000, 3, 130.469, 3.120, 7.485
+1048576, 1000, 4, 320.639, 3.120, 3.046
+1048576, 10000, 0, 174.610, 3.350, 5.593
+1048576, 10000, 1, 167.220, 3.350, 5.840
+1048576, 10000, 2, 167.350, 3.351, 5.835
+1048576, 10000, 3, 167.170, 3.351, 5.842
+1048576, 10000, 4, 354.738, 3.350, 2.753
+1048576, 100000, 0, 526.277, 3.130, 1.856
+1048576, 100000, 1, 533.057, 3.120, 1.832
+1048576, 100000, 2, 525.968, 3.120, 1.857
+1048576, 100000, 3, 529.678, 3.120, 1.844
+1048576, 100000, 4, 525.687, 3.120, 1.858
+1048576, 1000000, 0, 4126.600, 3.110, 0.237
+1048576, 1000000, 1, 4131.579, 3.109, 0.236
+1048576, 1000000, 2, 4130.669, 3.120, 0.236
+1048576, 1000000, 3, 4134.389, 3.110, 0.236
+1048576, 1000000, 4, 4132.939, 3.120, 0.236
+Successfully closed connection to the server

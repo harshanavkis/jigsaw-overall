@@ -1,0 +1,1592 @@
+c[?7l[2J[0mSeaBIOS (version rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org)
+
+
+iPXE (http://ipxe.org) 00:02.0 CA00 PCI2.10 PnP PMM+7EFD1950+7EF31950 CA00
+Press Ctrl-B to configure iPXE (PCI 00:02.0)...                                                                               
+
+
+Booting from ROM...
+c[?7l[2JNo EFI environment detected.
+early console in extract_kernel
+input_data: 0x0000000005b772cc
+input_len: 0x0000000001d3e56e
+output: 0x0000000001000000
+output_len: 0x000000000682cb08
+kernel_total_size: 0x0000000005c30000
+needed_size: 0x0000000006a00000
+trampoline_32bit: 0x0000000000000000
+
+
+KASLR disabled: 'nokaslr' on cmdline.
+
+
+Decompressing Linux... No EFI environment detected.
+Parsing ELF... No relocation needed... done.
+Booting the kernel (entry_offset: 0x0000000000000b16).
+[    0.000000] Linux version 6.11.0-rc16.11.0-rc1-g72e8c651e6c3-dirty (harshanavkis@clara) (gcc (GCC) 14.3.0, GNU ld (GNU Binutils) 2.44) #5 SMP PREEMPT_DYNAMIC Tue May 12 10:42:21 UTC 2026
+[    0.000000] Command line: console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off
+[    0.000000] [Firmware Bug]: TSC doesn't count with P0 frequency!
+[    0.000000] BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x000000007ffdefff] usable
+[    0.000000] BIOS-e820: [mem 0x000000007ffdf000-0x000000007fffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000b0000000-0x00000000bfffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fed1c000-0x00000000fed1ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000027fffffff] usable
+[    0.000000] BIOS-e820: [mem 0x000000fd00000000-0x000000ffffffffff] reserved
+[    0.000000] printk: legacy bootconsole [earlyser0] enabled
+[    0.000000] NX (Execute Disable) protection: active
+[    0.000000] APIC: Static calls initialized
+[    0.000000] SMBIOS 2.8 present.
+[    0.000000] DMI: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[    0.000000] DMI: Memory slots populated: 1/1
+[    0.000000] Hypervisor detected: KVM
+[    0.000000] kvm-clock: Using msrs 4b564d01 and 4b564d00
+[    0.000002] kvm-clock: using sched offset of 532878633 cycles
+[    0.000681] clocksource: kvm-clock: mask: 0xffffffffffffffff max_cycles: 0x1cd42e4dffb, max_idle_ns: 881590591483 ns
+[    0.002798] tsc: Detected 2649.998 MHz processor
+[    0.008826] last_pfn = 0x280000 max_arch_pfn = 0x400000000
+[    0.009591] MTRR map: 4 entries (3 fixed + 1 variable; max 19), built from 8 variable MTRRs
+[    0.010690] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT  
+[    0.011643] last_pfn = 0x7ffdf max_arch_pfn = 0x400000000
+[    0.015707] found SMP MP-table at [mem 0x000f54c0-0x000f54cf]
+[    0.016488] Using GB pages for direct mapping
+[    0.019255] ACPI: Early table checksum verification disabled
+[    0.020007] ACPI: RSDP 0x00000000000F52C0 000014 (v00 BOCHS )
+[    0.020768] ACPI: RSDT 0x000000007FFE275B 00003C (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.021893] ACPI: FACP 0x000000007FFE23F3 0000F4 (v03 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.023031] ACPI: DSDT 0x000000007FFE0040 0023B3 (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.024153] ACPI: FACS 0x000000007FFE0000 000040
+[    0.024761] ACPI: APIC 0x000000007FFE24E7 0000B0 (v03 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.025902] ACPI: HPET 0x000000007FFE2597 000038 (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.027087] ACPI: SRAT 0x000000007FFE25CF 000128 (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.028214] ACPI: MCFG 0x000000007FFE26F7 00003C (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.029351] ACPI: WAET 0x000000007FFE2733 000028 (v01 BOCHS  BXPC     00000001 BXPC 00000001)
+[    0.030472] ACPI: Reserving FACP table memory at [mem 0x7ffe23f3-0x7ffe24e6]
+[    0.031397] ACPI: Reserving DSDT table memory at [mem 0x7ffe0040-0x7ffe23f2]
+[    0.032320] ACPI: Reserving FACS table memory at [mem 0x7ffe0000-0x7ffe003f]
+[    0.033243] ACPI: Reserving APIC table memory at [mem 0x7ffe24e7-0x7ffe2596]
+[    0.034164] ACPI: Reserving HPET table memory at [mem 0x7ffe2597-0x7ffe25ce]
+[    0.035088] ACPI: Reserving SRAT table memory at [mem 0x7ffe25cf-0x7ffe26f6]
+[    0.036008] ACPI: Reserving MCFG table memory at [mem 0x7ffe26f7-0x7ffe2732]
+[    0.036921] ACPI: Reserving WAET table memory at [mem 0x7ffe2733-0x7ffe275a]
+[    0.038015] SRAT: PXM 0 -> APIC 0x00 -> Node 0
+[    0.038600] SRAT: PXM 0 -> APIC 0x01 -> Node 0
+[    0.039184] SRAT: PXM 0 -> APIC 0x02 -> Node 0
+[    0.039762] SRAT: PXM 0 -> APIC 0x03 -> Node 0
+[    0.040364] SRAT: PXM 0 -> APIC 0x04 -> Node 0
+[    0.040943] SRAT: PXM 0 -> APIC 0x05 -> Node 0
+[    0.041530] SRAT: PXM 0 -> APIC 0x06 -> Node 0
+[    0.042115] SRAT: PXM 0 -> APIC 0x07 -> Node 0
+[    0.042697] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x0009ffff]
+[    0.043490] ACPI: SRAT: Node 0 PXM 0 [mem 0x00100000-0x7fffffff]
+[    0.044280] ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0x27fffffff]
+[    0.045094] NUMA: Node 0 [mem 0x00000000-0x0009ffff] + [mem 0x00100000-0x7fffffff] -> [mem 0x00000000-0x7fffffff]
+[    0.046434] NUMA: Node 0 [mem 0x00000000-0x7fffffff] + [mem 0x100000000-0x27fffffff] -> [mem 0x00000000-0x27fffffff]
+[    0.047816] NODE_DATA(0) allocated [mem 0x27fffa000-0x27fffdfff]
+[    0.048663] Zone ranges:
+[    0.049003]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+[    0.049810]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+[    0.050622]   Normal   [mem 0x0000000100000000-0x000000027fffffff]
+[    0.051434] Movable zone start for each node
+[    0.051996] Early memory node ranges
+[    0.052461]   node   0: [mem 0x0000000000001000-0x000000000009efff]
+[    0.053287]   node   0: [mem 0x0000000000100000-0x000000007ffdefff]
+[    0.054114]   node   0: [mem 0x0000000100000000-0x000000027fffffff]
+[    0.054932] Initmem setup node 0 [mem 0x0000000000001000-0x000000027fffffff]
+[    0.056043] On node 0, zone DMA: 1 pages in unavailable ranges
+[    0.057014] On node 0, zone DMA: 97 pages in unavailable ranges
+[    0.168927] On node 0, zone Normal: 33 pages in unavailable ranges
+[    0.285274] kasan: KernelAddressSanitizer initialized
+[    0.286341] ACPI: PM-Timer IO Port: 0x608
+[    0.286887] ACPI: LAPIC_NMI (acpi_id[0xff] dfl dfl lint[0x1])
+[    0.287695] IOAPIC[0]: apic_id 0, version 17, address 0xfec00000, GSI 0-23
+[    0.288603] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+[    0.289439] ACPI: INT_SRC_OVR (bus 0 bus_irq 5 global_irq 5 high level)
+[    0.290304] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 high level)
+[    0.291175] ACPI: INT_SRC_OVR (bus 0 bus_irq 10 global_irq 10 high level)
+[    0.292064] ACPI: INT_SRC_OVR (bus 0 bus_irq 11 global_irq 11 high level)
+[    0.292965] ACPI: Using ACPI (MADT) for SMP configuration information
+[    0.293800] ACPI: HPET id: 0x8086a201 base: 0xfed00000
+[    0.294488] CPU topo: Max. logical packages:   1
+[    0.295102] CPU topo: Max. logical dies:       1
+[    0.295702] CPU topo: Max. dies per package:   1
+[    0.296315] CPU topo: Max. threads per core:   1
+[    0.296914] CPU topo: Num. cores per package:     8
+[    0.297553] CPU topo: Num. threads per package:   8
+[    0.298198] CPU topo: Allowing 8 present CPUs plus 0 hotplug CPUs
+[    0.299025] kvm-guest: APIC: eoi() replaced with kvm_guest_apic_eoi_write()
+[    0.299982] PM: hibernation: Registered nosave memory: [mem 0x00000000-0x00000fff]
+[    0.300979] PM: hibernation: Registered nosave memory: [mem 0x0009f000-0x0009ffff]
+[    0.301975] PM: hibernation: Registered nosave memory: [mem 0x000a0000-0x000effff]
+[    0.302963] PM: hibernation: Registered nosave memory: [mem 0x000f0000-0x000fffff]
+[    0.303945] PM: hibernation: Registered nosave memory: [mem 0x7ffdf000-0x7fffffff]
+[    0.304934] PM: hibernation: Registered nosave memory: [mem 0x80000000-0xafffffff]
+[    0.305921] PM: hibernation: Registered nosave memory: [mem 0xb0000000-0xbfffffff]
+[    0.306908] PM: hibernation: Registered nosave memory: [mem 0xc0000000-0xfed1bfff]
+[    0.307905] PM: hibernation: Registered nosave memory: [mem 0xfed1c000-0xfed1ffff]
+[    0.308893] PM: hibernation: Registered nosave memory: [mem 0xfed20000-0xfeffbfff]
+[    0.309885] PM: hibernation: Registered nosave memory: [mem 0xfeffc000-0xfeffffff]
+[    0.310875] PM: hibernation: Registered nosave memory: [mem 0xff000000-0xfffbffff]
+[    0.311862] PM: hibernation: Registered nosave memory: [mem 0xfffc0000-0xffffffff]
+[    0.312869] [mem 0xc0000000-0xfed1bfff] available for PCI devices
+[    0.313673] Booting paravirtualized kernel on KVM
+[    0.314296] clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1910969940391419 ns
+[    0.369597] setup_percpu: NR_CPUS:64 nr_cpumask_bits:8 nr_cpu_ids:8 nr_node_ids:1
+[    0.371245] percpu: Embedded 77 pages/cpu s278528 r8192 d28672 u524288
+[    0.372222] Kernel command line: console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off
+[    0.374146] Unknown kernel command line parameters "nokaslr", will be passed to user space.
+[    0.375275] random: crng init done
+[    0.376644] Dentry cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
+[    0.378166] Inode-cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+[    0.379679] Fallback order for Node 0: 0 
+[    0.379689] Built 1 zonelists, mobility grouping on.  Total pages: 2097021
+[    0.381138] Policy zone: Normal
+[    0.381553] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.382450] stackdepot: allocating hash table via alloc_large_system_hash
+[    0.383355] stackdepot hash table entries: 1048576 (order: 12, 16777216 bytes, linear)
+[    0.495999] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+Poking KASLR using RDRAND RDTSC...
+[    0.504301] Dynamic Preempt: voluntary
+[    0.505707] rcu: Preemptible hierarchical RCU implementation.
+[    0.506551] rcu: 	RCU event tracing is enabled.
+[    0.507156] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=8.
+[    0.508035] 	Trampoline variant of Tasks RCU enabled.
+[    0.508738] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.509753] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=8
+[    0.510741] RCU Tasks: Setting shift to 3 and lim to 1 rcu_task_cb_adjust=1.
+[    0.552630] NR_IRQS: 4352, nr_irqs: 488, preallocated irqs: 16
+[    0.554000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.559606] Console: colour VGA+ 80x25
+[    0.560174] printk: legacy console [ttyS0] enabled
+[    0.560174] printk: legacy console [ttyS0] enabled
+[    0.561460] printk: legacy bootconsole [earlyser0] disabled
+[    0.561460] printk: legacy bootconsole [earlyser0] disabled
+[    0.563021] ACPI: Core revision 20240322
+[    0.564081] clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604467 ns
+[    0.565468] APIC: Switch to symmetric I/O mode setup
+[    0.567830] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+[    0.568823] clocksource: tsc-early: mask: 0xffffffffffffffff max_cycles: 0x2632bb35aa3, max_idle_ns: 440795244412 ns
+[    0.570493] Calibrating delay loop (skipped) preset value.. 5299.99 BogoMIPS (lpj=2649998)
+[    0.571566] AMD Zen1 DIV0 bug detected. Disable SMT for full protection.
+[    0.572631] Last level iTLB entries: 4KB 512, 2MB 255, 4MB 127
+[    0.573490] Last level dTLB entries: 4KB 512, 2MB 255, 4MB 127, 1GB 0
+[    0.574497] Spectre V1 : Mitigation: usercopy/swapgs barriers and __user pointer sanitization
+[    0.575494] Spectre V2 : Mitigation: Retpolines
+[    0.576489] Spectre V2 : Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch
+[    0.577489] Spectre V2 : Spectre v2 / SpectreRSB : Filling RSB on VMEXIT
+[    0.578489] Spectre V2 : Enabling Speculation Barrier for firmware calls
+[    0.579489] RETBleed: Mitigation: untrained return thunk
+[    0.580494] Spectre V2 : mitigation: Enabling conditional Indirect Branch Prediction Barrier
+[    0.581489] Speculative Store Bypass: Vulnerable
+[    0.582490] Speculative Return Stack Overflow: IBPB-extending microcode not applied!
+[    0.583488] Speculative Return Stack Overflow: WARNING: See https://kernel.org/doc/html/latest/admin-guide/hw-vuln/srso.html for mitigation options.
+[    0.583494] Speculative Return Stack Overflow: Vulnerable: Safe RET, no microcode
+[    0.585507] x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'
+[    0.586490] x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
+[    0.587489] x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
+[    0.588490] x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  256
+[    0.589489] x86/fpu: Enabled xstate features 0x7, context size is 832 bytes, using 'compacted' format.
+[    0.695957] Freeing SMP alternatives memory: 48K
+[    0.696492] pid_max: default: 32768 minimum: 301
+[    0.697998] LSM: initializing lsm=capability,selinux
+[    0.698589] SELinux:  Initializing.
+[    0.700784] Mount-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.701499] Mountpoint-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.809140] smpboot: CPU0: AMD EPYC-v4 Processor (family: 0x17, model: 0x1, stepping: 0x2)
+[    0.812279] Performance Events: Fam17h+ core perfctr, AMD PMU driver.
+[    0.812497] ... version:                0
+[    0.813191] ... bit width:              48
+[    0.813491] ... generic registers:      6
+[    0.814490] ... value mask:             0000ffffffffffff
+[    0.815490] ... max period:             00007fffffffffff
+[    0.816490] ... fixed-purpose events:   0
+[    0.817182] ... event mask:             000000000000003f
+[    0.818630] signal: max sigframe size: 1776
+[    0.819635] rcu: Hierarchical SRCU implementation.
+[    0.820489] rcu: 	Max phase no-delay instances is 400.
+[    0.822145] Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+[    0.851757] smp: Bringing up secondary CPUs ...
+[    0.853971] smpboot: x86: Booting SMP configuration:
+[    0.854494] .... node  #0, CPUs:      #1 #2 #3 #4 #5 #6 #7
+[    0.875646] smp: Brought up 1 node, 8 CPUs
+[    0.877496] smpboot: Total of 8 processors activated (42399.96 BogoMIPS)
+[    0.899769] Memory: 7063340K/8388084K available (53248K kernel code, 8496K rwdata, 11084K rodata, 8500K init, 3324K bss, 1317848K reserved, 0K cma-reserved)
+[    0.902490] devtmpfs: initialized
+[    0.922937] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.923496] futex hash table entries: 2048 (order: 5, 131072 bytes, linear)
+[    0.926159] PM: RTC time: 11:49:11, date: 2026-05-12
+[    0.928884] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.934442] DMA: preallocated 1024 KiB GFP_KERNEL pool for atomic allocations
+[    0.934567] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.935565] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.936743] audit: initializing netlink subsys (disabled)
+[    0.937644] audit: type=2000 audit(1778586551.835:1): state=initialized audit_enabled=0 res=1
+[    0.941040] thermal_sys: Registered thermal governor 'step_wise'
+[    0.941051] thermal_sys: Registered thermal governor 'user_space'
+[    0.941622] cpuidle: using governor menu
+[    0.948043] PCI: ECAM [mem 0xb0000000-0xbfffffff] (base 0xb0000000) for domain 0000 [bus 00-ff]
+[    0.948496] PCI: ECAM [mem 0xb0000000-0xbfffffff] reserved as E820 entry
+[    0.949608] PCI: Using configuration type 1 for base access
+[    0.951868] kprobes: kprobe jump-optimization is enabled. All kprobes are optimized if possible.
+[    0.955707] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.956491] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.959591] cryptd: max_cpu_qlen set to 1000
+[    0.962668] ACPI: Added _OSI(Module Device)
+[    0.963415] ACPI: Added _OSI(Processor Device)
+[    0.963492] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.964491] ACPI: Added _OSI(Processor Aggregator Device)
+[    1.220500] ACPI: 1 ACPI AML tables successfully acquired and loaded
+[    1.262734] ACPI: Interpreter enabled
+[    1.263947] ACPI: PM: (supports S0 S3 S4 S5)
+[    1.264491] ACPI: Using IOAPIC for interrupt routing
+[    1.266612] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+[    1.267491] PCI: Using E820 reservations for host bridge windows
+[    1.278799] ACPI: Enabled 2 GPEs in block 00 to 3F
+[    1.563146] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+[    1.563620] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI HPX-Type3]
+[    1.574767] acpi PNP0A08:00: _OSC: platform does not support [LTR]
+[    1.593550] acpi PNP0A08:00: _OSC: OS now controls [PME PCIeCapability]
+[    1.598109] PCI host bridge to bus 0000:00
+[    1.599569] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+[    1.600519] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+[    1.601517] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+[    1.602517] pci_bus 0000:00: root bus resource [mem 0x80000000-0xafffffff window]
+[    1.603517] pci_bus 0000:00: root bus resource [mem 0xc0000000-0xfebfffff window]
+[    1.604517] pci_bus 0000:00: root bus resource [mem 0xc000000000-0xc7ffffffff window]
+[    1.606508] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.607614] pci 0000:00:00.0: [8086:29c0] type 00 class 0x060000 conventional PCI endpoint
+[    1.615936] pci 0000:00:01.0: [1234:1111] type 00 class 0x030000 conventional PCI endpoint
+[    1.618070] pci 0000:00:01.0: BAR 0 [mem 0xfd000000-0xfdffffff pref]
+[    1.622501] pci 0000:00:01.0: BAR 2 [mem 0xfea94000-0xfea94fff]
+[    1.629499] pci 0000:00:01.0: ROM [mem 0xfea80000-0xfea8ffff pref]
+[    1.630821] pci 0000:00:01.0: Video device with shadowed ROM at [mem 0x000c0000-0x000dffff]
+[    1.638135] pci 0000:00:02.0: [8086:10d3] type 00 class 0x020000 PCIe Root Complex Integrated Endpoint
+[    1.639492] pci 0000:00:02.0: BAR 0 [mem 0xfea40000-0xfea5ffff]
+[    1.642492] pci 0000:00:02.0: BAR 1 [mem 0xfea60000-0xfea7ffff]
+[    1.645492] pci 0000:00:02.0: BAR 2 [io  0xc040-0xc05f]
+[    1.648238] pci 0000:00:02.0: BAR 3 [mem 0xfea90000-0xfea93fff]
+[    1.651988] pci 0000:00:02.0: ROM [mem 0xfea00000-0xfea3ffff pref]
+[    1.652544] pci 0000:00:02.0: enabling Extended Tags
+[    1.661416] pci 0000:00:03.0: [1af4:1110] type 00 class 0x050000 conventional PCI endpoint
+[    1.662849] pci 0000:00:03.0: BAR 0 [mem 0xfea95000-0xfea950ff]
+[    1.665858] pci 0000:00:03.0: BAR 2 [mem 0xc000000000-0xc0001fffff 64bit pref]
+[    1.677851] pci 0000:00:04.0: [1234:11e8] type 00 class 0x00ff00 conventional PCI endpoint
+[    1.679613] pci 0000:00:04.0: BAR 0 [mem 0xfe800000-0xfe9fffff]
+[    1.688766] pci 0000:00:1f.0: [8086:2918] type 00 class 0x060100 conventional PCI endpoint
+[    1.690976] pci 0000:00:1f.0: quirk: [io  0x0600-0x067f] claimed by ICH6 ACPI/GPIO/TCO
+[    1.698816] pci 0000:00:1f.2: [8086:2922] type 00 class 0x010601 conventional PCI endpoint
+[    1.704492] pci 0000:00:1f.2: BAR 4 [io  0xc060-0xc07f]
+[    1.706492] pci 0000:00:1f.2: BAR 5 [mem 0xfea96000-0xfea96fff]
+[    1.715523] pci 0000:00:1f.3: [8086:2930] type 00 class 0x0c0500 conventional PCI endpoint
+[    1.718472] pci 0000:00:1f.3: BAR 4 [io  0x0700-0x073f]
+[    1.744068] ACPI: PCI: Interrupt link LNKA configured for IRQ 10
+[    1.754249] ACPI: PCI: Interrupt link LNKB configured for IRQ 10
+[    1.764308] ACPI: PCI: Interrupt link LNKC configured for IRQ 11
+[    1.774340] ACPI: PCI: Interrupt link LNKD configured for IRQ 11
+[    1.784373] ACPI: PCI: Interrupt link LNKE configured for IRQ 10
+[    1.794502] ACPI: PCI: Interrupt link LNKF configured for IRQ 10
+[    1.804523] ACPI: PCI: Interrupt link LNKG configured for IRQ 11
+[    1.814708] ACPI: PCI: Interrupt link LNKH configured for IRQ 11
+[    1.817781] ACPI: PCI: Interrupt link GSIA configured for IRQ 16
+[    1.820044] ACPI: PCI: Interrupt link GSIB configured for IRQ 17
+[    1.822299] ACPI: PCI: Interrupt link GSIC configured for IRQ 18
+[    1.824622] ACPI: PCI: Interrupt link GSID configured for IRQ 19
+[    1.826873] ACPI: PCI: Interrupt link GSIE configured for IRQ 20
+[    1.829131] ACPI: PCI: Interrupt link GSIF configured for IRQ 21
+[    1.831392] ACPI: PCI: Interrupt link GSIG configured for IRQ 22
+[    1.833652] ACPI: PCI: Interrupt link GSIH configured for IRQ 23
+[    1.892418] iommu: Default domain type: Translated
+[    1.892491] iommu: DMA domain TLB invalidation policy: lazy mode
+[    1.897758] SCSI subsystem initialized
+[    1.900177] ACPI: bus type USB registered
+[    1.901522] usbcore: registered new interface driver usbfs
+[    1.902738] usbcore: registered new interface driver hub
+[    1.903786] usbcore: registered new device driver usb
+[    1.905558] pps_core: LinuxPPS API ver. 1 registered
+[    1.906430] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    1.906607] PTP clock support registered
+[    1.910248] Advanced Linux Sound Architecture Driver Initialized.
+[    1.916601] NetLabel: Initializing
+[    1.917217] NetLabel:  domain hash size = 128
+[    1.917490] NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
+[    1.919603] NetLabel:  unlabeled traffic allowed by default
+[    1.921533] PCI: Using ACPI for IRQ routing
+[    1.985606] pci 0000:00:01.0: vgaarb: setting as boot VGA device
+[    1.986486] pci 0000:00:01.0: vgaarb: bridge control possible
+[    1.986486] pci 0000:00:01.0: vgaarb: VGA device added: decodes=io+mem,owns=io+mem,locks=none
+[    1.986500] vgaarb: loaded
+[    1.988590] hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0
+[    1.989490] hpet0: 3 comparators, 64-bit 100.000000 MHz counter
+[    1.999560] clocksource: Switched to clocksource kvm-clock
+[    2.004066] VFS: Disk quotas dquot_6.6.0
+[    2.004873] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+[    2.012713] pnp: PnP ACPI init
+[    2.022182] system 00:05: [mem 0xb0000000-0xbfffffff window] has been reserved
+[    2.045799] pnp: PnP ACPI: found 6 devices
+[    2.114437] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 2085701024 ns
+[    2.116547] NET: Registered PF_INET protocol family
+[    2.117755] IP idents hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    2.127248] tcp_listen_portaddr_hash hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    2.128858] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    2.130337] TCP established hash table entries: 65536 (order: 7, 524288 bytes, linear)
+[    2.133239] TCP bind hash table entries: 65536 (order: 9, 2097152 bytes, linear)
+[    2.136179] TCP: Hash tables configured (established 65536 bind 65536)
+[    2.138244] UDP hash table entries: 4096 (order: 5, 131072 bytes, linear)
+[    2.139662] UDP-Lite hash table entries: 4096 (order: 5, 131072 bytes, linear)
+[    2.142455] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    2.146579] RPC: Registered named UNIX socket transport module.
+[    2.147621] RPC: Registered udp transport module.
+[    2.148440] RPC: Registered tcp transport module.
+[    2.149261] RPC: Registered tcp-with-tls transport module.
+[    2.150220] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    2.155733] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 window]
+[    2.156855] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff window]
+[    2.157946] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff window]
+[    2.159142] pci_bus 0000:00: resource 7 [mem 0x80000000-0xafffffff window]
+[    2.160347] pci_bus 0000:00: resource 8 [mem 0xc0000000-0xfebfffff window]
+[    2.161549] pci_bus 0000:00: resource 9 [mem 0xc000000000-0xc7ffffffff window]
+[    2.163912] PCI: CLS 0 bytes, default 64
+[    2.219838] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x2632bb35aa3, max_idle_ns: 440795244412 ns
+[    2.273641] clocksource: Switched to clocksource tsc
+[    3.699261] Initialise system trusted keyrings
+[    3.700762] workingset: timestamp_bits=56 max_order=21 bucket_order=0
+[    3.709935] NFS: Registering the id_resolver key type
+[    3.710945] Key type id_resolver registered
+[    3.711711] Key type id_legacy registered
+[    3.713820] 9p: Installing v9fs 9p2000 file system support
+[    3.761830] Key type asymmetric registered
+[    3.762559] Asymmetric key parser 'x509' registered
+[    3.763873] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 251)
+[    3.765355] io scheduler mq-deadline registered
+[    3.766186] io scheduler kyber registered
+[    3.770698] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0
+[    3.773776] ACPI: button: Power Button [PWRF]
+[    3.789411] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    3.792991] 00:03: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+[    3.809455] Non-volatile memory driver v1.3
+[    3.810302] Linux agpgart interface v0.103
+[    3.812199] ACPI: bus type drm_connector registered
+[    3.898177] loop: module loaded
+[    3.899947] ivshmem: Shared memory size: 2097152 bytes
+[    3.975593] ACPI: \_SB_.GSIA: Enabled at IRQ 16
+[    3.979188] ahci 0000:00:1f.2: AHCI vers 0001.0000, 32 command slots, 1.5 Gbps, SATA mode
+[    3.980676] ahci 0000:00:1f.2: 6/6 ports implemented (port mask 0x3f)
+[    3.981884] ahci 0000:00:1f.2: flags: 64bit ncq only 
+[    4.007945] scsi host0: ahci
+[    4.013507] scsi host1: ahci
+[    4.019102] scsi host2: ahci
+[    4.024678] scsi host3: ahci
+[    4.030212] scsi host4: ahci
+[    4.035718] scsi host5: ahci
+[    4.039214] ata1: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96100 irq 24 lpm-pol 0
+[    4.040686] ata2: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96180 irq 24 lpm-pol 0
+[    4.042154] ata3: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96200 irq 24 lpm-pol 0
+[    4.043623] ata4: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96280 irq 24 lpm-pol 0
+[    4.045097] ata5: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96300 irq 24 lpm-pol 0
+[    4.046575] ata6: SATA max UDMA/133 abar m4096@0xfea96000 port 0xfea96380 irq 24 lpm-pol 0
+[    4.058033] e100: Intel(R) PRO/100 Network Driver
+[    4.058887] e100: Copyright(c) 1999-2006 Intel Corporation
+[    4.060091] e1000: Intel(R) PRO/1000 Network Driver
+[    4.060984] e1000: Copyright (c) 1999-2006 Intel Corporation.
+[    4.062271] e1000e: Intel(R) PRO/1000 Network Driver
+[    4.063174] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[    4.134430] ACPI: \_SB_.GSIG: Enabled at IRQ 22
+[    4.137235] e1000e 0000:00:02.0: Interrupt Throttling Rate (ints/sec) set to dynamic conservative mode
+[    4.182481] e1000e 0000:00:02.0 0000:00:02.0 (uninitialized): registered PHC clock
+[    4.240367] e1000e 0000:00:02.0 eth0: (PCI Express:2.5GT/s:Width x1) 52:54:00:12:34:56
+[    4.242937] e1000e 0000:00:02.0 eth0: Intel(R) PRO/1000 Network Connection
+[    4.245176] e1000e 0000:00:02.0 eth0: MAC: 3, PHY: 8, PBA No: 000000-000
+[    4.247955] sky2: driver version 1.30
+[    4.255261] usbcore: registered new interface driver usblp
+[    4.257533] usbcore: registered new interface driver usb-storage
+[    4.260788] i8042: PNP: PS/2 Controller [PNP0303:KBD,PNP0f13:MOU] at 0x60,0x64 irq 1,12
+[    4.264996] serio: i8042 KBD port at 0x60,0x64 irq 1
+[    4.266359] serio: i8042 AUX port at 0x60,0x64 irq 12
+[    4.272484] rtc_cmos 00:04: RTC can wake from S4
+[    4.277281] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input1
+[    4.286493] rtc_cmos 00:04: registered as rtc0
+[    4.289362] rtc_cmos 00:04: alarms up to one day, y3k, 242 bytes nvram, hpet irqs
+[    4.298078] device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: dm-devel@lists.linux.dev
+[    4.302185] hid: raw HID events driver (C) Jiri Kosina
+[    4.312416] usbcore: registered new interface driver usbhid
+[    4.314266] usbhid: USB HID core driver
+[    4.331395] Initializing XFRM netlink socket
+[    4.334187] NET: Registered PF_INET6 protocol family
+[    4.344213] Segment Routing with IPv6
+[    4.345540] In-situ OAM (IOAM) with IPv6
+[    4.347157] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    4.353628] NET: Registered PF_PACKET protocol family
+[    4.355487] 9pnet: Installing 9P2000 support
+[    4.356951] Key type dns_resolver registered
+[    4.358962] NET: Registered PF_VSOCK protocol family
+[    4.360021] ata4: SATA link down (SStatus 0 SControl 300)
+[    4.361642] ata2: SATA link down (SStatus 0 SControl 300)
+[    4.363073] ata1: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
+[    4.365911] ata5: SATA link down (SStatus 0 SControl 300)
+[    4.367782] ata6: SATA link down (SStatus 0 SControl 300)
+[    4.369193] ata3: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
+[    4.371277] ata1.00: ATA-7: QEMU HARDDISK, 2.5+, max UDMA/100
+[    4.372613] ata1.00: 20971520 sectors, multi 16: LBA48 NCQ (depth 32)
+[    4.374480] ata1.00: applying bridge limits
+[    4.375480] ata3.00: ATAPI: QEMU DVD-ROM, 2.5+, max UDMA/100
+[    4.376779] ata3.00: applying bridge limits
+[    4.377938] ata1.00: configured for UDMA/100
+[    4.379129] ata3.00: configured for UDMA/100
+[    4.380729] i801_smbus 0000:00:1f.3: SMBus using PCI interrupt
+[    4.383171] i2c i2c-0: Memory type 0x07 not supported yet, not instantiating SPD
+[    4.384039] IPI shorthand broadcast: enabled
+[    4.384160] scsi 0:0:0:0: Direct-Access     ATA      QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
+[    4.387925] AES CTR mode by8 optimization enabled
+[    4.391699] sd 0:0:0:0: Attached scsi generic sg0 type 0
+[    4.392154] sd 0:0:0:0: [sda] 20971520 512-byte logical blocks: (10.7 GB/10.0 GiB)
+[    4.394500] sd 0:0:0:0: [sda] Write Protect is off
+[    4.395767] scsi 2:0:0:0: CD-ROM            QEMU     QEMU DVD-ROM     2.5+ PQ: 0 ANSI: 5
+[    4.396015] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    4.400486] sd 0:0:0:0: [sda] Preferred minimum I/O size 512 bytes
+[    4.433681] sd 0:0:0:0: [sda] Attached SCSI disk
+[    4.441330] sr 2:0:0:0: [sr0] scsi3-mmc drive: 4x/4x cd/rw xa/form2 tray
+[    4.443432] cdrom: Uniform CD-ROM driver Revision: 3.20
+[    4.495800] sr 2:0:0:0: Attached scsi generic sg1 type 5
+[    4.646120] sched_clock: Marking stable (4631009513, 14559902)->(4712231617, -66662202)
+[    4.649115] registered taskstats version 1
+[    4.649904] Loading compiled-in X.509 certificates
+[    4.787141] Demotion targets for Node 0: null
+[    4.789383] PM:   Magic number: 10:847:832
+[    4.790257] disagg_init
+[    4.790739] ctx_init
+[    4.790804] printk: legacy console [netcon0] enabled
+[    4.792102] netconsole: network logging started
+[    4.794760] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    4.797269] kworker/u32:5 (106) used greatest stack depth: 28616 bytes left
+[    4.800735] Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[    4.804094] Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+[    4.806117] platform regulatory.0: Direct firmware load for regulatory.db failed with error -2
+[    4.807688] cfg80211: failed to load regulatory.db
+[    4.808640] ALSA device list:
+[    4.809191]   No soundcards found.
+[    5.334335] input: ImExPS/2 Generic Explorer Mouse as /devices/platform/i8042/serio1/input/input3
+[    5.342488] md: Waiting for all devices to be available before autodetect
+[    5.344071] md: If you don't use raid, use raid=noautodetect
+[    5.345124] md: Autodetecting RAID arrays.
+[    5.346024] md: autorun ...
+[    5.346750] md: ... autorun DONE.
+[    5.352744] EXT4-fs (sda): mounting ext2 file system using the ext4 subsystem
+[    5.361519] EXT4-fs (sda): warning: mounting unchecked fs, running e2fsck is recommended
+[    5.384724] EXT4-fs (sda): mounted filesystem f8b5610d-c605-4c09-ba6a-8e2e3584c3ea r/w without journal. Quota mode: none.
+[    5.388065] VFS: Mounted root (ext2 filesystem) on device 8:0.
+[    5.395112] devtmpfs: mounted
+[    5.398536] Freeing unused decrypted memory: 2036K
+[    5.403466] Freeing unused kernel image (initmem) memory: 8500K
+[    5.404817] Write protecting the kernel read-only data: 65536k
+[    5.409604] Freeing unused kernel image (rodata/data gap) memory: 1204K
+[    5.653700] x86/mm: Checked W+X mappings: passed, no W+X pages found.
+[    5.654649] Run /sbin/init as init process
+SELinux:  Could not open policy file <= /etc/selinux/default/policy/policy.34:  No such file or directory
+[!p]104[?7h[    5.874616] systemd[1]: systemd 257.9-1~deb13u1 running in system mode (+PAM +AUDIT +SELINUX +APPARMOR +IMA +IPE +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBCRYPTSETUP_PLUGINS +LIBFDISK +PCRE2 +PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +BPF_FRAMEWORK +BTF -XKBCOMMON -UTMP +SYSVINIT +LIBARCHIVE)
+[    5.879249] systemd[1]: Detected virtualization kvm.
+[    5.879994] systemd[1]: Detected architecture x86-64.
+
+[0;1;39mWelcome to [0m[1mDebian GNU/Linux 13 (trixie)[0m[0;1;39m![0m
+
+[    5.888163] systemd[1]: Hostname set to <clara>.
+[    5.957055] systemd[1]: bpf-restrict-fs: BPF LSM hook not enabled in the kernel, BPF LSM not supported.
+[    6.079497] systemd-fstab-g (115) used greatest stack depth: 25888 bytes left
+[    6.437995] systemd[1]: Queued start job for default target graphical.target.
+[    6.464873] systemd[1]: Created slice system-getty.slice - Slice /system/getty.
+[[0;32m  OK  [0m] Created slice [0;1;39msystem-getty.slice[0m - Slice /system/getty.
+[    6.471164] systemd[1]: Created slice system-modprobe.slice - Slice /system/modprobe.
+[[0;32m  OK  [0m] Created slice [0;1;39msystem-modprobe.slice[0m - Slice /system/modprobe.
+[    6.477161] systemd[1]: Created slice system-serial\x2dgetty.slice - Slice /system/serial-getty.
+[[0;32m  OK  [0m] Created slice [0;1;39msystem-serial\x2dget…slice[0m - Slice /system/serial-getty.
+[    6.483477] systemd[1]: Created slice user.slice - User and Session Slice.
+[[0;32m  OK  [0m] Created slice [0;1;39muser.slice[0m - User and Session Slice.
+[    6.487294] systemd[1]: Started systemd-ask-password-console.path - Dispatch Password Requests to Console Directory Watch.
+[[0;32m  OK  [0m] Started [0;1;39msystemd-ask-password-conso…[0mequests to Console Directory Watch.
+[    6.491926] systemd[1]: Started systemd-ask-password-wall.path - Forward Password Requests to Wall Directory Watch.
+[[0;32m  OK  [0m] Started [0;1;39msystemd-ask-password-wall.…[0md Requests to Wall Directory Watch.
+[    6.498021] systemd[1]: Set up automount proc-sys-fs-binfmt_misc.automount - Arbitrary Executable File Formats File System Automount Point.
+[[0;32m  OK  [0m] Set up automount [0;1;39mproc-sys-fs-binfm…[0mormats File System Automount Point.
+[    6.502145] systemd[1]: Expecting device dev-ttyS0.device - /dev/ttyS0...
+         Expecting device [0;1;39mdev-ttyS0.device[0m - /dev/ttyS0...
+[    6.504819] systemd[1]: Reached target paths.target - Path Units.
+[[0;32m  OK  [0m] Reached target [0;1;39mpaths.target[0m - Path Units.
+[    6.507468] systemd[1]: Reached target remote-fs.target - Remote File Systems.
+[[0;32m  OK  [0m] Reached target [0;1;39mremote-fs.target[0m - Remote File Systems.
+[    6.510508] systemd[1]: Reached target slices.target - Slice Units.
+[[0;32m  OK  [0m] Reached target [0;1;39mslices.target[0m - Slice Units.
+[    6.513194] systemd[1]: Reached target swap.target - Swaps.
+[[0;32m  OK  [0m] Reached target [0;1;39mswap.target[0m - Swaps.
+[    6.517761] systemd[1]: Listening on systemd-creds.socket - Credential Encryption/Decryption.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-creds.socket[0m - Credential Encryption/Decryption.
+[    6.521883] systemd[1]: Listening on systemd-initctl.socket - initctl Compatibility Named Pipe.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-initctl.socke…[0m- initctl Compatibility Named Pipe.
+[    6.526616] systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-journald-dev-…socket[0m - Journal Socket (/dev/log).
+[    6.531157] systemd[1]: Listening on systemd-journald.socket - Journal Sockets.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-journald.socket[0m - Journal Sockets.
+[    6.534205] systemd[1]: systemd-pcrextend.socket - TPM PCR Measurements was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    6.536088] systemd[1]: systemd-pcrlock.socket - Make TPM PCR Policy was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    6.538975] systemd[1]: Listening on systemd-udevd-control.socket - udev Control Socket.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-udevd-control.socket[0m - udev Control Socket.
+[    6.542803] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-udevd-kernel.socket[0m - udev Kernel Socket.
+[    6.554152] systemd[1]: Mounting dev-hugepages.mount - Huge Pages File System...
+         Mounting [0;1;39mdev-hugepages.mount[0m - Huge Pages File System...
+[    6.564654] systemd[1]: Mounting dev-mqueue.mount - POSIX Message Queue File System...
+         Mounting [0;1;39mdev-mqueue.mount[0m - POSIX Message Queue File System...
+[    6.574204] systemd[1]: Mounting run-lock.mount - Legacy Locks Directory /run/lock...
+         Mounting [0;1;39mrun-lock.mount[0m - Legacy Locks Directory /run/lock...
+[    6.584069] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+         Mounting [0;1;39msys-kernel-debug.mount[0m - Kernel Debug File System...
+[    6.594221] systemd[1]: Mounting sys-kernel-tracing.mount - Kernel Trace File System...
+         Mounting [0;1;39msys-kernel-tracing.mount[0m - Kernel Trace File System...
+[    6.621274] systemd[1]: Mounting tmp.mount - Temporary Directory /tmp...
+         Mounting [0;1;39mtmp.mount[0m - Temporary Directory /tmp...
+[    6.624350] systemd[1]: kmod-static-nodes.service - Create List of Static Device Nodes was skipped because of an unmet condition check (ConditionFileNotEmpty=/lib/modules/6.11.0-rc16.11.0-rc1-g72e8c651e6c3-dirty/modules.devname).
+[    6.633919] systemd[1]: Starting modprobe@configfs.service - Load Kernel Module configfs...
+         Starting [0;1;39mmodprobe@configfs.service[0m - Load Kernel Module configfs...
+[    6.645068] systemd[1]: Starting modprobe@drm.service - Load Kernel Module drm...
+         Starting [0;1;39mmodprobe@drm.service[0m - Load Kernel Module drm...
+[    6.656715] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+         Starting [0;1;39mmodprobe@efi_pstore.servi…[0m - Load Kernel Module efi_pstore...
+[    6.673097] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+         Starting [0;1;39mmodprobe@fuse.service[0m - Load Kernel Module fuse...
+[    6.676048] systemd[1]: systemd-hibernate-clear.service - Clear Stale Hibernate Storage Info was skipped because of an unmet condition check (ConditionPathExists=/sys/firmware/efi/efivars/HibernateLocation-8cf2644b-4b0b-428f-9387-6d876050dc67).
+[    6.676703] mount (128) used greatest stack depth: 25176 bytes left
+[    6.680289] systemd[1]: systemd-journald.service: unit configures an IP firewall, but the local system does not support BPF/cgroup firewalling.
+[    6.682162] systemd[1]: systemd-journald.service: (This warning is only shown for the first unit using IP firewalling.)
+[    6.697706] systemd[1]: Starting systemd-journald.service - Journal Service...
+         Starting [0;1;39msystemd-journald.service[0m - Journal Service...
+[    6.708375] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+         Startin[    6.709794] systemd[1]: systemd-pcrmachine.service - TPM PCR Machine ID Measurement was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+g [0;1;39msystemd-modules-load.service[0m - Load Kernel Modules...
+[    6.720383] systemd[1]: Starting systemd-remount-fs.service - Remount Root and Kernel File Systems...
+         Starting [0;1;39msystemd-remount-fs.servic…[0munt Root and Kernel File Systems...
+[    6.730676] systemd[1]: Starting systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully...
+         Starting [0;1;39msystemd-tmpfiles-setup-de…[0m Device Nodes in /dev gracefully...
+[    6.734825] systemd[1]: systemd-tpm2-setup-early.service - Early TPM SRK Setup was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    6.743135] systemd[1]: Starting systemd-udev-load-credentials.service - Load udev Rules from Credentials...
+         Starting [0;1;39msystemd-udev-load-credent…[0mLoad udev Rules from Credentials...
+[    6.751426] systemd[1]: Starting systemd-udev-trigger.service - Coldplug All udev Devices...
+         Starting [0;1;39msystemd-udev-trigger.service[0m - Coldplug All udev Devices...
+[    6.776367] systemd[1]: Mounted dev-hugepages.mount - Huge Pages File System.
+[[0;32m  OK  [0m] Mounted [0;1;39mdev-hugepages.mount[0m - Huge Pages File System.
+[    6.781054] systemd[1]: Mounted dev-mqueue.mount - POSIX Message Queue File System.
+[[0;32m  OK  [0m] Mounted [0;1;39mdev-mqueue.mount[0m - POSIX Message Queue File System.
+[    6.785672] systemd[1]: Mounted run-lock.mount - Legacy Locks Directory /run/lock.
+[[0;32m  OK  [0m] Mounted [0;1;39mrun-lock.mount[0m - Legacy Locks Directory /run/lock.
+[    6.799420] systemd[1]: Mounted sys-kernel-debug.mount - Kernel Debug File System.
+[[0;32m  OK  [0m] Mounted [0;1;39msys-kernel-debug.mount[0m - Kernel Debug File System.
+[    6.806044] systemd[1]: Mounted sys-kernel-tracing.mount - Kernel Trace File System.
+[[0;32m  OK  [0m] Mounted [0;1;39msys-kernel-tracing.mount[0m - Kernel Trace File System.
+[    6.812478] systemd[1]: Mounted tmp.mount - Temporary Directory /tmp.
+[[0;32m  OK  [0m] Mounted [0;1;39mtmp.mount[0m - Temporary Directory /tmp.
+[    6.819799] systemd[1]: modprobe@configfs.service: Deactivated successfully.
+[    6.822593] systemd[1]: Finished modprobe@configfs.service - Load Kernel Module configfs.
+[[0;32m  OK  [0m] Finished [0;1;39mmodprobe@configfs.service[0m - Load Kernel Module configfs.
+[    6.831501] systemd[1]: modprobe@drm.service: Deactivated successfully.
+[    6.834304] systemd-journald[139]: Collecting audit messages is disabled.
+[    6.834560] systemd[1]: Finished modprobe@drm.service - Load Kernel Module drm.
+[[0;32m  OK  [0m] Finished [0;1;39mmodprobe@drm.service[0m - Load Kernel Module drm.
+[    6.845608] systemd[1]: modprobe@efi_pstore.service: Deactivated successfully.
+[    6.849940] systemd[1]: Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[[0;32m  OK  [0m] Finished [0;1;39mmodprobe@efi_pstore.service[0m - Load Kernel Module efi_pstore.
+[    6.858586] systemd[1]: modprobe@fuse.service: Deactivated successfully.
+[    6.862186] systemd[1]: Finished modprobe@fuse.service - Load Kernel Module fuse.
+[[0;32m  OK  [0m] Finished [0;1;39mmodprobe@fuse.service[0m - Load Kernel Module fuse.
+[    6.871626] systemd[1]: Finished systemd-modules-load.service - Load Kernel Modules.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-modules-load.service[0m - Load Kernel Modules.
+[    6.878701] systemd[1]: Finished systemd-remount-fs.service - Remount Root and Kernel File Systems.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-remount-fs.servic…[0mmount Root and Kernel File Systems.
+[    6.888345] systemd[1]: Finished systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-tmpfiles-setup-de…[0mic Device Nodes in /dev gracefully.
+[    6.905520] systemd[1]: Finished systemd-udev-load-credentials.service - Load udev Rules from Credentials.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-udev-load-credent…[0m- Load udev Rules from Credentials.
+[    6.915788] systemd[1]: sys-fs-fuse-connections.mount - FUSE Control File System was skipped because of an unmet condition check (ConditionPathExists=/sys/fs/fuse/connections).
+[    6.926916] systemd[1]: Mounting sys-kernel-config.mount - Kernel Configuration File System...
+         Mounting [0;1;39msys-kernel-config.mount[0m - Kernel Configuration File System...
+[    6.934914] systemd[1]: systemd-hwdb-update.service - Rebuild Hardware Database was skipped because of an unmet condition check (ConditionNeedsUpdate=/etc).
+[    6.937480] systemd[1]: systemd-pstore.service - Platform Persistent Storage Archival was skipped because of an unmet condition check (ConditionDirectoryNotEmpty=/sys/fs/pstore).
+[    6.948181] systemd[1]: Starting systemd-random-seed.service - Load/Save OS Random Seed...
+         Starting [0;1;39msystemd-random-seed.service[0m - Load/Save OS Random Seed...
+[    6.958773] systemd[1]: Starting systemd-sysctl.service - Apply Kernel Variables...
+         Starting [0;1;39msystemd-sysctl.service[0m - Apply Kernel Variables...
+[    6.962171] systemd[1]: systemd-sysusers.service - Create System Users was skipped because no trigger condition checks were met.
+[    6.970068] systemd[1]: Starting systemd-tmpfiles-setup-dev.service - Create Static Device Nodes in /dev...
+         Starting [0;1;39msystemd-tmpfiles-setup-de…[0meate Static Device Nodes in /dev...
+[    6.973807] systemd[1]: systemd-tpm2-setup.service - TPM SRK Setup was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[    7.027710] systemd[1]: Mounted sys-kernel-config.mount - Kernel Configuration File System.
+[[0;32m  OK  [0m] Mounted [0;1;39msys-kernel-config.mount[0m - Kernel Configuration File System.
+[    7.055753] systemd[1]: Finished systemd-random-seed.service - Load/Save OS Random Seed.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-random-seed.service[0m - Load/Save OS Random Seed.
+[    7.108768] systemd[1]: Finished systemd-sysctl.service - Apply Kernel Variables.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-sysctl.service[0m - Apply Kernel Variables.
+[    7.118548] systemd[1]: Finished systemd-tmpfiles-setup-dev.service - Create Static Device Nodes in /dev.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-tmpfiles-setup-de…[0mCreate Static Device Nodes in /dev.
+[    7.124843] systemd[1]: Reached target local-fs-pre.target - Preparation for Local File Systems.
+[[0;32m  OK  [0m] Reached target [0;1;39mlocal-fs-pre.target[0m…Preparation for Local File Systems.
+[    7.130064] systemd[1]: Reached target local-fs.target - Local File Systems.
+[[0;32m  OK  [0m] Reached target [0;1;39mlocal-fs.target[0m - Local File Systems.
+[    7.136401] systemd[1]: Listening on systemd-sysext.socket - System Extension Image Management.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-sysext.socket[0m… System Extension Image Management.
+[    7.145926] systemd[1]: systemd-binfmt.service - Set Up Additional Binary Formats was skipped because no trigger condition checks were met.
+[    7.158436] systemd[1]: Starting systemd-udevd.service - Rule-based Manager for Device Events and Files...
+         Starting [0;1;39msystemd-udevd.service[0m - R…ager for Device Events and Files...
+[    7.165599] systemd[1]: Started systemd-journald.service - Journal Service.
+[[0;32m  OK  [0m] Started [0;1;39msystemd-journald.service[0m - Journal Service.
+         Starting [0;1;39msystemd-journal-flush.ser…[0msh Journal to Persistent Storage...
+[[0;32m  OK  [0m] Started [0;1;39msystemd-udevd.service[0m - Ru…anager for Device Events and Files.
+[    7.449521] systemd-journald[139]: Received client request to flush runtime journal.
+[    7.469462] EXT4-fs error (device sda): ext4_mb_generate_buddy:1217: group 51, block bitmap and bg descriptor inconsistent: 32161 vs 32162 free clusters
+[    7.473219] EXT4-fs error (device sda): ext4_mb_generate_buddy:1217: group 54, block bitmap and bg descriptor inconsistent: 18266 vs 18267 free clusters
+[    7.475666] EXT4-fs error (device sda): ext4_mb_generate_buddy:1217: group 53, block bitmap and bg descriptor inconsistent: 32229 vs 32230 free clusters
+[    7.665220] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417873
+[    7.671556] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417874
+[    7.724117] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417873
+[    7.759532] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417874
+[    7.770116] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417873
+[    7.773531] EXT4-fs error (device sda): ext4_lookup:1813: inode #417815: comm systemd-journal: deleted inode referenced: 417874
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-journal-flush.ser…[0mlush Journal to Persistent Storage.
+         Starting [0;1;39msystemd-tmpfiles-setup.se…[0mate System Files and Directories...
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-tmpfiles-setup.se…[0mreate System Files and Directories.
+[[0;32m  OK  [0m] Found device [0;1;39mdev-ttyS0.device[0m - /dev/ttyS0.
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-udev-trigger.service[0m - Coldplug All udev Devices.
+[[0;32m  OK  [0m] Reached target [0;1;39msysinit.target[0m - System Initialization.
+[[0;32m  OK  [0m] Started [0;1;39mapt-daily.timer[0m - Daily apt download activities.
+[[0;32m  OK  [0m] Started [0;1;39mapt-daily-upgrade.timer[0m - …y apt upgrade and clean activities.
+[[0;32m  OK  [0m] Started [0;1;39mdpkg-db-backup.timer[0m - Daily dpkg database backup timer.
+[[0;32m  OK  [0m] Started [0;1;39me2scrub_all.timer[0m - Period…Metadata Check for All Filesystems.
+[[0;32m  OK  [0m] Started [0;1;39mfstrim.timer[0m - Discard unused filesystem blocks once a week.
+[[0;32m  OK  [0m] Started [0;1;39mlogrotate.timer[0m - Daily rotation of log files.
+[[0;32m  OK  [0m] Started [0;1;39msystemd-tmpfiles-clean.tim…[0my Cleanup of Temporary Directories.
+[[0;32m  OK  [0m] Reached target [0;1;39mtimers.target[0m - Timer Units.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-hostnamed.socket[0m - Hostname Service Socket.
+[[0;32m  OK  [0m] Reached target [0;1;39msockets.target[0m - Socket Units.
+         Starting [0;1;39mifupdown-pre.service[0m - He…synchronize boot up for ifupdown...
+[[0;32m  OK  [0m] Reached target [0;1;39mbasic.target[0m - Basic System.
+[[0;32m  OK  [0m] Started [0;1;39mcron.service[0m - Regular background program processing daemon.
+         Starting [0;1;39me2scrub_reap.service[0m - Re…ne ext4 Metadata Check Snapshots...
+         Starting [0;1;39mgetty-static.service[0m - ge…bus and logind are not available...
+[[0;32m  OK  [0m] Finished [0;1;39mifupdown-pre.service[0m - He…o synchronize boot up for ifupdown.
+         Starting [0;1;39mnetworking.service[0m - Raise network interfaces...
+[[0;32m  OK  [0m] Finished [0;1;39me2scrub_reap.service[0m - Re…line ext4 Metadata Check Snapshots.
+[[0;32m  OK  [0m] Listening on [0;1;39msystemd-rfkill.socket[0m…ll Switch Status /dev/rfkill Watch.
+[[0;32m  OK  [0m] Finished [0;1;39mgetty-static.service[0m - ge… dbus and logind are not available.
+[[0;32m  OK  [0m] Finished [0;1;39mnetworking.service[0m - Raise network interfaces.
+[[0;32m  OK  [0m] Reached target [0;1;39mnetwork.target[0m - Network.
+         Starting [0;1;39msystemd-user-sessions.service[0m - Permit User Sessions...
+[[0;32m  OK  [0m] Finished [0;1;39msystemd-user-sessions.service[0m - Permit User Sessions.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty1.service[0m - Getty on tty1.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty2.service[0m - Getty on tty2.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty3.service[0m - Getty on tty3.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty4.service[0m - Getty on tty4.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty5.service[0m - Getty on tty5.
+[[0;32m  OK  [0m] Started [0;1;39mgetty@tty6.service[0m - Getty on tty6.
+[[0;32m  OK  [0m] Started [0;1;39mserial-getty@ttyS0.service[0m - Serial Getty on ttyS0.
+[[0;32m  OK  [0m] Reached target [0;1;39mgetty.target[0m - Login Prompts.
+[[0;32m  OK  [0m] Reached target [0;1;39mmulti-user.target[0m - Multi-User System.
+[[0;32m  OK  [0m] Reached target [0;1;39mgraphical.target[0m - Graphical Interface.
+[!p]104[?7h[6n[32766;32766H[6n[12;1H[!p]104[?7h[6n[32766;32766H[6n[12;1H
+Debian GNU/Linux 13 clara ttyS0
+
+clara login: root
+Password: 
+Linux clara 6.11.0-rc16.11.0-rc1-g72e8c651e6c3-dirty #5 SMP PREEMPT_DYNAMIC Tue May 12 10:42:21 UTC 2026 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+[?2004hroot@clara:~# insmod /modules/my_qemu_edu.ko 
+[?2004l[   17.309477] my_qemu_edu: loading out-of-tree module taints kernel.
+[   17.320698] my_qemu_edu_driver 0000:00:04.0: my_pci_probe
+[   17.322734] bar: pyhs_adr: fe800000, size: 2097152
+[   17.324837] BAR 0 start: fe800000, length: 200000
+[   17.326780] EDU MMIO virtual address: ffffc90001600000
+[   17.328105] MMIO_BENCH_CSV: data_size,operation,time_ns,run_id
+[   17.329590] MMIO_BENCH_CSV: 1,write,35820,0
+[   17.330657] MMIO_BENCH_CSV: 1,write,7500,1
+[   17.331701] MMIO_BENCH_CSV: 1,write,7330,2
+[   17.332767] MMIO_BENCH_CSV: 1,write,7220,3
+[   17.333809] MMIO_BENCH_CSV: 1,write,7090,4
+[   17.334876] MMIO_BENCH_CSV: 1,write,7210,5
+[   17.335904] MMIO_BENCH_CSV: 1,write,6900,6
+[   17.336924] MMIO_BENCH_CSV: 1,write,6740,7
+[   17.337963] MMIO_BENCH_CSV: 1,write,7100,8
+[   17.339024] MMIO_BENCH_CSV: 1,write,7240,9
+[   17.340091] MMIO_BENCH_CSV: 2,write,8250,0
+[   17.341368] MMIO_BENCH_CSV: 2,write,8200,1
+[   17.342456] MMIO_BENCH_CSV: 2,write,7700,2
+[   17.343508] MMIO_BENCH_CSV: 2,write,7550,3
+[   17.344604] MMIO_BENCH_CSV: 2,write,7560,4
+[   17.345443] MMIO_BENCH_CSV: 2,write,5740,5
+[   17.346211] MMIO_BENCH_CSV: 2,write,5630,6
+[   17.347000] MMIO_BENCH_CSV: 2,write,5760,7
+[   17.347768] MMIO_BENCH_CSV: 2,write,5950,8
+[   17.348547] MMIO_BENCH_CSV: 2,write,5500,9
+[   17.349317] MMIO_BENCH_CSV: 4,write,5580,0
+[   17.350118] MMIO_BENCH_CSV: 4,write,5510,1
+[   17.350890] MMIO_BENCH_CSV: 4,write,5410,2
+[   17.351659] MMIO_BENCH_CSV: 4,write,5350,3
+[   17.352425] MMIO_BENCH_CSV: 4,write,5310,4
+[   17.353196] MMIO_BENCH_CSV: 4,write,5491,5
+[   17.353987] MMIO_BENCH_CSV: 4,write,5560,6
+[   17.354756] MMIO_BENCH_CSV: 4,write,5390,7
+[   17.355532] MMIO_BENCH_CSV: 4,write,5340,8
+[   17.356331] MMIO_BENCH_CSV: 4,write,5600,9
+[   17.357134] MMIO_BENCH_CSV: 8,write,5690,0
+[   17.357904] MMIO_BENCH_CSV: 8,write,5360,1
+[   17.358673] MMIO_BENCH_CSV: 8,write,5420,2
+[   17.359439] MMIO_BENCH_CSV: 8,write,5260,3
+[   17.360210] MMIO_BENCH_CSV: 8,write,5370,4
+[   17.360997] MMIO_BENCH_CSV: 8,write,5510,5
+[   17.361767] MMIO_BENCH_CSV: 8,write,5449,6
+[   17.362546] MMIO_BENCH_CSV: 8,write,5270,7
+[   17.363313] MMIO_BENCH_CSV: 8,write,5470,8
+[   17.364096] MMIO_BENCH_CSV: 8,write,5570,9
+[   17.364868] MMIO_BENCH_CSV: 16,write,9850,0
+[   17.365808] MMIO_BENCH_CSV: 16,write,10410,1
+[   17.366659] MMIO_BENCH_CSV: 16,write,10020,2
+[   17.367467] MMIO_BENCH_CSV: 16,write,9690,3
+[   17.368254] MMIO_BENCH_CSV: 16,write,9750,4
+[   17.369026] MMIO_BENCH_CSV: 16,write,9070,5
+[   17.369622] MMIO_BENCH_CSV: 16,write,8600,6
+[   17.370213] MMIO_BENCH_CSV: 16,write,8570,7
+[   17.370806] MMIO_BENCH_CSV: 16,write,8620,8
+[   17.371396] MMIO_BENCH_CSV: 16,write,18070,9
+[   17.372031] MMIO_BENCH_CSV: 32,write,17450,0
+[   17.372649] MMIO_BENCH_CSV: 32,write,16910,1
+[   17.373250] MMIO_BENCH_CSV: 32,write,16670,2
+[   17.373868] MMIO_BENCH_CSV: 32,write,16890,3
+[   17.374469] MMIO_BENCH_CSV: 32,write,16610,4
+[   17.375106] MMIO_BENCH_CSV: 32,write,17300,5
+[   17.375739] MMIO_BENCH_CSV: 32,write,17140,6
+[   17.376350] MMIO_BENCH_CSV: 32,write,17000,7
+[   17.376980] MMIO_BENCH_CSV: 32,write,17150,8
+[   17.377598] MMIO_BENCH_CSV: 32,write,16930,9
+[   17.378218] MMIO_BENCH_CSV: 64,write,33520,0
+[   17.378853] MMIO_BENCH_CSV: 64,write,33970,1
+[   17.379487] MMIO_BENCH_CSV: 64,write,33450,2
+[   17.380124] MMIO_BENCH_CSV: 64,write,34040,3
+[   17.380763] MMIO_BENCH_CSV: 64,write,33680,4
+[   17.381405] MMIO_BENCH_CSV: 64,write,43410,5
+[   17.382053] MMIO_BENCH_CSV: 64,write,33740,6
+[   17.382689] MMIO_BENCH_CSV: 64,write,33910,7
+[   17.383312] MMIO_BENCH_CSV: 64,write,33810,8
+[   17.383991] MMIO_BENCH_CSV: 64,write,66240,9
+[   17.384681] MMIO_BENCH_CSV: 1,read,11440,0
+[   17.385261] MMIO_BENCH_CSV: 1,read,10270,1
+[   17.385881] MMIO_BENCH_CSV: 1,read,10790,2
+[   17.386454] MMIO_BENCH_CSV: 1,read,10360,3
+[   17.387054] MMIO_BENCH_CSV: 1,read,10490,4
+[   17.387650] MMIO_BENCH_CSV: 1,read,10510,5
+[   17.388223] MMIO_BENCH_CSV: 1,read,10380,6
+[   17.388810] MMIO_BENCH_CSV: 1,read,10450,7
+[   17.389406] MMIO_BENCH_CSV: 1,read,10260,8
+[   17.390036] MMIO_BENCH_CSV: 1,read,10800,9
+[   17.390628] MMIO_BENCH_CSV: 2,read,10750,0
+[   17.391204] MMIO_BENCH_CSV: 2,read,10360,1
+[   17.391791] MMIO_BENCH_CSV: 2,read,10560,2
+[   17.392377] MMIO_BENCH_CSV: 2,read,10420,3
+[   17.392978] MMIO_BENCH_CSV: 2,read,10829,4
+[   17.393551] MMIO_BENCH_CSV: 2,read,10310,5
+[   17.394139] MMIO_BENCH_CSV: 2,read,10831,6
+[   17.394725] MMIO_BENCH_CSV: 2,read,10590,7
+[   17.395299] MMIO_BENCH_CSV: 2,read,10309,8
+[   17.395885] MMIO_BENCH_CSV: 2,read,10490,9
+[   17.396456] MMIO_BENCH_CSV: 4,read,10550,0
+[   17.397044] MMIO_BENCH_CSV: 4,read,10660,1
+[   17.397632] MMIO_BENCH_CSV: 4,read,10510,2
+[   17.398220] MMIO_BENCH_CSV: 4,read,10250,3
+[   17.398809] MMIO_BENCH_CSV: 4,read,10490,4
+[   17.399380] MMIO_BENCH_CSV: 4,read,10220,5
+[   17.399982] MMIO_BENCH_CSV: 4,read,10610,6
+[   17.400552] MMIO_BENCH_CSV: 4,read,10260,7
+[   17.401141] MMIO_BENCH_CSV: 4,read,10820,8
+[   17.401727] MMIO_BENCH_CSV: 4,read,10591,9
+[   17.402299] MMIO_BENCH_CSV: 8,read,10290,0
+[   17.402883] MMIO_BENCH_CSV: 8,read,10700,1
+[   17.403453] MMIO_BENCH_CSV: 8,read,10190,2
+[   17.404062] MMIO_BENCH_CSV: 8,read,10760,3
+[   17.404651] MMIO_BENCH_CSV: 8,read,10840,4
+[   17.405224] MMIO_BENCH_CSV: 8,read,10211,5
+[   17.405810] MMIO_BENCH_CSV: 8,read,10520,6
+[   17.406395] MMIO_BENCH_CSV: 8,read,22860,7
+[   17.406993] MMIO_BENCH_CSV: 8,read,10730,8
+[   17.407580] MMIO_BENCH_CSV: 8,read,26960,9
+[   17.408173] MMIO_BENCH_CSV: 16,read,20590,0
+[   17.408781] MMIO_BENCH_CSV: 16,read,20350,1
+[   17.409374] MMIO_BENCH_CSV: 16,read,20000,2
+[   17.410002] MMIO_BENCH_CSV: 16,read,20230,3
+[   17.410609] MMIO_BENCH_CSV: 16,read,20090,4
+[   17.411214] MMIO_BENCH_CSV: 16,read,20080,5
+[   17.411820] MMIO_BENCH_CSV: 16,read,20170,6
+[   17.412421] MMIO_BENCH_CSV: 16,read,19840,7
+[   17.413043] MMIO_BENCH_CSV: 16,read,20040,8
+[   17.413649] MMIO_BENCH_CSV: 16,read,20270,9
+[   17.414261] MMIO_BENCH_CSV: 32,read,38930,0
+[   17.414956] MMIO_BENCH_CSV: 32,read,39520,1
+[   17.415582] MMIO_BENCH_CSV: 32,read,53530,2
+[   17.416203] MMIO_BENCH_CSV: 32,read,39410,3
+[   17.416827] MMIO_BENCH_CSV: 32,read,39120,4
+[   17.417471] MMIO_BENCH_CSV: 32,read,39160,5
+[   17.418116] MMIO_BENCH_CSV: 32,read,39300,6
+[   17.418743] MMIO_BENCH_CSV: 32,read,39240,7
+[   17.419361] MMIO_BENCH_CSV: 32,read,39100,8
+[   17.420011] MMIO_BENCH_CSV: 32,read,39540,9
+[   17.420678] MMIO_BENCH_CSV: 64,read,77180,0
+[   17.421363] MMIO_BENCH_CSV: 64,read,90380,1
+[   17.422151] MMIO_BENCH_CSV: 64,read,96640,2
+[   17.422826] MMIO_BENCH_CSV: 64,read,77829,3
+[   17.423503] MMIO_BENCH_CSV: 64,read,76940,4
+[   17.424175] MMIO_BENCH_CSV: 64,read,77320,5
+[   17.424845] MMIO_BENCH_CSV: 64,read,77740,6
+[   17.425504] MMIO_BENCH_CSV: 64,read,77140,7
+[   17.426174] MMIO_BENCH_CSV: 64,read,77200,8
+[   17.426839] MMIO_BENCH_CSV: 64,read,77430,9
+[   17.427436] MMIO_BENCH_CSV: mmio benchmark complete, 140 total measurements
+[   17.428376] DMA_BENCH_CSV: data_size,operation,total_time,mmio_done_ns,run_id,throughput_gibps
+[   17.429681] DMA_BENCH_CSV: 4096,h2d,27770,17270,0,0.137
+[   17.430437] DMA_BENCH_CSV: 4096,h2d,23120,12720,1,0.164
+[   17.431191] DMA_BENCH_CSV: 4096,h2d,23120,12760,2,0.164
+[   17.431962] DMA_BENCH_CSV: 4096,h2d,23630,13220,3,0.161
+[   17.432762] DMA_BENCH_CSV: 4096,h2d,23771,13160,4,0.160
+[   17.433512] DMA_BENCH_CSV: 4096,h2d,23320,12780,5,0.163
+[   17.434265] DMA_BENCH_CSV: 4096,h2d,23430,12880,6,0.162
+[   17.435030] DMA_BENCH_CSV: 4096,h2d,23400,12900,7,0.163
+[   17.435788] DMA_BENCH_CSV: 4096,h2d,23210,12850,8,0.164
+[   17.436544] DMA_BENCH_CSV: 4096,h2d,23170,12670,9,0.164
+[   17.437520] DMA_BENCH_CSV: 8192,h2d,27610,17080,0,0.276
+[   17.438283] DMA_BENCH_CSV: 8192,h2d,23580,13050,1,0.323
+[   17.439056] DMA_BENCH_CSV: 8192,h2d,23420,13140,2,0.325
+[   17.439802] DMA_BENCH_CSV: 8192,h2d,23150,12840,3,0.329
+[   17.440547] DMA_BENCH_CSV: 8192,h2d,23150,12840,4,0.329
+[   17.441304] DMA_BENCH_CSV: 8192,h2d,23340,13051,5,0.326
+[   17.442203] DMA_BENCH_CSV: 8192,h2d,26250,15320,6,0.290
+[   17.443099] DMA_BENCH_CSV: 8192,h2d,23740,13330,7,0.321
+[   17.443866] DMA_BENCH_CSV: 8192,h2d,23769,13000,8,0.320
+[   17.444617] DMA_BENCH_CSV: 8192,h2d,23270,12870,9,0.327
+[   17.445732] DMA_BENCH_CSV: 16384,h2d,27240,16800,0,0.560
+[   17.446500] DMA_BENCH_CSV: 16384,h2d,23690,13150,1,0.644
+[   17.447263] DMA_BENCH_CSV: 16384,h2d,23450,13070,2,0.650
+[   17.448044] DMA_BENCH_CSV: 16384,h2d,23550,13050,3,0.647
+[   17.448804] DMA_BENCH_CSV: 16384,h2d,23549,13080,4,0.647
+[   17.449560] DMA_BENCH_CSV: 16384,h2d,23520,13010,5,0.648
+[   17.450325] DMA_BENCH_CSV: 16384,h2d,23660,13150,6,0.644
+[   17.451095] DMA_BENCH_CSV: 16384,h2d,23360,12970,7,0.653
+[   17.451864] DMA_BENCH_CSV: 16384,h2d,23590,12920,8,0.646
+[   17.452624] DMA_BENCH_CSV: 16384,h2d,23340,12920,9,0.653
+[   17.454020] DMA_BENCH_CSV: 32768,h2d,27110,16660,0,1.125
+[   17.454789] DMA_BENCH_CSV: 32768,h2d,23740,13180,1,1.285
+[   17.455547] DMA_BENCH_CSV: 32768,h2d,23610,13000,2,1.292
+[   17.456319] DMA_BENCH_CSV: 32768,h2d,23649,13240,3,1.290
+[   17.457093] DMA_BENCH_CSV: 32768,h2d,23520,13050,4,1.297
+[   17.457854] DMA_BENCH_CSV: 32768,h2d,23560,12860,5,1.295
+[   17.458626] DMA_BENCH_CSV: 32768,h2d,23760,13020,6,1.284
+[   17.459396] DMA_BENCH_CSV: 32768,h2d,23300,12860,7,1.309
+[   17.460176] DMA_BENCH_CSV: 32768,h2d,23850,13260,8,1.279
+[   17.460952] DMA_BENCH_CSV: 32768,h2d,23640,13160,9,1.290
+[   17.462927] DMA_BENCH_CSV: 65536,h2d,88160,16510,0,0.692
+[   17.463748] DMA_BENCH_CSV: 65536,h2d,82251,13271,1,0.742
+[   17.464586] DMA_BENCH_CSV: 65536,h2d,99360,12840,2,0.614
+[   17.465402] DMA_BENCH_CSV: 65536,h2d,82230,12910,3,0.742
+[   17.466229] DMA_BENCH_CSV: 65536,h2d,81529,13080,4,0.748
+[   17.467067] DMA_BENCH_CSV: 65536,h2d,82060,12960,5,0.743
+[   17.467895] DMA_BENCH_CSV: 65536,h2d,81440,13220,6,0.749
+[   17.468710] DMA_BENCH_CSV: 65536,h2d,81260,13000,7,0.751
+[   17.469532] DMA_BENCH_CSV: 65536,h2d,80870,12830,8,0.754
+[   17.470355] DMA_BENCH_CSV: 65536,h2d,81950,12960,9,0.744
+[   17.473417] DMA_BENCH_CSV: 131072,h2d,86930,17520,0,1.404
+[   17.474270] DMA_BENCH_CSV: 131072,h2d,81810,13080,1,1.492
+[   17.475108] DMA_BENCH_CSV: 131072,h2d,81581,13100,2,1.496
+[   17.475948] DMA_BENCH_CSV: 131072,h2d,81830,12870,3,1.491
+[   17.476774] DMA_BENCH_CSV: 131072,h2d,80790,12830,4,1.510
+[   17.477629] DMA_BENCH_CSV: 131072,h2d,95110,12870,5,1.283
+[   17.478522] DMA_BENCH_CSV: 131072,h2d,144210,74700,6,0.846
+[   17.479368] DMA_BENCH_CSV: 131072,h2d,79380,12120,7,1.537
+[   17.480219] DMA_BENCH_CSV: 131072,h2d,79830,12130,8,1.529
+[   17.481066] DMA_BENCH_CSV: 131072,h2d,80191,12020,9,1.522
+[   17.486407] DMA_BENCH_CSV: 262144,h2d,76790,15300,0,3.179
+[   17.487255] DMA_BENCH_CSV: 262144,h2d,78150,11490,1,3.124
+[   17.488100] DMA_BENCH_CSV: 262144,h2d,77780,11450,2,3.138
+[   17.488926] DMA_BENCH_CSV: 262144,h2d,77640,11520,3,3.144
+[   17.489747] DMA_BENCH_CSV: 262144,h2d,78231,11280,4,3.120
+[   17.490591] DMA_BENCH_CSV: 262144,h2d,91560,11330,5,2.666
+[   17.491401] DMA_BENCH_CSV: 262144,h2d,79340,11220,6,3.077
+[   17.492242] DMA_BENCH_CSV: 262144,h2d,77401,11470,7,3.154
+[   17.493087] DMA_BENCH_CSV: 262144,h2d,78040,11560,8,3.128
+[   17.493915] DMA_BENCH_CSV: 262144,h2d,78170,11240,9,3.123
+[   17.502702] DMA_BENCH_CSV: 524288,h2d,82830,15690,0,5.894
+[   17.503532] DMA_BENCH_CSV: 524288,h2d,77869,11580,1,6.270
+[   17.504362] DMA_BENCH_CSV: 524288,h2d,78140,11560,2,6.248
+[   17.505203] DMA_BENCH_CSV: 524288,h2d,77150,11450,3,6.328
+[   17.506040] DMA_BENCH_CSV: 524288,h2d,77340,11460,4,6.313
+[   17.506863] DMA_BENCH_CSV: 524288,h2d,78090,11370,5,6.252
+[   17.507694] DMA_BENCH_CSV: 524288,h2d,77980,11340,6,6.261
+[   17.508517] DMA_BENCH_CSV: 524288,h2d,78549,11609,7,6.216
+[   17.509350] DMA_BENCH_CSV: 524288,h2d,77560,11500,8,6.295
+[   17.510189] DMA_BENCH_CSV: 524288,h2d,77970,11690,9,6.262
+[   17.527066] DMA_BENCH_CSV: 1048576,h2d,197291,15200,0,4.949
+[   17.527973] DMA_BENCH_CSV: 1048576,h2d,134810,11420,1,7.243
+[   17.528874] DMA_BENCH_CSV: 1048576,h2d,136220,11650,2,7.169
+[   17.529772] DMA_BENCH_CSV: 1048576,h2d,134960,11300,3,7.235
+[   17.530689] DMA_BENCH_CSV: 1048576,h2d,150950,11270,4,6.469
+[   17.531607] DMA_BENCH_CSV: 1048576,h2d,157040,11160,5,6.218
+[   17.532517] DMA_BENCH_CSV: 1048576,h2d,143500,11230,6,6.805
+[   17.533423] DMA_BENCH_CSV: 1048576,h2d,136900,11360,7,7.133
+[   17.534332] DMA_BENCH_CSV: 1048576,h2d,135480,11560,8,7.208
+[   17.535250] DMA_BENCH_CSV: 1048576,h2d,135920,11620,9,7.184
+[   17.536178] DMA_BENCH_CSV: 4096,d2h,24910,15630,0,0.153
+[   17.536939] DMA_BENCH_CSV: 4096,d2h,21280,11800,1,0.179
+[   17.537685] DMA_BENCH_CSV: 4096,d2h,20880,11390,2,0.182
+[   17.538426] DMA_BENCH_CSV: 4096,d2h,20849,11489,3,0.182
+[   17.539183] DMA_BENCH_CSV: 4096,d2h,20770,11460,4,0.183
+[   17.539951] DMA_BENCH_CSV: 4096,d2h,20970,11600,5,0.181
+[   17.540700] DMA_BENCH_CSV: 4096,d2h,20669,11260,6,0.184
+[   17.541439] DMA_BENCH_CSV: 4096,d2h,21930,12450,7,0.173
+[   17.542195] DMA_BENCH_CSV: 4096,d2h,21350,11790,8,0.178
+[   17.542961] DMA_BENCH_CSV: 4096,d2h,20910,11560,9,0.182
+[   17.543883] DMA_BENCH_CSV: 8192,d2h,23910,14600,0,0.319
+[   17.544627] DMA_BENCH_CSV: 8192,d2h,21040,11409,1,0.362
+[   17.545373] DMA_BENCH_CSV: 8192,d2h,20950,11550,2,0.364
+[   17.546139] DMA_BENCH_CSV: 8192,d2h,20780,11460,3,0.367
+[   17.546887] DMA_BENCH_CSV: 8192,d2h,21100,11580,4,0.361
+[   17.547640] DMA_BENCH_CSV: 8192,d2h,20980,11280,5,0.363
+[   17.548397] DMA_BENCH_CSV: 8192,d2h,30211,11421,6,0.252
+[   17.549146] DMA_BENCH_CSV: 8192,d2h,20650,11320,7,0.369
+[   17.549892] DMA_BENCH_CSV: 8192,d2h,20750,11320,8,0.367
+[   17.550632] DMA_BENCH_CSV: 8192,d2h,20590,11241,9,0.370
+[   17.551695] DMA_BENCH_CSV: 16384,d2h,24840,15100,0,0.614
+[   17.552456] DMA_BENCH_CSV: 16384,d2h,20990,11420,1,0.726
+[   17.553243] DMA_BENCH_CSV: 16384,d2h,21031,11651,2,0.725
+[   17.554019] DMA_BENCH_CSV: 16384,d2h,20980,11500,3,0.727
+[   17.554779] DMA_BENCH_CSV: 16384,d2h,21300,11790,4,0.716
+[   17.555540] DMA_BENCH_CSV: 16384,d2h,20820,11450,5,0.732
+[   17.556315] DMA_BENCH_CSV: 16384,d2h,20890,11530,6,0.730
+[   17.557087] DMA_BENCH_CSV: 16384,d2h,21311,11931,7,0.716
+[   17.557844] DMA_BENCH_CSV: 16384,d2h,21440,11900,8,0.711
+[   17.558613] DMA_BENCH_CSV: 16384,d2h,21020,11510,9,0.725
+[   17.559916] DMA_BENCH_CSV: 32768,d2h,23760,14320,0,1.284
+[   17.560684] DMA_BENCH_CSV: 32768,d2h,21180,11551,1,1.440
+[   17.561441] DMA_BENCH_CSV: 32768,d2h,21200,11670,2,1.439
+[   17.562197] DMA_BENCH_CSV: 32768,d2h,20920,11320,3,1.458
+[   17.562973] DMA_BENCH_CSV: 32768,d2h,21080,11520,4,1.447
+[   17.563738] DMA_BENCH_CSV: 32768,d2h,21260,11460,5,1.435
+[   17.564493] DMA_BENCH_CSV: 32768,d2h,21320,11280,6,1.431
+[   17.565252] DMA_BENCH_CSV: 32768,d2h,21090,11670,7,1.447
+[   17.566036] DMA_BENCH_CSV: 32768,d2h,21470,11710,8,1.421
+[   17.566798] DMA_BENCH_CSV: 32768,d2h,21160,11311,9,1.442
+[   17.568597] DMA_BENCH_CSV: 65536,d2h,40150,28660,0,1.520
+[   17.569346] DMA_BENCH_CSV: 65536,d2h,22269,11320,1,2.740
+[   17.570116] DMA_BENCH_CSV: 65536,d2h,23220,11710,2,2.628
+[   17.570877] DMA_BENCH_CSV: 65536,d2h,22350,11660,3,2.730
+[   17.571637] DMA_BENCH_CSV: 65536,d2h,21980,11350,4,2.776
+[   17.572404] DMA_BENCH_CSV: 65536,d2h,31290,11170,5,1.950
+[   17.573176] DMA_BENCH_CSV: 65536,d2h,22300,11629,6,2.737
+[   17.573943] DMA_BENCH_CSV: 65536,d2h,22740,11650,7,2.684
+[   17.574700] DMA_BENCH_CSV: 65536,d2h,22310,11290,8,2.735
+[   17.575457] DMA_BENCH_CSV: 65536,d2h,22320,11340,9,2.734
+[   17.578243] DMA_BENCH_CSV: 131072,d2h,84180,15349,0,1.450
+[   17.579091] DMA_BENCH_CSV: 131072,d2h,80020,11800,1,1.525
+[   17.579934] DMA_BENCH_CSV: 131072,d2h,79440,11460,2,1.536
+[   17.580763] DMA_BENCH_CSV: 131072,d2h,80090,11240,3,1.524
+[   17.581599] DMA_BENCH_CSV: 131072,d2h,94850,11510,4,1.286
+[   17.582423] DMA_BENCH_CSV: 131072,d2h,80310,11210,5,1.519
+[   17.583259] DMA_BENCH_CSV: 131072,d2h,79510,11680,6,1.535
+[   17.584111] DMA_BENCH_CSV: 131072,d2h,80160,11500,7,1.522
+[   17.585104] DMA_BENCH_CSV: 131072,d2h,227090,11910,8,0.537
+[   17.585948] DMA_BENCH_CSV: 131072,d2h,82270,11970,9,1.483
+[   17.591174] DMA_BENCH_CSV: 262144,d2h,83950,15280,0,2.908
+[   17.592018] DMA_BENCH_CSV: 262144,d2h,79690,11520,1,3.063
+[   17.592847] DMA_BENCH_CSV: 262144,d2h,79960,11680,2,3.053
+[   17.593685] DMA_BENCH_CSV: 262144,d2h,80110,11820,3,3.047
+[   17.594506] DMA_BENCH_CSV: 262144,d2h,79120,11270,4,3.085
+[   17.595331] DMA_BENCH_CSV: 262144,d2h,79170,11430,5,3.083
+[   17.596183] DMA_BENCH_CSV: 262144,d2h,81540,11560,6,2.994
+[   17.597023] DMA_BENCH_CSV: 262144,d2h,80020,11640,7,3.050
+[   17.597848] DMA_BENCH_CSV: 262144,d2h,79710,11310,8,3.062
+[   17.598685] DMA_BENCH_CSV: 262144,d2h,79930,11550,9,3.054
+[   17.607263] DMA_BENCH_CSV: 524288,d2h,83960,15130,0,5.815
+[   17.608114] DMA_BENCH_CSV: 524288,d2h,79860,11650,1,6.114
+[   17.608938] DMA_BENCH_CSV: 524288,d2h,79860,11340,2,6.114
+[   17.609761] DMA_BENCH_CSV: 524288,d2h,79290,11330,3,6.158
+[   17.610596] DMA_BENCH_CSV: 524288,d2h,93151,11261,4,5.241
+[   17.611419] DMA_BENCH_CSV: 524288,d2h,80920,11100,5,6.034
+[   17.612259] DMA_BENCH_CSV: 524288,d2h,79340,11390,6,6.154
+[   17.613106] DMA_BENCH_CSV: 524288,d2h,80230,11450,7,6.086
+[   17.613934] DMA_BENCH_CSV: 524288,d2h,80000,11310,8,6.103
+[   17.614758] DMA_BENCH_CSV: 524288,d2h,80320,11580,9,6.079
+[   17.631099] DMA_BENCH_CSV: 1048576,d2h,147230,15490,0,6.632
+[   17.632010] DMA_BENCH_CSV: 1048576,d2h,141320,11750,1,6.910
+[   17.632917] DMA_BENCH_CSV: 1048576,d2h,140111,11271,2,6.969
+[   17.633823] DMA_BENCH_CSV: 1048576,d2h,140770,11290,3,6.937
+[   17.634750] DMA_BENCH_CSV: 1048576,d2h,141030,11560,4,6.924
+[   17.635692] DMA_BENCH_CSV: 1048576,d2h,164400,11610,5,5.940
+[   17.636613] DMA_BENCH_CSV: 1048576,d2h,154981,11251,6,6.301
+[   17.637475] DMA_BENCH_CSV: 1048576,d2h,108400,11120,7,9.008
+[   17.638402] DMA_BENCH_CSV: 1048576,d2h,142040,11400,8,6.875
+[   17.639324] DMA_BENCH_CSV: 1048576,d2h,139960,11430,9,6.977
+[   17.640129] DMA_BENCH_CSV: dma benchmark complete, 180 total measurements
+[   17.641060] COMP_BENCH_CSV: data_size,cycles,operation,total_time,mmio_done_ns,run_id
+[   17.642244] COMP_BENCH_CSV: 4096,100,comp,39640,29770,0
+[   17.643021] COMP_BENCH_CSV: 4096,100,comp,35820,26410,1
+[   17.643791] COMP_BENCH_CSV: 4096,100,comp,36200,26770,2
+[   17.644577] COMP_BENCH_CSV: 4096,100,comp,35390,26000,3
+[   17.645332] COMP_BENCH_CSV: 4096,100,comp,35871,26451,4
+[   17.646110] COMP_BENCH_CSV: 4096,100,comp,35790,26240,5
+[   17.646869] COMP_BENCH_CSV: 4096,100,comp,35870,26380,6
+[   17.647625] COMP_BENCH_CSV: 4096,100,comp,35591,26171,7
+[   17.648370] COMP_BENCH_CSV: 4096,100,comp,35410,25980,8
+[   17.649159] COMP_BENCH_CSV: 4096,100,comp,35650,26320,9
+[   17.649927] COMP_BENCH_CSV: 4096,1000,comp,44800,26150,0
+[   17.650702] COMP_BENCH_CSV: 4096,1000,comp,44540,26380,1
+[   17.651474] COMP_BENCH_CSV: 4096,1000,comp,44640,26411,2
+[   17.652267] COMP_BENCH_CSV: 4096,1000,comp,44960,26340,3
+[   17.653069] COMP_BENCH_CSV: 4096,1000,comp,45330,26960,4
+[   17.653852] COMP_BENCH_CSV: 4096,1000,comp,44709,26600,5
+[   17.654643] COMP_BENCH_CSV: 4096,1000,comp,44460,26200,6
+[   17.655432] COMP_BENCH_CSV: 4096,1000,comp,55560,37270,7
+[   17.656213] COMP_BENCH_CSV: 4096,1000,comp,44140,26070,8
+[   17.657008] COMP_BENCH_CSV: 4096,1000,comp,44810,26430,9
+[   17.657822] COMP_BENCH_CSV: 4096,10000,comp,80020,26550,0
+[   17.658670] COMP_BENCH_CSV: 4096,10000,comp,79670,26320,1
+[   17.659491] COMP_BENCH_CSV: 4096,10000,comp,80870,26270,2
+[   17.660329] COMP_BENCH_CSV: 4096,10000,comp,80730,27310,3
+[   17.661168] COMP_BENCH_CSV: 4096,10000,comp,80470,26810,4
+[   17.662008] COMP_BENCH_CSV: 4096,10000,comp,79740,26280,5
+[   17.662834] COMP_BENCH_CSV: 4096,10000,comp,79570,26120,6
+[   17.663688] COMP_BENCH_CSV: 4096,10000,comp,79900,26350,7
+[   17.664511] COMP_BENCH_CSV: 4096,10000,comp,79350,25930,8
+[   17.665339] COMP_BENCH_CSV: 4096,10000,comp,80110,26730,9
+[   17.666537] COMP_BENCH_CSV: 4096,100000,comp,442571,26910,0
+[   17.667750] COMP_BENCH_CSV: 4096,100000,comp,440871,26080,1
+[   17.668958] COMP_BENCH_CSV: 4096,100000,comp,442411,26600,2
+[   17.670155] COMP_BENCH_CSV: 4096,100000,comp,433530,26280,3
+[   17.671369] COMP_BENCH_CSV: 4096,100000,comp,435810,26800,4
+[   17.672599] COMP_BENCH_CSV: 4096,100000,comp,440120,26520,5
+[   17.673788] COMP_BENCH_CSV: 4096,100000,comp,435221,26030,6
+[   17.675022] COMP_BENCH_CSV: 4096,100000,comp,459991,44090,7
+[   17.676228] COMP_BENCH_CSV: 4096,100000,comp,433360,26100,8
+[   17.677440] COMP_BENCH_CSV: 4096,100000,comp,434170,26500,9
+[   17.682261] COMP_BENCH_CSV: 4096,1000000,comp,4037593,26250,0
+[   17.687120] COMP_BENCH_CSV: 4096,1000000,comp,4041173,26260,1
+[   17.691963] COMP_BENCH_CSV: 4096,1000000,comp,4040253,26620,2
+[   17.696796] COMP_BENCH_CSV: 4096,1000000,comp,4041353,27440,3
+[   17.701651] COMP_BENCH_CSV: 4096,1000000,comp,4039823,28030,4
+[   17.706479] COMP_BENCH_CSV: 4096,1000000,comp,4035393,27529,5
+[   17.711315] COMP_BENCH_CSV: 4096,1000000,comp,4039494,27560,6
+[   17.716160] COMP_BENCH_CSV: 4096,1000000,comp,4040354,28190,7
+[   17.721001] COMP_BENCH_CSV: 4096,1000000,comp,4035674,28050,8
+[   17.725825] COMP_BENCH_CSV: 4096,1000000,comp,4035103,27400,9
+[   17.726865] COMP_BENCH_CSV: 8192,100,comp,41050,31270,0
+[   17.727625] COMP_BENCH_CSV: 8192,100,comp,37560,27780,1
+[   17.728374] COMP_BENCH_CSV: 8192,100,comp,38049,28340,2
+[   17.729144] COMP_BENCH_CSV: 8192,100,comp,37210,27530,3
+[   17.729904] COMP_BENCH_CSV: 8192,100,comp,37240,27480,4
+[   17.730663] COMP_BENCH_CSV: 8192,100,comp,37110,27400,5
+[   17.731440] COMP_BENCH_CSV: 8192,100,comp,37700,27790,6
+[   17.732253] COMP_BENCH_CSV: 8192,100,comp,37500,27660,7
+[   17.733041] COMP_BENCH_CSV: 8192,100,comp,37690,27910,8
+[   17.733806] COMP_BENCH_CSV: 8192,100,comp,38590,28320,9
+[   17.734591] COMP_BENCH_CSV: 8192,1000,comp,65321,27781,0
+[   17.735360] COMP_BENCH_CSV: 8192,1000,comp,46750,27890,1
+[   17.736153] COMP_BENCH_CSV: 8192,1000,comp,46770,27770,2
+[   17.736933] COMP_BENCH_CSV: 8192,1000,comp,46200,27390,3
+[   17.737713] COMP_BENCH_CSV: 8192,1000,comp,46860,27870,4
+[   17.738486] COMP_BENCH_CSV: 8192,1000,comp,46320,27380,5
+[   17.739266] COMP_BENCH_CSV: 8192,1000,comp,46840,27890,6
+[   17.740078] COMP_BENCH_CSV: 8192,1000,comp,47450,28310,7
+[   17.740860] COMP_BENCH_CSV: 8192,1000,comp,46440,27480,8
+[   17.741637] COMP_BENCH_CSV: 8192,1000,comp,46410,27310,9
+[   17.742461] COMP_BENCH_CSV: 8192,10000,comp,93120,37270,0
+[   17.743303] COMP_BENCH_CSV: 8192,10000,comp,83821,27800,1
+[   17.744142] COMP_BENCH_CSV: 8192,10000,comp,83110,27590,2
+[   17.744969] COMP_BENCH_CSV: 8192,10000,comp,82680,27340,3
+[   17.745796] COMP_BENCH_CSV: 8192,10000,comp,84190,28221,4
+[   17.746619] COMP_BENCH_CSV: 8192,10000,comp,82170,27420,5
+[   17.747455] COMP_BENCH_CSV: 8192,10000,comp,91920,35870,6
+[   17.748313] COMP_BENCH_CSV: 8192,10000,comp,84000,27880,7
+[   17.749157] COMP_BENCH_CSV: 8192,10000,comp,83620,27640,8
+[   17.749984] COMP_BENCH_CSV: 8192,10000,comp,82830,27440,9
+[   17.751167] COMP_BENCH_CSV: 8192,100000,comp,440000,27920,0
+[   17.752396] COMP_BENCH_CSV: 8192,100000,comp,439171,27671,1
+[   17.753612] COMP_BENCH_CSV: 8192,100000,comp,443761,27650,2
+[   17.754815] COMP_BENCH_CSV: 8192,100000,comp,450781,41720,3
+[   17.756044] COMP_BENCH_CSV: 8192,100000,comp,439911,28200,4
+[   17.757247] COMP_BENCH_CSV: 8192,100000,comp,439241,27390,5
+[   17.758471] COMP_BENCH_CSV: 8192,100000,comp,439071,27550,6
+[   17.759693] COMP_BENCH_CSV: 8192,100000,comp,444701,28540,7
+[   17.760896] COMP_BENCH_CSV: 8192,100000,comp,437021,27660,8
+[   17.762100] COMP_BENCH_CSV: 8192,100000,comp,441260,28370,9
+[   17.766902] COMP_BENCH_CSV: 8192,1000000,comp,4040234,27760,0
+[   17.771733] COMP_BENCH_CSV: 8192,1000000,comp,4043213,27450,1
+[   17.776581] COMP_BENCH_CSV: 8192,1000000,comp,4049713,28100,2
+[   17.781419] COMP_BENCH_CSV: 8192,1000000,comp,4050603,38760,3
+[   17.786253] COMP_BENCH_CSV: 8192,1000000,comp,4040933,27920,4
+[   17.791109] COMP_BENCH_CSV: 8192,1000000,comp,4040563,27650,5
+[   17.795934] COMP_BENCH_CSV: 8192,1000000,comp,4036124,27720,6
+[   17.800769] COMP_BENCH_CSV: 8192,1000000,comp,4045024,28291,7
+[   17.805624] COMP_BENCH_CSV: 8192,1000000,comp,4060684,46450,8
+[   17.810466] COMP_BENCH_CSV: 8192,1000000,comp,4038564,27430,9
+[   17.811678] COMP_BENCH_CSV: 16384,100,comp,41120,31051,0
+[   17.812449] COMP_BENCH_CSV: 16384,100,comp,37970,27690,1
+[   17.813239] COMP_BENCH_CSV: 16384,100,comp,37570,27450,2
+[   17.814029] COMP_BENCH_CSV: 16384,100,comp,38240,28110,3
+[   17.814798] COMP_BENCH_CSV: 16384,100,comp,37770,27650,4
+[   17.815581] COMP_BENCH_CSV: 16384,100,comp,37461,27320,5
+[   17.816344] COMP_BENCH_CSV: 16384,100,comp,37560,27460,6
+[   17.817128] COMP_BENCH_CSV: 16384,100,comp,37600,27410,7
+[   17.817898] COMP_BENCH_CSV: 16384,100,comp,37531,27360,8
+[   17.818666] COMP_BENCH_CSV: 16384,100,comp,37580,27360,9
+[   17.819462] COMP_BENCH_CSV: 16384,1000,comp,46810,27820,0
+[   17.820276] COMP_BENCH_CSV: 16384,1000,comp,46860,27780,1
+[   17.821094] COMP_BENCH_CSV: 16384,1000,comp,46430,27530,2
+[   17.821886] COMP_BENCH_CSV: 16384,1000,comp,46250,27420,3
+[   17.822675] COMP_BENCH_CSV: 16384,1000,comp,46400,27400,4
+[   17.823461] COMP_BENCH_CSV: 16384,1000,comp,46610,27540,5
+[   17.824267] COMP_BENCH_CSV: 16384,1000,comp,46640,27429,6
+[   17.825087] COMP_BENCH_CSV: 16384,1000,comp,46790,27560,7
+[   17.825882] COMP_BENCH_CSV: 16384,1000,comp,46440,27460,8
+[   17.826671] COMP_BENCH_CSV: 16384,1000,comp,46391,27360,9
+[   17.827496] COMP_BENCH_CSV: 16384,10000,comp,82940,27250,0
+[   17.828348] COMP_BENCH_CSV: 16384,10000,comp,83840,28270,1
+[   17.829200] COMP_BENCH_CSV: 16384,10000,comp,83240,27731,2
+[   17.830050] COMP_BENCH_CSV: 16384,10000,comp,83500,27810,3
+[   17.830888] COMP_BENCH_CSV: 16384,10000,comp,84110,28520,4
+[   17.831723] COMP_BENCH_CSV: 16384,10000,comp,83611,28191,5
+[   17.832561] COMP_BENCH_CSV: 16384,10000,comp,82730,27280,6
+[   17.833410] COMP_BENCH_CSV: 16384,10000,comp,83680,27760,7
+[   17.834250] COMP_BENCH_CSV: 16384,10000,comp,83031,27571,8
+[   17.835099] COMP_BENCH_CSV: 16384,10000,comp,83890,28120,9
+[   17.836302] COMP_BENCH_CSV: 16384,100000,comp,439820,27950,0
+[   17.837553] COMP_BENCH_CSV: 16384,100000,comp,442690,27980,1
+[   17.838784] COMP_BENCH_CSV: 16384,100000,comp,440220,28220,2
+[   17.840017] COMP_BENCH_CSV: 16384,100000,comp,457220,45040,3
+[   17.841234] COMP_BENCH_CSV: 16384,100000,comp,439510,27690,4
+[   17.842465] COMP_BENCH_CSV: 16384,100000,comp,441350,28100,5
+[   17.843702] COMP_BENCH_CSV: 16384,100000,comp,438380,28320,6
+[   17.844920] COMP_BENCH_CSV: 16384,100000,comp,439360,27400,7
+[   17.846141] COMP_BENCH_CSV: 16384,100000,comp,440220,27550,8
+[   17.847372] COMP_BENCH_CSV: 16384,100000,comp,440100,27840,9
+[   17.852211] COMP_BENCH_CSV: 16384,1000000,comp,4038123,28210,0
+[   17.857076] COMP_BENCH_CSV: 16384,1000000,comp,4038173,27760,1
+[   17.861924] COMP_BENCH_CSV: 16384,1000000,comp,4040433,27560,2
+[   17.866768] COMP_BENCH_CSV: 16384,1000000,comp,4041884,27411,3
+[   17.871644] COMP_BENCH_CSV: 16384,1000000,comp,4039893,27889,4
+[   17.876482] COMP_BENCH_CSV: 16384,1000000,comp,4037934,27910,5
+[   17.881346] COMP_BENCH_CSV: 16384,1000000,comp,4038963,27690,6
+[   17.886204] COMP_BENCH_CSV: 16384,1000000,comp,4041513,27690,7
+[   17.891072] COMP_BENCH_CSV: 16384,1000000,comp,4042223,28380,8
+[   17.895925] COMP_BENCH_CSV: 16384,1000000,comp,4043363,27760,9
+[   17.897360] COMP_BENCH_CSV: 32768,100,comp,50351,30740,0
+[   17.898156] COMP_BENCH_CSV: 32768,100,comp,48290,28320,1
+[   17.898938] COMP_BENCH_CSV: 32768,100,comp,47540,27510,2
+[   17.899787] COMP_BENCH_CSV: 32768,100,comp,107670,28090,3
+[   17.900596] COMP_BENCH_CSV: 32768,100,comp,66600,27450,4
+[   17.901413] COMP_BENCH_CSV: 32768,100,comp,97260,27760,5
+[   17.902200] COMP_BENCH_CSV: 32768,100,comp,47380,27410,6
+[   17.902995] COMP_BENCH_CSV: 32768,100,comp,47610,28010,7
+[   17.903777] COMP_BENCH_CSV: 32768,100,comp,47569,27340,8
+[   17.904620] COMP_BENCH_CSV: 32768,100,comp,109870,27300,9
+[   17.905420] COMP_BENCH_CSV: 32768,1000,comp,57290,38350,0
+[   17.906233] COMP_BENCH_CSV: 32768,1000,comp,46460,27480,1
+[   17.907041] COMP_BENCH_CSV: 32768,1000,comp,46490,27550,2
+[   17.907842] COMP_BENCH_CSV: 32768,1000,comp,46470,27430,3
+[   17.908649] COMP_BENCH_CSV: 32768,1000,comp,46520,27640,4
+[   17.909449] COMP_BENCH_CSV: 32768,1000,comp,46550,27580,5
+[   17.910253] COMP_BENCH_CSV: 32768,1000,comp,46570,27600,6
+[   17.911059] COMP_BENCH_CSV: 32768,1000,comp,47180,28171,7
+[   17.911848] COMP_BENCH_CSV: 32768,1000,comp,46090,27360,8
+[   17.912655] COMP_BENCH_CSV: 32768,1000,comp,47380,28510,9
+[   17.913497] COMP_BENCH_CSV: 32768,10000,comp,82800,27300,0
+[   17.914352] COMP_BENCH_CSV: 32768,10000,comp,82740,27470,1
+[   17.915205] COMP_BENCH_CSV: 32768,10000,comp,83850,28350,2
+[   17.916073] COMP_BENCH_CSV: 32768,10000,comp,83471,27811,3
+[   17.916918] COMP_BENCH_CSV: 32768,10000,comp,85290,29050,4
+[   17.917759] COMP_BENCH_CSV: 32768,10000,comp,87250,27470,5
+[   17.918613] COMP_BENCH_CSV: 32768,10000,comp,82571,27611,6
+[   17.919445] COMP_BENCH_CSV: 32768,10000,comp,82600,25870,7
+[   17.920278] COMP_BENCH_CSV: 32768,10000,comp,80490,26710,8
+[   17.921138] COMP_BENCH_CSV: 32768,10000,comp,79949,26269,9
+[   17.922355] COMP_BENCH_CSV: 32768,100000,comp,442861,26300,0
+[   17.923606] COMP_BENCH_CSV: 32768,100000,comp,453230,26860,1
+[   17.924884] COMP_BENCH_CSV: 32768,100000,comp,503850,34850,2
+[   17.926108] COMP_BENCH_CSV: 32768,100000,comp,443261,26790,3
+[   17.927326] COMP_BENCH_CSV: 32768,100000,comp,442021,26050,4
+[   17.928560] COMP_BENCH_CSV: 32768,100000,comp,443531,26250,5
+[   17.929788] COMP_BENCH_CSV: 32768,100000,comp,445180,26350,6
+[   17.931036] COMP_BENCH_CSV: 32768,100000,comp,443091,26800,7
+[   17.932267] COMP_BENCH_CSV: 32768,100000,comp,442590,26550,8
+[   17.933515] COMP_BENCH_CSV: 32768,100000,comp,443761,26430,9
+[   17.938339] COMP_BENCH_CSV: 32768,1000000,comp,4038433,26550,0
+[   17.943199] COMP_BENCH_CSV: 32768,1000000,comp,4043303,26990,1
+[   17.948057] COMP_BENCH_CSV: 32768,1000000,comp,4043893,26400,2
+[   17.952899] COMP_BENCH_CSV: 32768,1000000,comp,4039743,26160,3
+[   17.957740] COMP_BENCH_CSV: 32768,1000000,comp,4044063,26190,4
+[   17.962607] COMP_BENCH_CSV: 32768,1000000,comp,4062763,44160,5
+[   17.967461] COMP_BENCH_CSV: 32768,1000000,comp,4042113,26209,6
+[   17.972324] COMP_BENCH_CSV: 32768,1000000,comp,4040404,26491,7
+[   17.977180] COMP_BENCH_CSV: 32768,1000000,comp,4039934,26320,8
+[   17.982040] COMP_BENCH_CSV: 32768,1000000,comp,4041824,26780,9
+[   17.983958] COMP_BENCH_CSV: 65536,100,comp,104280,28940,0
+[   17.984803] COMP_BENCH_CSV: 65536,100,comp,101540,26190,1
+[   17.985672] COMP_BENCH_CSV: 65536,100,comp,118360,43760,2
+[   17.986511] COMP_BENCH_CSV: 65536,100,comp,101580,26220,3
+[   17.987361] COMP_BENCH_CSV: 65536,100,comp,102110,26540,4
+[   17.988231] COMP_BENCH_CSV: 65536,100,comp,101040,26380,5
+[   17.989088] COMP_BENCH_CSV: 65536,100,comp,102220,26650,6
+[   17.989931] COMP_BENCH_CSV: 65536,100,comp,100780,26010,7
+[   17.990773] COMP_BENCH_CSV: 65536,100,comp,101069,26269,8
+[   17.991633] COMP_BENCH_CSV: 65536,100,comp,115730,26590,9
+[   17.992486] COMP_BENCH_CSV: 65536,1000,comp,112200,37520,0
+[   17.993346] COMP_BENCH_CSV: 65536,1000,comp,102270,26900,1
+[   17.994216] COMP_BENCH_CSV: 65536,1000,comp,101960,26440,2
+[   17.995088] COMP_BENCH_CSV: 65536,1000,comp,101780,26950,3
+[   17.995959] COMP_BENCH_CSV: 65536,1000,comp,101720,26440,4
+[   17.996813] COMP_BENCH_CSV: 65536,1000,comp,101120,26260,5
+[   17.997695] COMP_BENCH_CSV: 65536,1000,comp,102890,26860,6
+[   17.998543] COMP_BENCH_CSV: 65536,1000,comp,102780,25890,7
+[   17.999411] COMP_BENCH_CSV: 65536,1000,comp,110860,26311,8
+[   18.000283] COMP_BENCH_CSV: 65536,1000,comp,101940,26700,9
+[   18.001157] COMP_BENCH_CSV: 65536,10000,comp,103050,26800,0
+[   18.002037] COMP_BENCH_CSV: 65536,10000,comp,101871,26731,1
+[   18.002908] COMP_BENCH_CSV: 65536,10000,comp,103030,26770,2
+[   18.003782] COMP_BENCH_CSV: 65536,10000,comp,102640,26540,3
+[   18.004677] COMP_BENCH_CSV: 65536,10000,comp,119930,43840,4
+[   18.005542] COMP_BENCH_CSV: 65536,10000,comp,101171,26460,5
+[   18.006414] COMP_BENCH_CSV: 65536,10000,comp,103870,26620,6
+[   18.007293] COMP_BENCH_CSV: 65536,10000,comp,101560,26590,7
+[   18.008184] COMP_BENCH_CSV: 65536,10000,comp,103031,26551,8
+[   18.009066] COMP_BENCH_CSV: 65536,10000,comp,102170,26200,9
+[   18.010280] COMP_BENCH_CSV: 65536,100000,comp,446000,25990,0
+[   18.011603] COMP_BENCH_CSV: 65536,100000,comp,519130,26630,1
+[   18.012879] COMP_BENCH_CSV: 65536,100000,comp,506940,35540,2
+[   18.014104] COMP_BENCH_CSV: 65536,100000,comp,447750,26540,3
+[   18.015326] COMP_BENCH_CSV: 65536,100000,comp,446830,26130,4
+[   18.016626] COMP_BENCH_CSV: 65536,100000,comp,508960,26760,5
+[   18.017850] COMP_BENCH_CSV: 65536,100000,comp,445870,26700,6
+[   18.019112] COMP_BENCH_CSV: 65536,100000,comp,465540,26310,7
+[   18.020406] COMP_BENCH_CSV: 65536,100000,comp,504200,27720,8
+[   18.021647] COMP_BENCH_CSV: 65536,100000,comp,446430,27940,9
+[   18.026520] COMP_BENCH_CSV: 65536,1000000,comp,4100923,27660,0
+[   18.031426] COMP_BENCH_CSV: 65536,1000000,comp,4098883,27700,1
+[   18.036340] COMP_BENCH_CSV: 65536,1000000,comp,4099823,27610,2
+[   18.041201] COMP_BENCH_CSV: 65536,1000000,comp,4046013,28410,3
+[   18.046090] COMP_BENCH_CSV: 65536,1000000,comp,4046173,27630,4
+[   18.050937] COMP_BENCH_CSV: 65536,1000000,comp,4047703,27560,5
+[   18.055846] COMP_BENCH_CSV: 65536,1000000,comp,4100713,28410,6
+[   18.060766] COMP_BENCH_CSV: 65536,1000000,comp,4102353,28060,7
+[   18.065642] COMP_BENCH_CSV: 65536,1000000,comp,4046404,27851,8
+[   18.070557] COMP_BENCH_CSV: 65536,1000000,comp,4101663,27380,9
+[   18.073650] COMP_BENCH_CSV: 131072,100,comp,113710,44780,0
+[   18.074521] COMP_BENCH_CSV: 131072,100,comp,104770,27420,1
+[   18.075378] COMP_BENCH_CSV: 131072,100,comp,101821,26391,2
+[   18.076264] COMP_BENCH_CSV: 131072,100,comp,104350,27270,3
+[   18.077145] COMP_BENCH_CSV: 131072,100,comp,101920,26410,4
+[   18.078001] COMP_BENCH_CSV: 131072,100,comp,102490,26560,5
+[   18.078853] COMP_BENCH_CSV: 131072,100,comp,101551,26140,6
+[   18.079734] COMP_BENCH_CSV: 131072,100,comp,104400,27240,7
+[   18.080602] COMP_BENCH_CSV: 131072,100,comp,118040,26610,8
+[   18.081420] COMP_BENCH_CSV: 131072,100,comp,64329,25929,9
+[   18.082275] COMP_BENCH_CSV: 131072,1000,comp,102190,26800,0
+[   18.083154] COMP_BENCH_CSV: 131072,1000,comp,103080,26330,1
+[   18.084044] COMP_BENCH_CSV: 131072,1000,comp,102381,26391,2
+[   18.084912] COMP_BENCH_CSV: 131072,1000,comp,101930,26100,3
+[   18.085777] COMP_BENCH_CSV: 131072,1000,comp,102480,26530,4
+[   18.086659] COMP_BENCH_CSV: 131072,1000,comp,121740,26080,5
+[   18.087539] COMP_BENCH_CSV: 131072,1000,comp,101870,26420,6
+[   18.088415] COMP_BENCH_CSV: 131072,1000,comp,106600,26100,7
+[   18.089313] COMP_BENCH_CSV: 131072,1000,comp,103470,26580,8
+[   18.090195] COMP_BENCH_CSV: 131072,1000,comp,102220,26640,9
+[   18.091105] COMP_BENCH_CSV: 131072,10000,comp,104400,26990,0
+[   18.092001] COMP_BENCH_CSV: 131072,10000,comp,104410,26840,1
+[   18.092888] COMP_BENCH_CSV: 131072,10000,comp,103640,26180,2
+[   18.093768] COMP_BENCH_CSV: 131072,10000,comp,104400,26740,3
+[   18.094671] COMP_BENCH_CSV: 131072,10000,comp,120710,43080,4
+[   18.095547] COMP_BENCH_CSV: 131072,10000,comp,103580,26130,5
+[   18.096432] COMP_BENCH_CSV: 131072,10000,comp,104371,26660,6
+[   18.097316] COMP_BENCH_CSV: 131072,10000,comp,104150,26630,7
+[   18.098214] COMP_BENCH_CSV: 131072,10000,comp,103790,26380,8
+[   18.099107] COMP_BENCH_CSV: 131072,10000,comp,104000,26430,9
+[   18.100401] COMP_BENCH_CSV: 131072,100000,comp,505771,26560,0
+[   18.101702] COMP_BENCH_CSV: 131072,100000,comp,502681,26260,1
+[   18.102988] COMP_BENCH_CSV: 131072,100000,comp,501261,26051,2
+[   18.104278] COMP_BENCH_CSV: 131072,100000,comp,504441,26011,3
+[   18.105596] COMP_BENCH_CSV: 131072,100000,comp,515681,26240,4
+[   18.106900] COMP_BENCH_CSV: 131072,100000,comp,516990,37500,5
+[   18.108203] COMP_BENCH_CSV: 131072,100000,comp,505490,26590,6
+[   18.109522] COMP_BENCH_CSV: 131072,100000,comp,505250,26390,7
+[   18.110816] COMP_BENCH_CSV: 131072,100000,comp,502180,26810,8
+[   18.112120] COMP_BENCH_CSV: 131072,100000,comp,504880,26450,9
+[   18.117030] COMP_BENCH_CSV: 131072,1000000,comp,4107413,26700,0
+[   18.121952] COMP_BENCH_CSV: 131072,1000000,comp,4108003,26830,1
+[   18.126867] COMP_BENCH_CSV: 131072,1000000,comp,4100943,26390,2
+[   18.131733] COMP_BENCH_CSV: 131072,1000000,comp,4053433,26180,3
+[   18.136619] COMP_BENCH_CSV: 131072,1000000,comp,4073393,44860,4
+[   18.141541] COMP_BENCH_CSV: 131072,1000000,comp,4108133,26360,5
+[   18.146466] COMP_BENCH_CSV: 131072,1000000,comp,4103123,26809,6
+[   18.151400] COMP_BENCH_CSV: 131072,1000000,comp,4103134,26371,7
+[   18.156338] COMP_BENCH_CSV: 131072,1000000,comp,4108853,26269,8
+[   18.161216] COMP_BENCH_CSV: 131072,1000000,comp,4054454,26331,9
+[   18.166030] COMP_BENCH_CSV: 262144,100,comp,105831,29560,0
+[   18.166888] COMP_BENCH_CSV: 262144,100,comp,102820,26390,1
+[   18.167741] COMP_BENCH_CSV: 262144,100,comp,103290,26560,2
+[   18.168613] COMP_BENCH_CSV: 262144,100,comp,117140,26430,3
+[   18.169479] COMP_BENCH_CSV: 262144,100,comp,113120,35910,4
+[   18.170354] COMP_BENCH_CSV: 262144,100,comp,101730,26280,5
+[   18.171232] COMP_BENCH_CSV: 262144,100,comp,104060,26920,6
+[   18.172116] COMP_BENCH_CSV: 262144,100,comp,101200,26300,7
+[   18.172974] COMP_BENCH_CSV: 262144,100,comp,100930,26050,8
+[   18.173828] COMP_BENCH_CSV: 262144,100,comp,101860,26150,9
+[   18.174701] COMP_BENCH_CSV: 262144,1000,comp,101960,26560,0
+[   18.175762] COMP_BENCH_CSV: 262144,1000,comp,103470,27600,1
+[   18.176648] COMP_BENCH_CSV: 262144,1000,comp,118230,28070,2
+[   18.177511] COMP_BENCH_CSV: 262144,1000,comp,103550,28210,3
+[   18.178382] COMP_BENCH_CSV: 262144,1000,comp,104300,27920,4
+[   18.179262] COMP_BENCH_CSV: 262144,1000,comp,102740,27510,5
+[   18.180172] COMP_BENCH_CSV: 262144,1000,comp,104570,27620,6
+[   18.181057] COMP_BENCH_CSV: 262144,1000,comp,103330,27530,7
+[   18.181923] COMP_BENCH_CSV: 262144,1000,comp,102770,27440,8
+[   18.182790] COMP_BENCH_CSV: 262144,1000,comp,104430,27500,9
+[   18.183730] COMP_BENCH_CSV: 262144,10000,comp,181620,43910,0
+[   18.184628] COMP_BENCH_CSV: 262144,10000,comp,120489,27249,1
+[   18.185586] COMP_BENCH_CSV: 262144,10000,comp,183910,27180,2
+[   18.186519] COMP_BENCH_CSV: 262144,10000,comp,169020,27210,3
+[   18.187477] COMP_BENCH_CSV: 262144,10000,comp,173440,27790,4
+[   18.188407] COMP_BENCH_CSV: 262144,10000,comp,122110,27629,5
+[   18.189369] COMP_BENCH_CSV: 262144,10000,comp,167580,27570,6
+[   18.190332] COMP_BENCH_CSV: 262144,10000,comp,168300,28150,7
+[   18.191299] COMP_BENCH_CSV: 262144,10000,comp,167320,27950,8
+[   18.192275] COMP_BENCH_CSV: 262144,10000,comp,166770,27500,9
+[   18.193596] COMP_BENCH_CSV: 262144,100000,comp,532301,27790,0
+[   18.194900] COMP_BENCH_CSV: 262144,100000,comp,527500,36400,1
+[   18.196217] COMP_BENCH_CSV: 262144,100000,comp,521360,27460,2
+[   18.197545] COMP_BENCH_CSV: 262144,100000,comp,521100,28109,3
+[   18.198863] COMP_BENCH_CSV: 262144,100000,comp,517760,27630,4
+[   18.200183] COMP_BENCH_CSV: 262144,100000,comp,520650,27840,5
+[   18.201498] COMP_BENCH_CSV: 262144,100000,comp,516330,27690,6
+[   18.202813] COMP_BENCH_CSV: 262144,100000,comp,516930,27990,7
+[   18.204156] COMP_BENCH_CSV: 262144,100000,comp,520390,27680,8
+[   18.205483] COMP_BENCH_CSV: 262144,100000,comp,521730,28150,9
+[   18.210404] COMP_BENCH_CSV: 262144,1000000,comp,4125363,27600,0
+[   18.215361] COMP_BENCH_CSV: 262144,1000000,comp,4123793,27530,1
+[   18.220304] COMP_BENCH_CSV: 262144,1000000,comp,4120833,27990,2
+[   18.225249] COMP_BENCH_CSV: 262144,1000000,comp,4117393,27980,3
+[   18.230199] COMP_BENCH_CSV: 262144,1000000,comp,4117933,27600,4
+[   18.235144] COMP_BENCH_CSV: 262144,1000000,comp,4120833,28100,5
+[   18.240102] COMP_BENCH_CSV: 262144,1000000,comp,4119423,28010,6
+[   18.245047] COMP_BENCH_CSV: 262144,1000000,comp,4117223,28200,7
+[   18.249980] COMP_BENCH_CSV: 262144,1000000,comp,4120993,28170,8
+[   18.254932] COMP_BENCH_CSV: 262144,1000000,comp,4122473,28690,9
+[   18.264112] COMP_BENCH_CSV: 524288,100,comp,123320,30320,0
+[   18.264990] COMP_BENCH_CSV: 524288,100,comp,119290,26080,1
+[   18.265859] COMP_BENCH_CSV: 524288,100,comp,119340,26270,2
+[   18.266748] COMP_BENCH_CSV: 524288,100,comp,119750,26740,3
+[   18.267632] COMP_BENCH_CSV: 524288,100,comp,134380,26170,4
+[   18.268591] COMP_BENCH_CSV: 524288,100,comp,187890,26560,5
+[   18.269462] COMP_BENCH_CSV: 524288,100,comp,119350,26370,6
+[   18.270405] COMP_BENCH_CSV: 524288,100,comp,173049,26640,7
+[   18.271345] COMP_BENCH_CSV: 524288,100,comp,171160,26600,8
+[   18.272235] COMP_BENCH_CSV: 524288,100,comp,119410,26350,9
+[   18.273178] COMP_BENCH_CSV: 524288,1000,comp,171720,26500,0
+[   18.274132] COMP_BENCH_CSV: 524288,1000,comp,172909,26729,1
+[   18.275070] COMP_BENCH_CSV: 524288,1000,comp,172060,26940,2
+[   18.276014] COMP_BENCH_CSV: 524288,1000,comp,170190,26060,3
+[   18.276950] COMP_BENCH_CSV: 524288,1000,comp,171470,26580,4
+[   18.277882] COMP_BENCH_CSV: 524288,1000,comp,170420,26329,5
+[   18.278813] COMP_BENCH_CSV: 524288,1000,comp,171650,26800,6
+[   18.279783] COMP_BENCH_CSV: 524288,1000,comp,171560,26630,7
+[   18.280745] COMP_BENCH_CSV: 524288,1000,comp,190660,45430,8
+[   18.281635] COMP_BENCH_CSV: 524288,1000,comp,125790,26269,9
+[   18.282605] COMP_BENCH_CSV: 524288,10000,comp,192860,25980,0
+[   18.283595] COMP_BENCH_CSV: 524288,10000,comp,212340,36370,1
+[   18.284558] COMP_BENCH_CSV: 524288,10000,comp,190630,38930,2
+[   18.285535] COMP_BENCH_CSV: 524288,10000,comp,179100,27000,3
+[   18.286510] COMP_BENCH_CSV: 524288,10000,comp,182040,26520,4
+[   18.287474] COMP_BENCH_CSV: 524288,10000,comp,179360,26910,5
+[   18.288439] COMP_BENCH_CSV: 524288,10000,comp,180650,26720,6
+[   18.289414] COMP_BENCH_CSV: 524288,10000,comp,180410,26360,7
+[   18.290387] COMP_BENCH_CSV: 524288,10000,comp,179081,26360,8
+[   18.291365] COMP_BENCH_CSV: 524288,10000,comp,178701,27050,9
+[   18.292712] COMP_BENCH_CSV: 524288,100000,comp,540370,27200,0
+[   18.294038] COMP_BENCH_CSV: 524288,100000,comp,537521,26070,1
+[   18.295370] COMP_BENCH_CSV: 524288,100000,comp,543171,26000,2
+[   18.296720] COMP_BENCH_CSV: 524288,100000,comp,538761,26900,3
+[   18.298054] COMP_BENCH_CSV: 524288,100000,comp,537461,26151,4
+[   18.299383] COMP_BENCH_CSV: 524288,100000,comp,541630,26389,5
+[   18.300739] COMP_BENCH_CSV: 524288,100000,comp,539521,26511,6
+[   18.302072] COMP_BENCH_CSV: 524288,100000,comp,537740,26370,7
+[   18.303404] COMP_BENCH_CSV: 524288,100000,comp,544830,26050,8
+[   18.304747] COMP_BENCH_CSV: 524288,100000,comp,538060,26950,9
+[   18.309709] COMP_BENCH_CSV: 524288,1000000,comp,4165703,45190,0
+[   18.314663] COMP_BENCH_CSV: 524288,1000000,comp,4133283,27090,1
+[   18.319638] COMP_BENCH_CSV: 524288,1000000,comp,4149073,27010,2
+[   18.324614] COMP_BENCH_CSV: 524288,1000000,comp,4148043,29050,3
+[   18.329580] COMP_BENCH_CSV: 524288,1000000,comp,4153073,27620,4
+[   18.334533] COMP_BENCH_CSV: 524288,1000000,comp,4144843,37610,5
+[   18.339492] COMP_BENCH_CSV: 524288,1000000,comp,4135093,28320,6
+[   18.344466] COMP_BENCH_CSV: 524288,1000000,comp,4144373,27740,7
+[   18.349467] COMP_BENCH_CSV: 524288,1000000,comp,4163183,28260,8
+[   18.354436] COMP_BENCH_CSV: 524288,1000000,comp,4146073,27940,9
+[   18.372208] COMP_BENCH_CSV: 1048576,100,comp,232081,28110,0
+[   18.373219] COMP_BENCH_CSV: 1048576,100,comp,226930,25520,1
+[   18.374228] COMP_BENCH_CSV: 1048576,100,comp,227200,25430,2
+[   18.375241] COMP_BENCH_CSV: 1048576,100,comp,227540,25320,3
+[   18.376248] COMP_BENCH_CSV: 1048576,100,comp,228791,25231,4
+[   18.377270] COMP_BENCH_CSV: 1048576,100,comp,227541,25461,5
+[   18.378289] COMP_BENCH_CSV: 1048576,100,comp,227840,25720,6
+[   18.379310] COMP_BENCH_CSV: 1048576,100,comp,227800,25120,7
+[   18.380331] COMP_BENCH_CSV: 1048576,100,comp,228410,25920,8
+[   18.381343] COMP_BENCH_CSV: 1048576,100,comp,227670,25700,9
+[   18.382355] COMP_BENCH_CSV: 1048576,1000,comp,226980,25589,0
+[   18.383381] COMP_BENCH_CSV: 1048576,1000,comp,226991,25600,1
+[   18.384404] COMP_BENCH_CSV: 1048576,1000,comp,231040,25070,2
+[   18.385435] COMP_BENCH_CSV: 1048576,1000,comp,227860,25870,3
+[   18.386469] COMP_BENCH_CSV: 1048576,1000,comp,235810,25560,4
+[   18.387484] COMP_BENCH_CSV: 1048576,1000,comp,227410,25250,5
+[   18.388504] COMP_BENCH_CSV: 1048576,1000,comp,226521,25360,6
+[   18.389519] COMP_BENCH_CSV: 1048576,1000,comp,227380,25360,7
+[   18.390544] COMP_BENCH_CSV: 1048576,1000,comp,241620,25380,8
+[   18.391579] COMP_BENCH_CSV: 1048576,1000,comp,227640,25730,9
+[   18.392655] COMP_BENCH_CSV: 1048576,10000,comp,300130,25590,0
+[   18.393740] COMP_BENCH_CSV: 1048576,10000,comp,295881,25421,1
+[   18.394827] COMP_BENCH_CSV: 1048576,10000,comp,294411,25131,2
+[   18.395932] COMP_BENCH_CSV: 1048576,10000,comp,275811,25220,3
+[   18.397001] COMP_BENCH_CSV: 1048576,10000,comp,277300,25700,4
+[   18.398069] COMP_BENCH_CSV: 1048576,10000,comp,276560,25350,5
+[   18.399138] COMP_BENCH_CSV: 1048576,10000,comp,275890,25480,6
+[   18.400222] COMP_BENCH_CSV: 1048576,10000,comp,276490,25350,7
+[   18.401314] COMP_BENCH_CSV: 1048576,10000,comp,276590,25150,8
+[   18.402409] COMP_BENCH_CSV: 1048576,10000,comp,280530,25540,9
+[   18.403847] COMP_BENCH_CSV: 1048576,100000,comp,638730,25140,0
+[   18.405304] COMP_BENCH_CSV: 1048576,100000,comp,639740,26010,1
+[   18.406768] COMP_BENCH_CSV: 1048576,100000,comp,638220,25530,2
+[   18.408232] COMP_BENCH_CSV: 1048576,100000,comp,637511,25330,3
+[   18.409711] COMP_BENCH_CSV: 1048576,100000,comp,657501,25570,4
+[   18.411150] COMP_BENCH_CSV: 1048576,100000,comp,636321,25810,5
+[   18.412622] COMP_BENCH_CSV: 1048576,100000,comp,649480,25480,6
+[   18.414068] COMP_BENCH_CSV: 1048576,100000,comp,633960,25530,7
+[   18.415509] COMP_BENCH_CSV: 1048576,100000,comp,642790,25620,8
+[   18.416958] COMP_BENCH_CSV: 1048576,100000,comp,642180,25680,9
+[   18.422002] COMP_BENCH_CSV: 1048576,1000000,comp,4238123,25560,0
+[   18.427062] COMP_BENCH_CSV: 1048576,1000000,comp,4234654,25150,1
+[   18.432130] COMP_BENCH_CSV: 1048576,1000000,comp,4232134,25600,2
+[   18.437219] COMP_BENCH_CSV: 1048576,1000000,comp,4239234,25271,3
+[   18.442299] COMP_BENCH_CSV: 1048576,1000000,comp,4239953,25880,4
+[   18.447413] COMP_BENCH_CSV: 1048576,1000000,comp,4245283,25630,5
+[   18.452500] COMP_BENCH_CSV: 1048576,1000000,comp,4244563,25160,6
+[   18.457585] COMP_BENCH_CSV: 1048576,1000000,comp,4251813,25160,7
+[   18.462663] COMP_BENCH_CSV: 1048576,1000000,comp,4245823,25160,8
+[   18.467743] COMP_BENCH_CSV: 1048576,1000000,comp,4238783,25430,9
+[   18.468611] COMP_BENCH_CSV: computation benchmark complete
+[   18.488179] TRACE_SUMMARY: app,run,n_events,n_bulk_h2d,n_bulk_d2h,n_bundle,total_h2d_ns,total_d2h_ns,total_bundle_ns,total_ns,total_h2d_bytes,total_d2h_bytes,total_cycles
+[   18.501870] TRACE_SUMMARY: bfs,0,30,13,1,16,484570,26920,11010297,11521787,350481,16392,2620951
+[   18.514758] TRACE_SUMMARY: bfs,1,30,13,1,16,479610,26680,11035579,11541869,350481,16392,2620951
+[   18.527653] TRACE_SUMMARY: bfs,2,30,13,1,16,475722,26560,11013106,11515388,350481,16392,2620951
+[   18.540484] TRACE_SUMMARY: bfs,3,30,13,1,16,459249,26960,11005891,11492100,350481,16392,2620951
+[   18.553323] TRACE_SUMMARY: bfs,4,30,13,1,16,459120,26810,10977249,11463179,350481,16392,2620951
+[   18.567182] TRACE_SUMMARY: blackscholes,0,7,4,2,1,128270,52460,12436350,12617080,36756,2048,3102206
+[   18.581074] TRACE_SUMMARY: blackscholes,1,7,4,2,1,106209,55469,12459510,12621188,36756,2048,3102206
+[   18.594954] TRACE_SUMMARY: blackscholes,2,7,4,2,1,128159,55530,12442690,12626379,36756,2048,3102206
+[   18.608837] TRACE_SUMMARY: blackscholes,3,7,4,2,1,110840,56220,12438730,12605790,36756,2048,3102206
+[   18.622732] TRACE_SUMMARY: blackscholes,4,7,4,2,1,110830,55700,12443410,12609940,36756,2048,3102206
+[   18.626728] TRACE_SUMMARY: conv3,0,4,2,1,1,116560,29750,2578032,2724342,97436,65536,636010
+[   18.630622] TRACE_SUMMARY: conv3,1,4,2,1,1,114870,29649,2593102,2737621,97436,65536,636010
+[   18.634500] TRACE_SUMMARY: conv3,2,4,2,1,1,115729,29680,2578642,2724051,97436,65536,636010
+[   18.638378] TRACE_SUMMARY: conv3,3,4,2,1,1,113540,30020,2580303,2723863,97436,65536,636010
+[   18.642261] TRACE_SUMMARY: conv3,4,4,2,1,1,124120,29690,2576632,2730442,97436,65536,636010
+[   18.646980] TRACE_SUMMARY: dotproduct,0,5,3,1,1,230050,29931,3315293,3575274,553940,65536,821407
+[   18.651747] TRACE_SUMMARY: dotproduct,1,5,3,1,1,199281,30431,3325953,3555665,553940,65536,821407
+[   18.656533] TRACE_SUMMARY: dotproduct,2,5,3,1,1,201649,30110,3316442,3548201,553940,65536,821407
+[   18.661328] TRACE_SUMMARY: dotproduct,3,5,3,1,1,198781,30100,3321982,3550863,553940,65536,821407
+[   18.666128] TRACE_SUMMARY: dotproduct,4,5,3,1,1,212850,29630,3313833,3556313,553940,65536,821407
+[   18.715977] TRACE_SUMMARY: guassian,0,132,3,3,126,94350,82780,47480244,47657374,70968,33024,10815524
+[   18.765826] TRACE_SUMMARY: guassian,1,132,3,3,126,85250,83770,47485167,47654187,70968,33024,10815524
+[   18.815691] TRACE_SUMMARY: guassian,2,132,3,3,126,85480,83210,47504147,47672837,70968,33024,10815524
+[   18.865552] TRACE_SUMMARY: guassian,3,132,3,3,126,85450,83120,47510019,47678589,70968,33024,10815524
+[   18.915502] TRACE_SUMMARY: guassian,4,132,3,3,126,84369,84730,47567750,47736849,70968,33024,10815524
+[   18.936727] TRACE_SUMMARY: kmeans,0,9,4,2,3,171770,56530,19703536,19931836,564660,4096,4897255
+[   18.957863] TRACE_SUMMARY: kmeans,1,9,4,2,3,169850,56270,19681477,19907597,564660,4096,4897255
+[   18.979005] TRACE_SUMMARY: kmeans,2,9,4,2,3,169901,55790,19697176,19922867,564660,4096,4897255
+[   19.000150] TRACE_SUMMARY: kmeans,3,9,4,2,3,169451,55950,19696335,19921736,564660,4096,4897255
+[   19.021280] TRACE_SUMMARY: kmeans,4,9,4,2,3,162590,56560,19689825,19908975,564660,4096,4897255
+[   19.036129] TRACE_SUMMARY: lbm,0,5,3,1,1,666960,147060,12828881,13642901,2488484,1228800,3198780
+[   19.050654] TRACE_SUMMARY: lbm,1,5,3,1,1,321410,158231,12823050,13302691,2488484,1228800,3198780
+[   19.065177] TRACE_SUMMARY: lbm,2,5,3,1,1,309581,146310,12829860,13285751,2488484,1228800,3198780
+[   19.079716] TRACE_SUMMARY: lbm,3,5,3,1,1,331330,161170,12828261,13320761,2488484,1228800,3198780
+[   19.094233] TRACE_SUMMARY: lbm,4,5,3,1,1,308210,148290,12827810,13284310,2488484,1228800,3198780
+[   19.098169] TRACE_SUMMARY: nearn,0,4,2,1,1,110751,84670,2497382,2692803,200656,85528,616918
+[   19.102023] TRACE_SUMMARY: nearn,1,4,2,1,1,120580,85710,2496102,2702392,200656,85528,616918
+[   19.105870] TRACE_SUMMARY: nearn,2,4,2,1,1,110600,86480,2495742,2692822,200656,85528,616918
+[   19.109727] TRACE_SUMMARY: nearn,3,4,2,1,1,111470,84590,2502672,2698732,200656,85528,616918
+[   19.113603] TRACE_SUMMARY: nearn,4,4,2,1,1,110660,106510,2498922,2716092,200656,85528,616918
+[   19.115109] TRACE_SUMMARY: oclprintf,0,2,1,0,1,27550,0,314080,341630,29704,0,69837
+[   19.116514] TRACE_SUMMARY: oclprintf,1,2,1,0,1,27780,0,307141,334921,29704,0,69837
+[   19.117921] TRACE_SUMMARY: oclprintf,2,2,1,0,1,27080,0,307321,334401,29704,0,69837
+[   19.119306] TRACE_SUMMARY: oclprintf,3,2,1,0,1,27631,0,307681,335312,29704,0,69837
+[   19.120708] TRACE_SUMMARY: oclprintf,4,2,1,0,1,27540,0,323881,351421,29704,0,69837
+[   19.122286] TRACE_SUMMARY: psort,0,4,2,1,1,54200,26130,428170,508500,30332,512,99923
+[   19.123903] TRACE_SUMMARY: psort,1,4,2,1,1,65180,26310,434310,525800,30332,512,99923
+[   19.125677] TRACE_SUMMARY: psort,2,4,2,1,1,56610,28390,432721,517721,30332,512,99923
+[   19.127278] TRACE_SUMMARY: psort,3,4,2,1,1,56860,27810,434220,518890,30332,512,99923
+[   19.128900] TRACE_SUMMARY: psort,4,4,2,1,1,65980,28090,437350,531420,30332,512,99923
+[   19.130594] TRACE_SUMMARY: psum,0,4,2,1,1,55800,43550,503441,602791,33984,512,118301
+[   19.132262] TRACE_SUMMARY: psum,1,4,2,1,1,55870,27670,506080,589620,33984,512,118301
+[   19.133946] TRACE_SUMMARY: psum,2,4,2,1,1,56450,28160,502701,587311,33984,512,118301
+[   19.135621] TRACE_SUMMARY: psum,3,4,2,1,1,56870,27580,501861,586311,33984,512,118301
+[   19.137300] TRACE_SUMMARY: psum,4,4,2,1,1,57490,27950,505030,590470,33984,512,118301
+[   19.139684] TRACE_SUMMARY: saxpy,0,5,3,1,1,91230,28410,1163431,1283071,95088,32768,282394
+[   19.142097] TRACE_SUMMARY: saxpy,1,5,3,1,1,84740,28390,1165801,1278931,95088,32768,282394
+[   19.144518] TRACE_SUMMARY: saxpy,2,5,3,1,1,84920,27720,1164771,1277411,95088,32768,282394
+[   19.146934] TRACE_SUMMARY: saxpy,3,5,3,1,1,83710,28010,1160491,1272211,95088,32768,282394
+[   19.149337] TRACE_SUMMARY: saxpy,4,5,3,1,1,83340,27970,1159561,1270871,95088,32768,282394
+[   19.151295] TRACE_SUMMARY: sfilter,0,5,3,1,1,99470,28500,673820,801790,62608,16384,161119
+[   19.153227] TRACE_SUMMARY: sfilter,1,5,3,1,1,82490,27740,679921,790151,62608,16384,161119
+[   19.155185] TRACE_SUMMARY: sfilter,2,5,3,1,1,95010,28720,682291,806021,62608,16384,161119
+[   19.157122] TRACE_SUMMARY: sfilter,3,5,3,1,1,84420,27820,677731,789971,62608,16384,161119
+[   19.159052] TRACE_SUMMARY: sfilter,4,5,3,1,1,84980,28680,674951,788611,62608,16384,161119
+[   19.162819] TRACE_SUMMARY: sgemm,0,5,3,1,1,84161,27860,2525202,2637223,62412,16384,622498
+[   19.166622] TRACE_SUMMARY: sgemm,1,5,3,1,1,85450,28470,2520902,2634822,62412,16384,622498
+[   19.170404] TRACE_SUMMARY: sgemm,2,5,3,1,1,85070,34580,2518662,2638312,62412,16384,622498
+[   19.174188] TRACE_SUMMARY: sgemm,3,5,3,1,1,98130,28580,2523622,2650332,62412,16384,622498
+[   19.177968] TRACE_SUMMARY: sgemm,4,5,3,1,1,83140,27840,2525102,2636082,62412,16384,622498
+[   19.181423] TRACE_SUMMARY: sgemm2,0,5,3,1,1,83150,34870,2201402,2319422,48456,9216,541290
+[   19.184889] TRACE_SUMMARY: sgemm2,1,5,3,1,1,98671,27849,2201671,2328191,48456,9216,541290
+[   19.188344] TRACE_SUMMARY: sgemm2,2,5,3,1,1,85101,28510,2196132,2309743,48456,9216,541290
+[   19.191826] TRACE_SUMMARY: sgemm2,3,5,3,1,1,108490,28390,2196582,2333462,48456,9216,541290
+[   19.195335] TRACE_SUMMARY: sgemm2,4,5,3,1,1,83270,27750,2198212,2309232,48456,9216,541290
+[   19.198908] TRACE_SUMMARY: sgemm3,0,5,3,1,1,84970,28490,2317452,2430912,48512,9216,566285
+[   19.202456] TRACE_SUMMARY: sgemm3,1,5,3,1,1,84510,27960,2296381,2408851,48512,9216,566285
+[   19.206022] TRACE_SUMMARY: sgemm3,2,5,3,1,1,86942,28191,2301622,2416755,48512,9216,566285
+[   19.209589] TRACE_SUMMARY: sgemm3,3,5,3,1,1,84491,50730,2298702,2433923,48512,9216,566285
+[   19.213147] TRACE_SUMMARY: sgemm3,4,5,3,1,1,83210,27940,2297942,2409092,48512,9216,566285
+[   19.215031] TRACE_SUMMARY: spmv,0,8,6,1,1,176420,28560,531151,736131,79192,4552,124630
+[   19.216880] TRACE_SUMMARY: spmv,1,8,6,1,1,168140,28050,529450,725640,79192,4552,124630
+[   19.218731] TRACE_SUMMARY: spmv,2,8,6,1,1,169120,28700,534321,732141,79192,4552,124630
+[   19.220591] TRACE_SUMMARY: spmv,3,8,6,1,1,166362,41340,532410,740112,79192,4552,124630
+[   19.222446] TRACE_SUMMARY: spmv,4,8,6,1,1,168450,28100,531461,728011,79192,4552,124630
+[   19.226405] TRACE_SUMMARY: stencil,0,5,3,1,1,97212,27760,2725212,2850184,95376,32768,671828
+[   19.230425] TRACE_SUMMARY: stencil,1,5,3,1,1,97010,35850,2719322,2852182,95376,32768,671828
+[   19.234442] TRACE_SUMMARY: stencil,2,5,3,1,1,83190,27510,2728492,2839192,95376,32768,671828
+[   19.238440] TRACE_SUMMARY: stencil,3,5,3,1,1,83300,28289,2725903,2837492,95376,32768,671828
+[   19.242448] TRACE_SUMMARY: stencil,4,5,3,1,1,83829,28310,2731943,2844082,95376,32768,671828
+[   19.306973] TRACE_SUMMARY: transpose,0,5,2,1,2,174550,147430,63029920,63351900,1079592,1048576,15741943
+[   19.371653] TRACE_SUMMARY: transpose,1,5,2,1,2,166860,161011,63031180,63359051,1079592,1048576,15741943
+[   19.436317] TRACE_SUMMARY: transpose,2,5,2,1,2,169160,146440,63026521,63342121,1079592,1048576,15741943
+[   19.500998] TRACE_SUMMARY: transpose,3,5,2,1,2,167280,146950,63030541,63344771,1079592,1048576,15741943
+[   19.565664] TRACE_SUMMARY: transpose,4,5,2,1,2,151250,167550,63037181,63355981,1079592,1048576,15741943
+[   19.567734] TRACE_SUMMARY: vecadd,0,5,3,1,1,82690,27631,652991,763312,62320,16384,154526
+[   19.569630] TRACE_SUMMARY: vecadd,1,5,3,1,1,81350,27190,652290,760830,62320,16384,154526
+[   19.571510] TRACE_SUMMARY: vecadd,2,5,3,1,1,81260,27460,646031,754751,62320,16384,154526
+[   19.573390] TRACE_SUMMARY: vecadd,3,5,3,1,1,81002,26690,647661,755353,62320,16384,154526
+[   19.575295] TRACE_SUMMARY: vecadd,4,5,3,1,1,97090,27429,646011,770530,62320,16384,154526
+[   19.576408] TRACE_CSV: trace replay complete (20 apps x 5 runs)
+[?2004hroot@clara:~# QEMU: Terminated
+
