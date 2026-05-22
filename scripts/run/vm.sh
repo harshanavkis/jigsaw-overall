@@ -45,7 +45,7 @@ case $1 in
 			-kernel $KERNEL_BIN \
 			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off" \
 			-drive file=$2,format=raw \
-			-object memory-backend-file,size=2M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem,host-nodes=1,policy=bind \
+			-object memory-backend-file,size=16M,share=on,mem-path=/dev/hugepages/ivshmem,id=hostmem,host-nodes=1,policy=bind,prealloc=on \
 			-device ivshmem-plain,memdev=hostmem \
 			-enable-kvm \
 			-nographic \

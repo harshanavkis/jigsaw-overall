@@ -75,6 +75,7 @@ pkgs.mkShell {
     python3.pkgs.matplotlib
 
     numactl
+    cloc
   ];
 
   shellHook = ''
