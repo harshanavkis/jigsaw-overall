@@ -980,9 +980,11 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     ax.grid(True, alpha=0.3, axis='y', color='gray', linestyle='-')
     ax.set_axisbelow(True)
 
-    # Legend
-    ax.legend(loc='upper right', ncol=len(variants), frameon=True,
-              fontsize=local_legend_size, columnspacing=1.5)
+    # Legend: outside the axes (above), so it never collides with the
+    # speedup annotations of tall bars
+    ax.legend(loc='lower right', bbox_to_anchor=(1.0, 1.0), ncol=len(variants),
+              frameon=False, fontsize=local_legend_size, columnspacing=1.5,
+              borderaxespad=0.1)
     
     plt.tight_layout()
     plt.margins(x=0.015, y=0.0, tight=True)
