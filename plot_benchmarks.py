@@ -921,7 +921,7 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     # Blue, green, red-ish for baseline / jigsaw / sw forwarder
     colors = {'Baseline': palette[0], 'Jigsaw': palette[2], 'SW-Forwarder': palette[3]}
 
-    fig, ax = plt.subplots(figsize=(16.0, 4.6))
+    fig, ax = plt.subplots(figsize=(16.0, 3.8))
 
     apps = list(df['app'].cat.categories)
     x = np.arange(len(apps))
@@ -1036,7 +1036,7 @@ def plot_compact_app_size_performance(df, folder, name_suffix=''):
     colors = {'Baseline': palette[0], 'Jigsaw': palette[2]}
     hatches = {'small': '', 'medium': '///', 'long': '\\\\'}
 
-    fig, ax = plt.subplots(figsize=(16.0, 4.6))
+    fig, ax = plt.subplots(figsize=(16.0, 3.8))
 
     apps = list(df['app'].cat.categories)
     x = np.arange(len(apps))
