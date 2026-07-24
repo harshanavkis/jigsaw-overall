@@ -921,7 +921,7 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     # Blue, green, red-ish for baseline / jigsaw / sw forwarder
     colors = {'Baseline': palette[0], 'Jigsaw': palette[2], 'SW-Forwarder': palette[3]}
 
-    fig, ax = plt.subplots(figsize=(16.0, 3.5))
+    fig, ax = plt.subplots(figsize=(16.0, 4.6))
 
     apps = list(df['app'].cat.categories)
     x = np.arange(len(apps))
@@ -974,17 +974,16 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=local_tick_size)
     ax.tick_params(axis='y', labelsize=local_tick_size)
     ax.set_yscale('log')
-    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 4.0))
+    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 30.0))
 
     # Grid
     ax.grid(True, alpha=0.3, axis='y', color='gray', linestyle='-')
     ax.set_axisbelow(True)
 
-    # Legend: outside the axes (above), so it never collides with the
-    # speedup annotations of tall bars
-    ax.legend(loc='lower right', bbox_to_anchor=(1.0, 1.0), ncol=len(variants),
-              frameon=False, fontsize=local_legend_size, columnspacing=1.5,
-              borderaxespad=0.1)
+    # Legend inside the axes; the taller figure + extra y headroom keep
+    # it clear of the speedup annotations
+    ax.legend(loc='upper right', ncol=len(variants), frameon=True,
+              fontsize=local_legend_size, columnspacing=1.5)
     
     plt.tight_layout()
     plt.margins(x=0.015, y=0.0, tight=True)
@@ -1037,7 +1036,7 @@ def plot_compact_app_size_performance(df, folder, name_suffix=''):
     colors = {'Baseline': palette[0], 'Jigsaw': palette[2]}
     hatches = {'small': '', 'medium': '///', 'long': '\\\\'}
 
-    fig, ax = plt.subplots(figsize=(16.0, 3.5))
+    fig, ax = plt.subplots(figsize=(16.0, 4.6))
 
     apps = list(df['app'].cat.categories)
     x = np.arange(len(apps))
@@ -1178,7 +1177,7 @@ def plot_no_virt_app_performance(df, folder):
     ax.set_xticks(x)
     ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=TICK_SIZE)
     ax.set_yscale('log')
-    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 4.0))
+    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 30.0))
     ax.grid(True, alpha=0.3, axis='y', color='gray', linestyle='-')
     ax.set_axisbelow(True)
     sns.despine(ax=ax)
