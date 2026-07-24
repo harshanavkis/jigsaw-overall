@@ -1,5 +1,6 @@
 import os
 import re
+import glob
 import argparse
 import numpy as np
 import pandas as pd
@@ -86,6 +87,7 @@ def display_variant_label(variant):
         'Jigsaw-minus-NW': 'jigsaw-minus-nw',
         'Jigsaw-minus-NW (BM)': 'jigsaw-minus-nw (BM)',
         'CPU-attached': 'cpu-attached',
+        'SW-Forwarder': 'sw-forwarder',
     }
     return labels.get(variant, variant)
 
@@ -631,15 +633,44 @@ def plot_comp_performance(df, folder, variants, font_sizes=None, fig_size=None, 
         print("Saved Computation_Performance.png/pdf")
         plt.close()
 
+def read_cycles_scale(path):
+    """Reads the cycles_scale a log was captured with (TRACE_CSV line).
+
+    Falls back to a -cs<N> filename suffix, then 1 (as-captured traces)."""
+    try:
+        with open(path, 'r', errors='replace') as f:
+            for line in f:
+                m = re.search(r'TRACE_CSV:\s*cycles_scale=(\d+)', line)
+                if m:
+                    return int(m.group(1))
+    except OSError:
+        pass
+    m = re.search(r'-cs(\d+)\.log$', path)
+    return int(m.group(1)) if m else 1
+
 def parse_app_summary(folder, label_file_map):
-    """Parses per-app summary from logs."""
+    """Parses per-app summary from logs.
+
+    For every mapped file, scale-suffixed siblings (<stem>-cs<N>.log) are
+    parsed too; every row is tagged with the cycles_scale its log reports
+    (TRACE_CSV: cycles_scale=N) so plots can be emitted per scale."""
     data = []
+    expanded = []
     for label, filename in label_file_map.items():
-        path = os.path.join(folder, filename)
-        if not os.path.exists(path):
-            print(f"Warning: {path} not found.")
+        stem, ext = os.path.splitext(filename)
+        siblings = sorted(os.path.basename(p) for p in
+                          glob.glob(os.path.join(folder, f"{stem}-cs*{ext}")))
+        candidates = [filename] + siblings
+        if not any(os.path.exists(os.path.join(folder, c)) for c in candidates):
+            print(f"Warning: {os.path.join(folder, filename)} not found.")
             continue
-            
+        expanded += [(label, c) for c in candidates
+                     if os.path.exists(os.path.join(folder, c))]
+
+    for label, filename in expanded:
+        path = os.path.join(folder, filename)
+        cycles_scale = read_cycles_scale(path)
+
         in_summary = False
         with open(path, 'r') as f:
             for line in f:
@@ -667,6 +698,7 @@ def parse_app_summary(folder, label_file_map):
                         'set': set_name,
                         'variant': label,
                         'app': app_name,
+                        'cycles_scale': cycles_scale,
                         'total_us': float(parts[total_ns_idx]) / 1000.0
                     })
                     continue
@@ -688,12 +720,14 @@ def parse_app_summary(folder, label_file_map):
                             'set': 'all',
                             'variant': label,
                             'app': app_name,
+                            'cycles_scale': cycles_scale,
                             'total_us': float(parts[8])
                         })
     df = pd.DataFrame(data)
     if df.empty:
         return df
-    return df.groupby(['set', 'variant', 'app'], as_index=False)['total_us'].agg(gmean)
+    return df.groupby(['set', 'variant', 'app', 'cycles_scale'],
+                      as_index=False)['total_us'].agg(gmean)
 
 def parse_no_virt_app_summary(folder, label_file_map):
     """Parses no-virt per-app summary tables.
@@ -762,7 +796,7 @@ def parse_no_virt_app_summary(folder, label_file_map):
         return df
     return df.groupby(['variant', 'app'], as_index=False)['total_us'].agg(gmean)
 
-def summarize_app_set_changes(df, folder):
+def summarize_app_set_changes(df, folder, name_suffix=''):
     """Writes a per-app summary of Jigsaw/Baseline ratios across trace sets."""
     if df.empty or 'set' not in df.columns:
         return pd.DataFrame()
@@ -808,12 +842,12 @@ def summarize_app_set_changes(df, folder):
     if sort_cols:
         summary = summary.sort_values(sort_cols, ascending=ascending)
 
-    out_path = os.path.join(folder, "E2E_App_Performance_set_summary.csv")
+    out_path = os.path.join(folder, f"E2E_App_Performance_set_summary{name_suffix}.csv")
     summary.to_csv(out_path, index=False, float_format='%.6f')
     print(f"Saved {out_path}")
     return summary
 
-def plot_app_performance(df, folder, set_name=None, app_order=None):
+def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=''):
     """Bar plot for per-app performance with custom styling."""
     if df.empty: return
 
@@ -839,7 +873,8 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
             app_order = sorted(df['app'].unique())
 
         if ordered_sets == ['all']:
-            plot_app_performance(df.drop(columns=['set']), folder, set_name='all', app_order=app_order)
+            plot_app_performance(df.drop(columns=['set']), folder, set_name='all',
+                                 app_order=app_order, name_suffix=name_suffix)
             return
 
         for current_set in ordered_sets:
@@ -847,18 +882,32 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
                 df[df['set'] == current_set].drop(columns=['set']),
                 folder,
                 set_name=current_set,
-                app_order=app_order
+                app_order=app_order,
+                name_suffix=name_suffix
             )
         return
 
     baseline_label = 'Baseline'
-    jigsaw_label = 'Jigsaw'
-    
+    variant_order = ['Baseline', 'Jigsaw', 'SW-Forwarder']
+    variants = [v for v in variant_order if v in df['variant'].unique()]
+
     if app_order is None:
         app_order = df[df['variant'] == baseline_label].sort_values('total_us', ascending=False)['app'].tolist()
         if not app_order:
             app_order = sorted(df['app'].unique())
-    
+
+    # Trailing geomean group: one synthetic "app" whose per-variant value is
+    # the geomean of that variant's per-app totals (over the ordered apps).
+    geo_rows = []
+    for variant in df['variant'].unique():
+        sub = df[df['variant'] == variant].set_index('app')['total_us']
+        vals = sub.reindex(app_order).dropna()
+        if len(vals):
+            geo_rows.append({'app': 'geomean', 'variant': variant,
+                             'total_us': gmean(vals)})
+    df = pd.concat([df, pd.DataFrame(geo_rows)], ignore_index=True)
+    app_order = list(app_order) + ['geomean']
+
     df['app'] = pd.Categorical(df['app'], categories=app_order, ordered=True)
     df = df.sort_values('app')
 
@@ -869,16 +918,16 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
     local_speedup_size = SPEEDUP_SIZE + 4
 
     palette = sns.color_palette("pastel")
-    colors = {baseline_label: palette[0], jigsaw_label: palette[2]} # Blue and Green
+    # Blue, green, red-ish for baseline / jigsaw / sw forwarder
+    colors = {'Baseline': palette[0], 'Jigsaw': palette[2], 'SW-Forwarder': palette[3]}
 
     fig, ax = plt.subplots(figsize=(16.0, 3.5))
 
     apps = list(df['app'].cat.categories)
     x = np.arange(len(apps))
-    bar_width = 0.34
+    bar_width = min(0.34, 0.85 / max(len(variants), 1))
 
-    variants = [baseline_label, jigsaw_label]
-    hatches = {baseline_label: '', jigsaw_label: '\\\\'}
+    hatches = {'Baseline': '', 'Jigsaw': '\\\\', 'SW-Forwarder': '//'}
     baseline_by_app = df[df['variant'] == baseline_label].set_index('app')['total_us']
 
     for i, variant in enumerate(variants):
@@ -888,11 +937,14 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
         # Ensure we match the order of apps
         sub = sub.set_index('app').reindex(apps).reset_index()
 
-        bars = ax.bar(x + (i - 0.5) * bar_width, sub['total_us'], bar_width,
+        bars = ax.bar(x + (i - (len(variants) - 1) / 2.0) * bar_width, sub['total_us'], bar_width,
                       label=display_variant_label(variant), color=colors[variant],
                       hatch=hatches[variant], edgecolor='black', linewidth=1, alpha=1.0)
 
-        if variant == jigsaw_label:
+        if variant != baseline_label:
+            # Stagger annotation rows per variant so near-equal bars don't
+            # print their ratios on top of each other.
+            row = variants.index(variant) - 1
             for bar, app_name, total_us in zip(bars, sub['app'], sub['total_us']):
                 if pd.isna(total_us) or app_name not in baseline_by_app:
                     continue
@@ -901,11 +953,15 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
                     continue
                 ax.annotate(f'{total_us / baseline_us:.2f}x',
                             xy=(bar.get_x() + bar.get_width() / 2, total_us),
-                            xytext=(0, 3), textcoords='offset points',
+                            xytext=(0, 3 + row * (local_speedup_size + 4)),
+                            textcoords='offset points',
                             ha='center', va='bottom',
                             fontsize=local_speedup_size)
 
     # ===== AXIS FORMATTING =====
+    # separator before the trailing geomean group
+    ax.axvline(len(apps) - 1.5, color='gray', linewidth=1,
+               linestyle='--', alpha=0.7)
     ax.set_ylabel('')
     # Custom y-axis label (rotated)
     ax.text(-0.04, 0.5, 'Execution Time [us]',
@@ -918,14 +974,14 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
     ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=local_tick_size)
     ax.tick_params(axis='y', labelsize=local_tick_size)
     ax.set_yscale('log')
-    ax.set_ylim(top=df['total_us'].max() * 2.2)
+    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 4.0))
 
     # Grid
     ax.grid(True, alpha=0.3, axis='y', color='gray', linestyle='-')
     ax.set_axisbelow(True)
 
     # Legend
-    ax.legend(loc='upper right', ncol=2, frameon=True,
+    ax.legend(loc='upper right', ncol=len(variants), frameon=True,
               fontsize=local_legend_size, columnspacing=1.5)
     
     plt.tight_layout()
@@ -934,13 +990,14 @@ def plot_app_performance(df, folder, set_name=None, app_order=None):
     output_name = "E2E_App_Performance"
     if set_name and set_name != 'all':
         output_name = f"{output_name}-{set_name}"
+    output_name = f"{output_name}{name_suffix}"
     out_path = os.path.join(folder, output_name)
     plt.savefig(out_path + ".png", dpi=300, bbox_inches='tight')
     plt.savefig(out_path + ".pdf", bbox_inches='tight')
     print(f"Saved {out_path}.png/pdf")
     plt.close()
 
-def plot_compact_app_size_performance(df, folder):
+def plot_compact_app_size_performance(df, folder, name_suffix=''):
     """Compact E2E app plot with size subgroups for selected applications."""
     if df.empty or 'set' not in df.columns:
         return
@@ -1046,7 +1103,7 @@ def plot_compact_app_size_performance(df, folder):
     plt.tight_layout()
     plt.margins(x=0.015, y=0.0, tight=True)
 
-    out_path = os.path.join(folder, "E2E_App_Performance_Compact_By_Size")
+    out_path = os.path.join(folder, f"E2E_App_Performance_Compact_By_Size{name_suffix}")
     plt.savefig(out_path + ".png", dpi=300, bbox_inches='tight')
     plt.savefig(out_path + ".pdf", bbox_inches='tight')
     print(f"Saved {out_path}.png/pdf")
@@ -1119,7 +1176,7 @@ def plot_no_virt_app_performance(df, folder):
     ax.set_xticks(x)
     ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=TICK_SIZE)
     ax.set_yscale('log')
-    ax.set_ylim(top=df['total_us'].max() * 2.2)
+    ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 4.0))
     ax.grid(True, alpha=0.3, axis='y', color='gray', linestyle='-')
     ax.set_axisbelow(True)
     sns.despine(ax=ax)
@@ -1523,12 +1580,20 @@ def main():
     # 7. NEW: E2E Application Performance
     app_mapping = {
         'Baseline': 'jigsaw-baseline.log',
-        'Jigsaw': 'jigsaw-nw-attached.log'
+        'Jigsaw': 'jigsaw-nw-attached.log',
+        'SW-Forwarder': 'jigsaw-sw-forwarder.log'
     }
     df_apps = parse_app_summary(args.folder, app_mapping)
-    summarize_app_set_changes(df_apps, args.folder)
-    plot_app_performance(df_apps, args.folder)
-    plot_compact_app_size_performance(df_apps, args.folder)
+    if not df_apps.empty:
+        # One set of app plots per cycles_scale found in the logs; scale 1
+        # keeps the legacy unsuffixed filenames, others get -cs<N>. Logs at
+        # a non-default scale live in <stem>-cs<N>.log files.
+        for scale in sorted(df_apps['cycles_scale'].unique()):
+            sub = df_apps[df_apps['cycles_scale'] == scale].drop(columns=['cycles_scale'])
+            suffix = '' if scale == 1 else f"-cs{int(scale)}"
+            summarize_app_set_changes(sub, args.folder, name_suffix=suffix)
+            plot_app_performance(sub, args.folder, name_suffix=suffix)
+            plot_compact_app_size_performance(sub, args.folder, name_suffix=suffix)
 
     # 8. E2E Application Performance (No-Virt Only)
     no_virt_app_mapping = {
