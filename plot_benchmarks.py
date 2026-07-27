@@ -87,7 +87,7 @@ def display_variant_label(variant):
         'Jigsaw-minus-NW': 'jigsaw-minus-nw',
         'Jigsaw-minus-NW (BM)': 'jigsaw-minus-nw (BM)',
         'CPU-attached': 'cpu-attached',
-        'SW-Forwarder': 'sw-forwarder',
+        'SW-Forwarder': 'vfio-fwd',
     }
     return labels.get(variant, variant)
 
@@ -942,9 +942,7 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
                       hatch=hatches[variant], edgecolor='black', linewidth=1, alpha=1.0)
 
         if variant != baseline_label:
-            # Stagger annotation rows per variant so near-equal bars don't
-            # print their ratios on top of each other.
-            row = variants.index(variant) - 1
+            # Rotated 90 so adjacent bars' ratios don't collide.
             for bar, app_name, total_us in zip(bars, sub['app'], sub['total_us']):
                 if pd.isna(total_us) or app_name not in baseline_by_app:
                     continue
@@ -953,9 +951,8 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
                     continue
                 ax.annotate(f'{total_us / baseline_us:.2f}x',
                             xy=(bar.get_x() + bar.get_width() / 2, total_us),
-                            xytext=(0, 3 + row * (local_speedup_size + 4)),
-                            textcoords='offset points',
-                            ha='center', va='bottom',
+                            xytext=(0, 3), textcoords='offset points',
+                            ha='center', va='bottom', rotation=90,
                             fontsize=local_speedup_size)
 
     # ===== AXIS FORMATTING =====
