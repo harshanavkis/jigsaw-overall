@@ -32,6 +32,7 @@ PERFORMANCE_FONT_SIZES = {
 }
 PERFORMANCE_FIGURE_SIZE = SINGLE_COLUMN_FIGURE_SIZE
 E2E_COMBINED_FIGURE_SIZE = (48, 7)
+ABLATION_COMBINED_FIGURE_SIZE = (56, 7)
 E2E_COMBINED_FONT_SIZES = {
     'label': 40,
     'tick': 36,
@@ -471,7 +472,7 @@ def plot_lines(df, title, ylabel, output_path, variants, is_latency=False, two_r
         print(f"Saved {output_path}.png/pdf")
         plt.close()
 
-def plot_4k_grouped_latency(df_dma, folder):
+def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_sizes=None):
     """Grouped stacked bar plot for 4KiB DMA latency (Native vs Virtualized)."""
     if df_dma.empty: return
     
@@ -493,7 +494,9 @@ def plot_4k_grouped_latency(df_dma, folder):
     }).reset_index()
     
     # 3. Preparation for Plotting
-    fig, ax = plt.subplots(figsize=SINGLE_COLUMN_FIGURE_SIZE)
+    standalone = ax is None
+    if standalone:
+        fig, ax = plt.subplots(figsize=SINGLE_COLUMN_FIGURE_SIZE)
 
     group_labels = list(groups.keys())
     y = np.arange(len(group_labels))
@@ -511,10 +514,10 @@ def plot_4k_grouped_latency(df_dma, folder):
             exec_t = (row_n['latency_ns'].values[0] - row_n['mmio_done_ns'].values[0]) / 1000.0
             total = init + exec_t
 
-            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (Bare Metal)' if i==0 else "")
-            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (Bare Metal)' if i==0 else "")
+            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (BM)' if i==0 else "")
+            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (BM)' if i==0 else "")
             ax.text(total + 0.2, y[i] - height/2, f'{round(total)}', va='center', ha='left',
-                    fontsize=SINGLE_COLUMN_FONT_SIZES['annotation'] + 1, fontweight='bold')
+                    fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
         # VM Bar (Top offset) - With hatch
         v_virt = variants[1]
@@ -527,32 +530,46 @@ def plot_4k_grouped_latency(df_dma, folder):
             ax.barh(y[i] + height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (VM)' if i==0 else "", hatch='///')
             ax.barh(y[i] + height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (VM)' if i==0 else "", hatch='///')
             ax.text(total + 0.2, y[i] + height/2, f'{round(total)}', va='center', ha='left',
-                    fontsize=SINGLE_COLUMN_FONT_SIZES['annotation'] + 1, fontweight='bold')
+                    fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
     # 4. Labeling and Aesthetics
-    local_label_size = SINGLE_COLUMN_FONT_SIZES['label'] + 4
-    local_tick_size = SINGLE_COLUMN_FONT_SIZES['tick'] + 4
-    local_legend_size = SINGLE_COLUMN_FONT_SIZES['legend'] + 4
-    local_annotation_size = SINGLE_COLUMN_FONT_SIZES['annotation'] + 1
+    if font_sizes:
+        local_label_size = font_sizes['label']
+        local_tick_size = font_sizes['tick']
+        local_legend_size = font_sizes['legend']
+        local_annotation_size = font_sizes['annotation']
+    else:
+        local_label_size = SINGLE_COLUMN_FONT_SIZES['label'] + 4
+        local_tick_size = SINGLE_COLUMN_FONT_SIZES['tick'] + 4
+        local_legend_size = SINGLE_COLUMN_FONT_SIZES['legend'] + 4
+        local_annotation_size = SINGLE_COLUMN_FONT_SIZES['annotation'] + 1
 
+    ax.set_xlim(right=ax.get_xlim()[1] * (1.45 if not standalone else 1.12))
     ax.set_xlabel("Latency [us]", fontsize=local_label_size)
     ax.set_yticks(y)
     ax.set_yticklabels(group_labels, fontsize=local_tick_size)
     ax.tick_params(axis='x', labelsize=local_tick_size)
 
-    ax.legend(loc='lower right', ncol=1, frameon=True, fontsize=local_legend_size)
+    ax.legend(loc='lower right', ncol=2 if not standalone else 1, frameon=True,
+              fontsize=local_legend_size * (0.62 if not standalone else 1.0),
+              handlelength=1.2, handletextpad=0.4, columnspacing=0.8, borderpad=0.3)
     ax.grid(True, axis='x', alpha=0.3)
 
-    ax.text(1.0, 0.5, '← Lower is better',
-            transform=ax.transAxes, ha='right', va='center',
-            fontsize=local_annotation_size, color='navy', fontweight='bold')
+    if standalone:
+        ax.text(1.0, 0.5, '← Lower is better',
+                transform=ax.transAxes, ha='right', va='center',
+                fontsize=local_annotation_size, color='navy', fontweight='bold')
 
-    plt.tight_layout()
-    out_path = os.path.join(folder, "DMA_Latency_Decomposition_4K")
-    plt.savefig(out_path + ".png", dpi=300, bbox_inches='tight')
-    plt.savefig(out_path + ".pdf", bbox_inches='tight')
-    print(f"Saved {out_path}.png/pdf")
-    plt.close()
+    if subplot_label:
+        ax.set_title(subplot_label, fontsize=local_label_size, pad=12)
+
+    if standalone:
+        plt.tight_layout()
+        out_path = os.path.join(folder, "DMA_Latency_Decomposition_4K")
+        plt.savefig(out_path + ".png", dpi=300, bbox_inches='tight')
+        plt.savefig(out_path + ".pdf", bbox_inches='tight')
+        print(f"Saved {out_path}.png/pdf")
+        plt.close()
 
 def plot_comp_performance(df, folder, variants, font_sizes=None, fig_size=None, direction_y=0.90, ax=None, subplot_label=None, ylabel="Relative Perf."):
     """
@@ -1333,11 +1350,11 @@ def plot_e2e_combined(df_mmio, df_dma, df_comp, folder, variants, markers,
     plt.close()
 
 def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
-    """Protocol, network, and virtualization DMA overhead plots side-by-side."""
+    """Protocol, network, virtualization, and 4 KiB latency decomposition side-by-side."""
     font_sizes = font_sizes or E2E_COMBINED_FONT_SIZES
-    fig_size = fig_size or E2E_COMBINED_FIGURE_SIZE
+    fig_size = fig_size or ABLATION_COMBINED_FIGURE_SIZE
 
-    fig, axes = plt.subplots(1, 3, figsize=fig_size)
+    fig, axes = plt.subplots(1, 4, figsize=fig_size)
 
     prot_variants = ['Baseline (BM)', 'Jigsaw-minus-NW (BM)']
     prot_markers = {
@@ -1379,6 +1396,9 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
                font_sizes=font_sizes, legend_ncol=2, split_op_legend=True,
                subplot_label="(c) Virtualization overheads (higher is better ↑)",
                ax=axes[2])
+
+    plot_4k_grouped_latency(df_dma, folder, ax=axes[3], font_sizes=font_sizes,
+                            subplot_label="(d) 4 KiB H2D latency (lower is better ↓)")
 
     fig.subplots_adjust(left=0.08, right=0.99, top=0.88, bottom=0.18, wspace=0.15)
     out = os.path.join(folder, "ablation-study")
