@@ -547,7 +547,8 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
     ax.set_xlim(right=ax.get_xlim()[1] * (1.45 if not standalone else 1.12))
     ax.set_xlabel("Latency [us]", fontsize=local_label_size)
     ax.set_yticks(y)
-    ax.set_yticklabels(group_labels, fontsize=local_tick_size)
+    ax.set_yticklabels([g.replace('-minus-', '-\nminus-') for g in group_labels],
+                       fontsize=local_tick_size)
     ax.tick_params(axis='x', labelsize=local_tick_size)
 
     ax.legend(loc='lower right', ncol=2 if not standalone else 1, frameon=True,
@@ -561,7 +562,9 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
                 fontsize=local_annotation_size, color='navy', fontweight='bold')
 
     if subplot_label:
-        ax.set_title(subplot_label, fontsize=local_label_size, pad=12)
+        ax.text(0.5, 1.0, subplot_label, transform=ax.transAxes,
+                ha='center', va='bottom', fontsize=local_annotation_size,
+                color='navy', fontweight='bold', clip_on=False)
 
     if standalone:
         plt.tight_layout()
@@ -1355,7 +1358,7 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     fig_size = fig_size or ABLATION_COMBINED_FIGURE_SIZE
 
     fig, axes = plt.subplots(1, 4, figsize=fig_size,
-                             gridspec_kw={'width_ratios': [1, 1, 1, 0.82]})
+                             gridspec_kw={'width_ratios': [1, 1, 1, 0.88]})
 
     prot_variants = ['Baseline (BM)', 'Jigsaw-minus-NW (BM)']
     prot_markers = {
