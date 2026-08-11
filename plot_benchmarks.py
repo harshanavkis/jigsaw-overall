@@ -1354,7 +1354,8 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     font_sizes = font_sizes or E2E_COMBINED_FONT_SIZES
     fig_size = fig_size or ABLATION_COMBINED_FIGURE_SIZE
 
-    fig, axes = plt.subplots(1, 4, figsize=fig_size)
+    fig, axes = plt.subplots(1, 4, figsize=fig_size,
+                             gridspec_kw={'width_ratios': [1, 1, 1, 0.82]})
 
     prot_variants = ['Baseline (BM)', 'Jigsaw-minus-NW (BM)']
     prot_markers = {
@@ -1400,7 +1401,7 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     plot_4k_grouped_latency(df_dma, folder, ax=axes[3], font_sizes=font_sizes,
                             subplot_label="(d) 4 KiB H2D latency (lower is better ↓)")
 
-    fig.subplots_adjust(left=0.08, right=0.99, top=0.88, bottom=0.18, wspace=0.15)
+    fig.subplots_adjust(left=0.08, right=0.99, top=0.88, bottom=0.18, wspace=0.30)
     out = os.path.join(folder, "ablation-study")
     plt.savefig(out + ".png", dpi=300, bbox_inches='tight')
     plt.savefig(out + ".pdf", bbox_inches='tight')
