@@ -1001,8 +1001,8 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     # it clear of the speedup annotations
     ax.legend(loc='upper right', ncol=len(variants), frameon=True,
               fontsize=local_legend_size, columnspacing=1.5)
-    ax.text(0.015, 0.97, '(Lower is better ↓)', transform=ax.transAxes,
-            ha='left', va='top', fontsize=local_legend_size, color='navy',
+    ax.text(0.5, 0.97, '(Lower is better ↓)', transform=ax.transAxes,
+            ha='center', va='top', fontsize=local_legend_size, color='navy',
             fontweight='bold')
     
     plt.tight_layout()
