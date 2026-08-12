@@ -514,8 +514,8 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
             exec_t = (row_n['latency_ns'].values[0] - row_n['mmio_done_ns'].values[0]) / 1000.0
             total = init + exec_t
 
-            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (BM)' if i==0 else "")
-            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (BM)' if i==0 else "")
+            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label=(('Init' if not standalone else 'Init (BM)') if i==0 else ""))
+            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label=(('Exec' if not standalone else 'Exec (BM)') if i==0 else ""))
             ax.text(total + 0.2, y[i] - height/2, f'{round(total)}', va='center', ha='left',
                     fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
@@ -527,8 +527,8 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
             exec_t = (row_v['latency_ns'].values[0] - row_v['mmio_done_ns'].values[0]) / 1000.0
             total = init + exec_t
 
-            ax.barh(y[i] + height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (VM)' if i==0 else "", hatch='///')
-            ax.barh(y[i] + height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (VM)' if i==0 else "", hatch='///')
+            ax.barh(y[i] + height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label=(('' if not standalone else 'Init (VM)') if i==0 else ""), hatch='///')
+            ax.barh(y[i] + height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label=(('' if not standalone else 'Exec (VM)') if i==0 else ""), hatch='///')
             ax.text(total + 0.2, y[i] + height/2, f'{round(total)}', va='center', ha='left',
                     fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
@@ -544,15 +544,15 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
         local_legend_size = SINGLE_COLUMN_FONT_SIZES['legend'] + 4
         local_annotation_size = SINGLE_COLUMN_FONT_SIZES['annotation'] + 1
 
-    ax.set_xlim(right=ax.get_xlim()[1] * (1.45 if not standalone else 1.12))
+    ax.set_xlim(right=ax.get_xlim()[1] * (1.30 if not standalone else 1.12))
     ax.set_xlabel("Latency [us]", fontsize=local_label_size)
     ax.set_yticks(y)
     ax.set_yticklabels([g.replace('-minus-', '-\nminus-') for g in group_labels],
                        fontsize=local_tick_size)
     ax.tick_params(axis='x', labelsize=local_tick_size)
 
-    ax.legend(loc='lower right', ncol=2 if not standalone else 1, frameon=True,
-              fontsize=local_legend_size * (0.62 if not standalone else 1.0),
+    ax.legend(loc='lower right', ncol=1, frameon=True,
+              fontsize=local_legend_size,
               handlelength=1.2, handletextpad=0.4, columnspacing=0.8, borderpad=0.3)
     ax.grid(True, axis='x', alpha=0.3)
 
