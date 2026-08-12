@@ -31,7 +31,7 @@ PERFORMANCE_FONT_SIZES = {
     'annotation': 18,
 }
 PERFORMANCE_FIGURE_SIZE = SINGLE_COLUMN_FIGURE_SIZE
-E2E_COMBINED_FIGURE_SIZE = (48, 7)
+E2E_COMBINED_FIGURE_SIZE = (48, 5.65)
 ABLATION_COMBINED_FIGURE_SIZE = (56, 7)
 E2E_COMBINED_FONT_SIZES = {
     'label': 40,
@@ -514,8 +514,8 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
             exec_t = (row_n['latency_ns'].values[0] - row_n['mmio_done_ns'].values[0]) / 1000.0
             total = init + exec_t
 
-            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label=(('Init' if not standalone else 'Init (BM)') if i==0 else ""))
-            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label=(('Exec' if not standalone else 'Exec (BM)') if i==0 else ""))
+            ax.barh(y[i] - height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (BM)' if i==0 else "")
+            ax.barh(y[i] - height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (BM)' if i==0 else "")
             ax.text(total + 0.2, y[i] - height/2, f'{round(total)}', va='center', ha='left',
                     fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
@@ -527,8 +527,8 @@ def plot_4k_grouped_latency(df_dma, folder, ax=None, subplot_label=None, font_si
             exec_t = (row_v['latency_ns'].values[0] - row_v['mmio_done_ns'].values[0]) / 1000.0
             total = init + exec_t
 
-            ax.barh(y[i] + height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label=(('' if not standalone else 'Init (VM)') if i==0 else ""), hatch='///')
-            ax.barh(y[i] + height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label=(('' if not standalone else 'Exec (VM)') if i==0 else ""), hatch='///')
+            ax.barh(y[i] + height/2, init, height, color=colors[0], alpha=0.8, edgecolor='k', label='Init (VM)' if i==0 else "", hatch='///')
+            ax.barh(y[i] + height/2, exec_t, height, left=init, color=colors[1], alpha=0.8, edgecolor='k', label='Exec (VM)' if i==0 else "", hatch='///')
             ax.text(total + 0.2, y[i] + height/2, f'{round(total)}', va='center', ha='left',
                     fontsize=(font_sizes or SINGLE_COLUMN_FONT_SIZES)['annotation'] + 1, fontweight='bold')
 
@@ -1001,6 +1001,9 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
     # it clear of the speedup annotations
     ax.legend(loc='upper right', ncol=len(variants), frameon=True,
               fontsize=local_legend_size, columnspacing=1.5)
+    ax.text(0.015, 0.97, '(Lower is better ↓)', transform=ax.transAxes,
+            ha='left', va='top', fontsize=local_legend_size, color='navy',
+            fontweight='bold')
     
     plt.tight_layout()
     plt.margins(x=0.015, y=0.0, tight=True)
