@@ -1430,14 +1430,21 @@ def annotate_improvement(ax, df, value_col, op, sorted_sizes, better='higher',
     if not (y_ref > 0 and y_new > 0):
         return
     factor = y_new / y_ref if better == 'higher' else y_ref / y_new
+    # Report each panel in the unit its own claim uses: throughput as a factor,
+    # latency as the equivalent reduction (2.7x faster == 63% lower).
+    if better == 'higher':
+        label = f'{factor:.1f}$\\times$'
+    else:
+        label = f'$-${100 * (1 - 1 / factor):.0f}%'
     # plot_lines draws latency in us, so match whatever unit the axes use
     y_ref, y_new = y_ref * scale, y_new * scale
     ax.annotate('', xy=(x, y_new), xytext=(x, y_ref),
                 arrowprops=dict(arrowstyle='-|>', linewidth=3, color='navy',
                                 shrinkA=6, shrinkB=6, mutation_scale=30))
-    ax.text(x - 0.12, (y_ref + y_new) / 2, f'{factor:.1f}$\\times$',
-            ha='right', va='center', fontsize=annotation_size,
-            color='navy', fontweight='bold')
+    ax.text(x, (y_ref + y_new) / 2, label,
+            ha='center', va='center', fontsize=annotation_size,
+            color='navy', fontweight='bold',
+            bbox=dict(facecolor='white', edgecolor='none', alpha=0.85, pad=1.5))
 
 
 def plot_motivation_combined(stranding_dir, df_motiv_dma, folder,
