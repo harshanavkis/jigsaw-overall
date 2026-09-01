@@ -1414,6 +1414,32 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     print(f"Saved {out}.png/pdf")
     plt.close()
 
+def annotate_improvement(ax, df, value_col, op, sorted_sizes, better='higher',
+                         scale=1.0, font_sizes=None):
+    """Arrow at the largest transfer size from CPU-attached to Jigsaw, labelled
+    with the improvement factor. Points up for throughput, down for latency."""
+    annotation_size = (font_sizes or {}).get('annotation', ANNOTATION_SIZE)
+    size = max(sorted_sizes)
+    x = sorted_sizes.index(size)
+    sub = df[(df['size'] == size) & (df['op'] == op)]
+    try:
+        y_ref = sub[sub['variant'] == 'CPU-attached'][value_col].mean()
+        y_new = sub[sub['variant'] == 'Jigsaw'][value_col].mean()
+    except KeyError:
+        return
+    if not (y_ref > 0 and y_new > 0):
+        return
+    factor = y_new / y_ref if better == 'higher' else y_ref / y_new
+    # plot_lines draws latency in us, so match whatever unit the axes use
+    y_ref, y_new = y_ref * scale, y_new * scale
+    ax.annotate('', xy=(x, y_new), xytext=(x, y_ref),
+                arrowprops=dict(arrowstyle='-|>', linewidth=3, color='navy',
+                                shrinkA=6, shrinkB=6, mutation_scale=30))
+    ax.text(x - 0.12, (y_ref + y_new) / 2, f'{factor:.1f}$\\times$',
+            ha='right', va='center', fontsize=annotation_size,
+            color='navy', fontweight='bold')
+
+
 def plot_motivation_combined(stranding_dir, df_motiv_dma, folder,
                              font_sizes=None, fig_size=None):
     """Stranding analysis, DMA perf motivation, and DMA latency motivation side-by-side."""
@@ -1447,6 +1473,12 @@ def plot_motivation_combined(stranding_dir, df_motiv_dma, folder,
                font_sizes=font_sizes,
                subplot_label="(c) DMA latency (lower is better ↓)",
                ax=axes[2])
+
+    sorted_sizes = sorted(df_motiv_dma['size'].unique())
+    annotate_improvement(axes[1], df_motiv_dma, 'val', 'h2d', sorted_sizes,
+                         better='higher', font_sizes=font_sizes)
+    annotate_improvement(axes[2], df_motiv_lat, 'val', 'h2d', sorted_sizes,
+                         better='lower', scale=1 / 1000.0, font_sizes=font_sizes)
 
     fig.subplots_adjust(left=0.08, right=0.99, top=0.88, bottom=0.18, wspace=0.15)
     out = os.path.join(folder, "jigsaw-motivation")
