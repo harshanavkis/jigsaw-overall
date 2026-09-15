@@ -1364,9 +1364,10 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
                              gridspec_kw={'width_ratios': [1, 1, 1, 0.88]})
 
     prot_variants = ['Baseline (BM)', 'Jigsaw-minus-NW (BM)']
+    # One marker per op across variants (the split-op legend lists one shape per op).
     prot_markers = {
         'Baseline (BM)': {'h2d': 'o', 'd2h': 's'},
-        'Jigsaw-minus-NW (BM)': {'h2d': '^', 'd2h': 'D'},
+        'Jigsaw-minus-NW (BM)': {'h2d': 'o', 'd2h': 's'},
     }
     plot_lines(df_dma[df_dma['variant'].isin(prot_variants)],
                "DMA Throughput", "Throughput [GiB/s]",
@@ -1379,7 +1380,7 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     net_variants = ['Jigsaw-minus-NW (BM)', 'Jigsaw (BM)']
     net_markers = {
         'Jigsaw-minus-NW (BM)': {'h2d': 'o', 'd2h': 's'},
-        'Jigsaw (BM)': {'h2d': '^', 'd2h': 'D'},
+        'Jigsaw (BM)': {'h2d': 'o', 'd2h': 's'},
     }
     plot_lines(df_dma[df_dma['variant'].isin(net_variants)],
                "DMA Throughput", "Throughput [GiB/s]",
@@ -1392,9 +1393,9 @@ def plot_ablation_combined(df_dma, folder, font_sizes=None, fig_size=None):
     virt_variants = ['Baseline (BM)', 'Baseline', 'Jigsaw (BM)', 'Jigsaw']
     virt_markers = {
         'Baseline (BM)': {'h2d': 'o', 'd2h': 's'},
-        'Baseline': {'h2d': '^', 'd2h': 'D'},
-        'Jigsaw (BM)': {'h2d': 'v', 'd2h': 'P'},
-        'Jigsaw': {'h2d': 'X', 'd2h': 'p'},
+        'Baseline': {'h2d': 'o', 'd2h': 's'},
+        'Jigsaw (BM)': {'h2d': 'o', 'd2h': 's'},
+        'Jigsaw': {'h2d': 'o', 'd2h': 's'},
     }
     plot_lines(df_dma[df_dma['variant'].isin(virt_variants)],
                "DMA Throughput", "Throughput [GiB/s]",
@@ -1520,9 +1521,11 @@ def main():
     }
     df_e2e_mmio, df_e2e_dma, df_e2e_comp = parse_logs(args.folder, e2e_mapping)
     e2e_variants = ['Baseline', 'Jigsaw']
+    # Same marker per op for both variants: the split-op legend lists one
+    # shape per op, so colour alone must tell the variants apart.
     e2e_markers = {
         'Baseline': {'h2d': 'o', 'd2h': 's', 'write': 'o', 'read': 's'},
-        'Jigsaw': {'h2d': '^', 'd2h': 'D', 'write': '^', 'read': 'D'}
+        'Jigsaw': {'h2d': 'o', 'd2h': 's', 'write': 'o', 'read': 's'}
     }
     plot_lines(limit_mmio_plot_size(df_e2e_mmio), "MMIO Latency", "Latency [us]",
                os.path.join(args.folder, "MMIO_Performance_e2e_microbench"), e2e_variants, is_latency=True,
