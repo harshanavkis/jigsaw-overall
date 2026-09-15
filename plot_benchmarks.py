@@ -65,6 +65,8 @@ plt.rcParams['xtick.labelsize'] = TICK_SIZE
 plt.rcParams['ytick.labelsize'] = TICK_SIZE
 plt.rcParams['legend.fontsize'] = LEGEND_SIZE
 
+APP_DISPLAY = {'guassian': 'gaussian'}
+
 def gmean(x):
     """Calculates the geometric mean of a series."""
     return np.exp(np.mean(np.log(x[x > 0])))
@@ -988,7 +990,8 @@ def plot_app_performance(df, folder, set_name=None, app_order=None, name_suffix=
 
     ax.set_xlabel('')
     ax.set_xticks(x)
-    ax.set_xticklabels(apps, rotation=45, ha='right', fontsize=local_tick_size)
+    # The Vortex suite spells this app 'guassian'; fix the label only.
+    ax.set_xticklabels([APP_DISPLAY.get(a, a) for a in apps], rotation=45, ha='right', fontsize=local_tick_size)
     ax.tick_params(axis='y', labelsize=local_tick_size)
     ax.set_yscale('log')
     ax.set_ylim(top=df['total_us'].max() * (2.2 if len(variants) <= 2 else 30.0))
