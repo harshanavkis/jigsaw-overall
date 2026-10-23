@@ -12,6 +12,27 @@ SRC_DIR="$(realpath "$SCRIPT_DIR/../..")"
 KERNEL_BIN="$SRC_DIR/submodules/spdm-linux/arch/x86/boot/bzImage"
 QEMU_BIN="$SRC_DIR/submodules/qemu/build/qemu-system-x86_64"
 
+# The QEMU submodule is built inside this repo's nix-shell, whose nixpkgs is
+# unpinned: the store paths baked into the binary's RUNPATH can vanish on a
+# channel update or nix GC, after which the loader reports e.g.
+# "libudev.so.1: cannot open shared object file". Resolve any now-missing
+# runtime libs from whatever copy the store currently has — the loader only
+# needs the sonames present (the features they back are unused in these VMs).
+missing=$(ldd "$QEMU_BIN" 2>/dev/null | awk '/not found/ {print $1}')
+if [ -n "$missing" ]; then
+	libpath=""
+	for lib in $missing; do
+		found=$(find /nix/store -mindepth 3 -maxdepth 3 -name "$lib" -print -quit 2>/dev/null)
+		if [ -z "$found" ]; then
+			echo "Error: cannot resolve $lib for $QEMU_BIN (searched /nix/store)"
+			exit 1
+		fi
+		libpath="$libpath$(dirname "$found"):"
+	done
+	export LD_LIBRARY_PATH="$libpath$LD_LIBRARY_PATH"
+	echo "Resolved missing QEMU libs via LD_LIBRARY_PATH: $libpath"
+fi
+
 case $1 in
 	CVM)
 		$QEMU_BIN \
@@ -20,7 +41,7 @@ case $1 in
 			-numa node,memdev=sysmem-file \
 			-smp 8 \
 			-kernel $KERNEL_BIN \
-			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr" \
+			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr log_buf_len=16M" \
 			-drive file=$2,format=raw \
 			-object memory-backend-file,size=1M,share=on,mem-path=/dev/shm/ivshmem,id=hostmem \
 			-device ivshmem-plain,memdev=hostmem \
@@ -43,7 +64,7 @@ case $1 in
 			-numa node,memdev=sysmem-file \
 			-smp 8 \
 			-kernel $KERNEL_BIN \
-			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off" \
+			-append "console=ttyS0 root=/dev/sda rw earlyprintk=serial net.ifnames=0 nokaslr swiotlb=noforce iommu=off log_buf_len=16M" \
 			-drive file=$2,format=raw \
 			-object memory-backend-file,size=16M,share=on,mem-path=/dev/hugepages/ivshmem,id=hostmem,host-nodes=1,policy=bind,prealloc=on \
 			-device ivshmem-plain,memdev=hostmem \
